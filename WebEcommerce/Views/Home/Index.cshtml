@@ -1,0 +1,187 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    string saluto = DateTime.Now.Hour < 12 ? "Buongiorno" : DateTime.Now.Hour < 18 ? "Buon pomeriggio" : "Buonasera";
+    string ruolo = Session["Role"]?.ToString().ToLower();
+}
+
+
+<style>
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .card-fadein {
+        opacity: 0;
+        animation: fadeInUp 0.5s ease forwards;
+    }
+
+    .card-fadein:nth-child(1) { animation-delay: 0.1s; }
+    .card-fadein:nth-child(2) { animation-delay: 0.3s; }
+    .card-fadein:nth-child(3) { animation-delay: 0.5s; }
+    .card-fadein:nth-child(4) { animation-delay: 0.7s; }
+</style>
+
+<main class="container-fluid px-4 mt-4">
+
+    <!-- Saluto -->
+    <h1 class="fw-bold mb-1" style="font-size: 2rem;">
+        @saluto, <span style="color: #ffc107;">@Session["User"]</span>!
+    </h1>
+    <p class="text-muted mb-4">
+        <i class="bi bi-calendar me-1"></i> @DateTime.Now.ToString("dddd, dd MMMM yyyy")
+    </p>
+
+    @if (ruolo == "admin" || ruolo == "admin-customer")
+    {
+        <!-- BLOCCO ADMIN - statistiche -->
+   
+
+        <div class="row g-3 mb-5">
+
+            <!-- Totale Utenti -->
+            <div class="col-md-3 card-fadein">
+                <div class="p-4 bg-white card-animated" style="border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <p class="text-muted mb-1" style="font-size: 0.85rem;">Totale Utenti</p>
+                            <h3 class="fw-bold mb-0">--</h3>
+                        </div>
+                        <i class="bi bi-people-fill" style="font-size: 1.8rem; color: #ffc107;"></i>
+                    </div>
+                    <div style="height: 6px; background-color: #f0f0f0; border-radius: 3px;">
+                        <div style="height: 6px; width: 70%; background: linear-gradient(90deg, #ffc107, #212529); border-radius: 3px;"></div>
+                    </div>
+                    <p class="text-muted mt-1 mb-0" style="font-size: 0.75rem;">70% rispetto al mese scorso</p>
+                </div>
+            </div>
+
+            <!-- Totale Ordini -->
+            <div class="col-md-3 card-fadein">
+                <div class="p-4 bg-white card-animated" style="border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <p class="text-muted mb-1" style="font-size: 0.85rem;">Totale Ordini</p>
+                            <h3 class="fw-bold mb-0">--</h3>
+                        </div>
+                        <i class="bi bi-bag-fill" style="font-size: 1.8rem; color: #212529;"></i>
+                    </div>
+                    <div style="height: 6px; background-color: #f0f0f0; border-radius: 3px;">
+                        <div style="height: 6px; width: 50%; background: linear-gradient(90deg, #212529, #ffc107); border-radius: 3px;"></div>
+                    </div>
+                    <p class="text-muted mt-1 mb-0" style="font-size: 0.75rem;">50% rispetto al mese scorso</p>
+                </div>
+            </div>
+
+            <!-- Totale Prodotti -->
+            <div class="col-md-3 card-fadein">
+                <div class="p-4 bg-white card-animated" style="border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <p class="text-muted mb-1" style="font-size: 0.85rem;">Totale Prodotti</p>
+                            <h3 class="fw-bold mb-0">--</h3>
+                        </div>
+                        <i class="bi bi-box-seam-fill" style="font-size: 1.8rem; color: #ffc107;"></i>
+                    </div>
+                    <div style="height: 6px; background-color: #f0f0f0; border-radius: 3px;">
+                        <div style="height: 6px; width: 85%; background: linear-gradient(90deg, #ffc107, #212529); border-radius: 3px;"></div>
+                    </div>
+                    <p class="text-muted mt-1 mb-0" style="font-size: 0.75rem;">85% rispetto al mese scorso</p>
+                </div>
+            </div>
+
+            <!-- Totale Clienti -->
+            <div class="col-md-3 card-fadein">
+                <div class="p-4 bg-white card-animated" style="border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <p class="text-muted mb-1" style="font-size: 0.85rem;">Totale Clienti</p>
+                            <h3 class="fw-bold mb-0">--</h3>
+                        </div>
+                        <i class="bi bi-person-fill" style="font-size: 1.8rem; color: #212529;"></i>
+                    </div>
+                    <div style="height: 6px; background-color: #f0f0f0; border-radius: 3px;">
+                        <div style="height: 6px; width: 60%; background: linear-gradient(90deg, #212529, #ffc107); border-radius: 3px;"></div>
+                    </div>
+                    <p class="text-muted mt-1 mb-0" style="font-size: 0.75rem;">60% rispetto al mese scorso</p>
+                </div>
+            </div>
+
+        </div>
+    }
+
+    @if (ruolo == "admin-customer" || ruolo == "customer")
+    {
+        <!-- BLOCCO CUSTOMER - ultimi ordini -->
+        <h5 class="fw-bold mb-3">I tuoi ultimi ordini</h5>
+        <div class="d-flex gap-3 mb-5 overflow-auto pb-2">
+            @for (int i = 0; i < 4; i++)
+            {
+                <div class="bg-white card-animated flex-shrink-0" style="width: 220px; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 16px;">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="bi bi-bag-fill" style="color: #ffc107; font-size: 1.5rem;"></i>
+                        <span class="fw-semibold">Ordine #000@(i + 1)</span>
+                    </div>
+                    <p class="text-muted mb-1" style="font-size: 0.8rem;">Data: --/--/----</p>
+                    <p class="text-muted mb-0" style="font-size: 0.8rem;">Stato: <span class="badge" style="background-color: #ffc107; color: #212529;">In attesa</span></p>
+                </div>
+            }
+        </div>
+
+        <!-- BLOCCO CUSTOMER - prodotti consigliati -->
+        <h5 class="fw-bold mb-3">Prodotti consigliati per te</h5>
+        <div class="row g-3 mb-5">
+            @for (int i = 1; i <= 4; i++)
+            {
+                <div class="col-md-3">
+                    <div class="bg-white card-animated" style="border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); overflow: hidden;">
+
+                        @*<div class="d-flex align-items-center justify-content-center" style="height: 150px; background-color: #f5f5f5;">
+                                <i class="bi bi-image" style="font-size: 3rem; color: #ddd;"></i>
+                            </div>*@
+                        <div>
+                            @*in futuro ciclare la lista*@
+                            <img src="~/Content/Images/prodotti/prodotto-@(i).png" alt="prodotti"
+                                 class="img-fluid"
+                                 style="max-height: 100%; object-fit: contain;" />
+                        </div>
+
+                        <div class="p-3">
+                            <h6 class="fw-bold mb-1">Nome Prodotto</h6>
+                            <p class="text-muted mb-2" style="font-size: 0.8rem;">Categoria</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold" style="color: #ffc107;">€ --,--</span>
+                                <button class="btn btn-sm btn-animated fw-semibold" style="background-color: #212529; color: white; border-radius: 20px;">
+                                    <i class="bi bi-cart-plus me-1"></i> Aggiungi
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    @*BLOCCO CUSTOMER - carrello
+        <h5 class="fw-bold mb-3">Il tuo carrello</h5>
+        <div class="bg-white p-4 card-animated mb-5" style="border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-3">
+                    <i class="bi bi-cart-fill" style="font-size: 2rem; color: #ffc107;"></i>
+                    <div>
+                        <h6 class="fw-bold mb-0">-- prodotti nel carrello</h6>
+                        <p class="text-muted mb-0" style="font-size: 0.85rem;">Totale: € --,--</p>
+                    </div>
+                </div>
+                <a href="#" class="btn fw-semibold btn-animated px-4" style="background-color: #ffc107; color: #212529; border-radius: 25px; border: none;">
+                    <i class="bi bi-cart-check me-1"></i> Vai al carrello
+                </a>
+            </div>
+        </div>*@
+
+</main>

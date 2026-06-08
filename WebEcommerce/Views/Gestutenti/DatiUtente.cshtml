@@ -1,0 +1,44 @@
+﻿@model WebEcommerce.Models.GestioneUtentiViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="container mt-4">
+    <div class="card shadow-sm">
+        <div>
+            <h1>Dati utente</h1>
+        </div>
+        <div>
+            <label for="username">Username:</label><br />
+
+            <input type="text" id="Username" value="@Model.UserDetail.Username"><br />
+
+            <label for="password">Password:</label><br />
+            <input type="text" id="password" value="@Model.UserDetail.Password"><br />
+
+            <label for="cognome">Cognome:</label><br />
+            <input type="text" id="cognome" value="@Model.UserDetail.LastName"><br />
+
+            <label for="nome">Nome:</label><br />
+            <input type="text" id="nome" value="@Model.UserDetail.FirstName"><br />
+
+            <label for="ruolo">Ruolo:</label><br />
+            <input type="text" id="ruolo" value="@Model.UserDetail.RoleName"><br />
+
+            <label for="email">Email:</label><br />
+            <input type="text" id="email" value="@Model.UserDetail.Email"><br />
+
+            <label>Attivo:</label><br />
+            <span>@(Model.IsActive ? "Sì" : "No")</span>
+
+            <div class="text-end">
+
+                <a href="javascript:history.back();" class="btn btn-secondary">Torna indietro</a>
+
+            </div>
+        </div>
+    </div>
+
+
+</main>

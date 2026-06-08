@@ -1,0 +1,20 @@
+﻿@model WebEcommerce.Models.GestioneUtentiViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    // Convertiamo l'oggetto singolo nel suo tipo reale
+    var parametriDiRicerca = ViewData["valori"] as DTO_Ecommerce.sp_SearchUser_Param;
+}
+
+@if (TempData["MessaggioSuccesso"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Fatto!</strong> @TempData["MessaggioSuccesso"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@Html.ActionLink("Torna indietro", "GestioneUtenti", "Gestutenti")

@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="BLL_Ecommerce/BLL_Ecommerce.csproj" Id="e77950b9-a894-4b46-a47b-433012b2eeb4" />
+  <Project Path="DAL_Ecommerce/DAL_Ecommerce.csproj" Id="a85c35d2-b1d1-40c2-8036-e6703584cef0" />
+  <Project Path="DTO_Ecommerce/DTO_Ecommerce.csproj" Id="d40e87f6-fcd3-4241-acce-2186b82e971f" />
+  <Project Path="WebEcommerce/WebEcommerce.csproj" Id="f1bf8f0e-2b2c-4922-9fda-15e1e9f57465" />
+</Solution>

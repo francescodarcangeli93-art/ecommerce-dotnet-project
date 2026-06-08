@@ -1,0 +1,33 @@
+﻿
+function confermaEliminazione(id, username)
+{
+
+    document.getElementById('Id').value = id;
+    document.getElementById('nomeUtenteDaEliminare').textContent = username;
+
+    const modal = new bootstrap.Modal(document.getElementById('modalElimina'));
+
+    modal.show();
+
+}
+
+setTimeout(function ()
+{
+    var alertSuccesso = document.getElementById('alertSuccesso');
+    var alerErrore = document.getElementById('alertErrore');
+
+    if (alertSuccesso)
+    {
+        alertSuccesso.style.transition = 'opacity 1s';
+        alertSuccesso.style.opacity = '0';
+    }
+
+    if (alerErrore) {
+        alerErrore.style.transition = 'opacity 1s';
+        alerErrore.style.opacity = '0';
+    }
+
+}, 1000)
+
+
+
