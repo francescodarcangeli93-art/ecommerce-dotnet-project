@@ -1,0 +1,81 @@
+﻿
+@*FiLTRI*@ 
+
+<div class="mb-4 p-4 bg-white card-animated" style="border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+    <h5 class="mb-4 fw-semibold text-dark">Ricerca Utenti</h5>
+
+    <form action="@Url.Action("GestioneUtenti","Gestutenti")" method="POST" class="row g-3">
+        <div class="col-md-3">
+            <input type="text" name="Username" placeholder="Username" class="form-control input-animated"
+                   value="@(Model?.Filtri?.Username)"
+                   style="border-radius: 25px; border: 1.5px solid #ddd; padding: 10px 18px;" />
+        </div>
+
+        <div class="col-md-3">
+            <select name="RoleId" class="form-select input-animated"
+                    style="border-radius: 25px; border: 1.5px solid #ddd; padding: 10px 18px;">
+                <option value="">-- selezionare un Ruolo --</option>
+                @foreach (var role in Model.ListRuoli)
+                {
+                    <option value="@role.Id" @(Model.Filtri.RoleId == role.Id ? "selected" : "")>@role.RoleName</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <input type="text" name="LastName" placeholder="Cognome" class="form-control input-animated"
+                   value="@(Model?.Filtri?.LastName)"
+                   style="border-radius: 25px; border: 1.5px solid #ddd; padding: 10px 18px;" />
+        </div>
+
+        <div class="col-md-3">
+            <input type="text" name="FirstName" placeholder="Nome" class="form-control d-block input-animated"
+                   value="@(Model?.Filtri?.FirstName)"
+                   style="border-radius: 25px; border: 1.5px solid #ddd; padding: 10px 18px;" />
+        </div>
+
+        <div class="col-md-4">
+            <input type="email" name="Email" placeholder="Email" class="form-control input-animated"
+                   value="@(Model?.Filtri?.Email)"
+                   style="border-radius: 25px; border: 1.5px solid #ddd; padding: 10px 18px;" />
+        </div>
+
+        @*<div class="col-md-3 d-flex align-items-center gap-3">
+                <span class="fw-semibold text-muted" style="font-size: 14px;">Attivo:</span>
+                <div class="form-check mb-0">
+                    <input class="form-check-input input-animated" type="radio" id="radioTutti" name="IsActive" value="" />
+                    <label class="form-check-label text-muted" for="radioTutti">Tutti</label>
+                </div>
+                <div class="form-check mb-0">
+                    <input class="form-check-input input-animated" type="radio" id="radioTrue" name="IsActive" value="true" @(Model?.Filtri?.IsActive == true ? "checked" : "") />
+                    <label class="form-check-label text-muted" for="radioTrue">Sì</label>
+                </div>
+                <div class="form-check mb-0">
+                    <input class="form-check-input input-animated" type="radio" id="radioFalse" name="IsActive" value="false" @(Model?.Filtri?.IsActive == false ? "checked" : "") />
+                    <label class="form-check-label text-muted" for="radioFalse">No</label>
+                </div>
+            </div>*@
+
+        <div class="col-md-3 ">
+            <select name="IsActive" id="isActive" class="form-select input-animated" style="border-radius: 25px; border: 1.5px solid #ddd; padding: 10px 18px;">
+                <option value="">-- selezionare uno Stato --</option>
+                <option value="true" @(Model.Filtri.IsActive == true ? "selected" : "")>attivi</option>
+                <option value="false" @(Model.Filtri.IsActive == false ? "selected" : "")>non attivi</option>
+
+            </select>
+        </div>
+        <div class="col-md-3 d-flex align-items-center gap-2 justify-content-end">
+
+            <button type="submit" class="btn fw-semibold px-4 btn-animated"
+                    style="background-color: #ffc107; color: #212529; border-radius: 25px; padding: 6px 24px; border: none;">
+                <i class="bi bi-search me-1"></i> Cerca
+            </button>
+
+            <button type="button" onclick="location.href='/Gestutenti/ClearPage'"
+                    class="btn fw-semibold px-4 btn-animated"
+                    style="background-color: white; color: #212529; border: 2px solid #ffc107; border-radius: 25px; padding: 6px 24px;">
+                Pulisci
+            </button>
+        </div>
+    </form>
+</div>

@@ -8,9 +8,9 @@ using System.Web.Services.Description;
 using WebEcommerce.Models;
 
 namespace WebEcommerce.Controllers
-{
+{   
     public class GestutentiController : Controller
-    {
+    {   
         private readonly ILUserService _userservices;
         private readonly ILCustomerService _customerservices;
         private readonly ILRoleService _roleservices;
@@ -41,8 +41,6 @@ namespace WebEcommerce.Controllers
             return RedirectToAction("GestioneUtenti");
         }
 
-
-        
         [HttpGet]
         public ActionResult GestioneUtenti(int? Id)
         {
@@ -139,6 +137,7 @@ namespace WebEcommerce.Controllers
                 Password = utente.Password,
                 CreatedDate = utente.CreatedDate,
                 IsActive = utente.IsActive,
+
                 CustomerId = utente.CustomerId,
                 FirstName = utente.FirstName,
                 LastName = utente.LastName,
@@ -268,7 +267,7 @@ namespace WebEcommerce.Controllers
             // aggiornare  i filtri  da mettere nel model 
             catch (Exception ex)
             {
-                TempData["Errore"] = ex.Message;
+                ViewData["Errore"] = ex.Message;
                 model.ListRuoli = _roleservices.UserRoleList();
                 return View(model);
             }
@@ -330,8 +329,6 @@ namespace WebEcommerce.Controllers
             return View(model);
         }
         
-
-
         [HttpPost] 
         public ActionResult AggiungiUtente(GestioneUtentiViewModel model)
         {
@@ -398,7 +395,7 @@ namespace WebEcommerce.Controllers
             }
             catch (Exception ex)
             {
-             
+                
                 model.ListRuoli = role.UserRoleList();
 
                 ViewBag.Errore = "Errore durante il salvataggio: " + ex.Message;
@@ -414,7 +411,6 @@ namespace WebEcommerce.Controllers
         //     return RedirectToAction("GestioneUtenti", "Gestutenti");
         //    return View();
         //}
-
 
 
         [HttpPost]

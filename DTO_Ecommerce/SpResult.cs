@@ -274,6 +274,50 @@ namespace DTO_Ecommerce
         public string Country { get; set; }
 
         public string Phone { get; set; }
+
+        public string IconUserRole
+        {
+            get
+            {
+                switch (this.RoleName.ToUpper())
+                {
+                    case "ADMIN":
+                    {
+                        return "bi bi-shield-lock-fill";
+                    }
+                    case "CUSTOMER":
+                    {
+                        return "bi bi-person-circle";
+                    }
+                    case "ADMIN-CUSTOMER":
+                    {
+                        return "bi bi-person-lock";
+                    }
+                    default:
+                    {
+                        return "";
+                    }
+                }
+            }
+        }
+
+        public bool ShowAddressIcon
+        {
+            get
+            {
+                switch (this.RoleName.ToUpper())
+                {
+                    case "ADMIN":
+                    {
+                        return false;
+                    }
+                    default:
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
     }
 
     public class sp_GetUserRoleById_Result

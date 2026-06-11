@@ -42,21 +42,7 @@ namespace WebEcommerce.Models
 
         public bool IsActive { get; set; }
 
-        public string stato
-        {
-            get
-            {
-                if (IsActive)
-                {
-                    return "Attivo";
-                }
-                else
-                {
-                    return "Non Attivo";
-                }
-            }
-
-        }
+      
 
         public int? CustomerId { get; set; }
 

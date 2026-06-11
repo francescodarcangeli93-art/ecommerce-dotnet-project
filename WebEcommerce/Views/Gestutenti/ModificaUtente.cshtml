@@ -1,9 +1,10 @@
-﻿```
+﻿
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @model WebEcommerce.Models.GestioneUtentiViewModel
+
 
 <style>
     .form-control, .form-select {
@@ -34,13 +35,15 @@
     }
 </style>
 
+
+
 <main class="container mt-4">
 
     <h1 class="fw-bold mb-4" style="font-size: 2rem; border-left: 4px solid #ffc107; padding-left: 12px;">
         Modifica Utente
     </h1>
-
-    <form id="formModifica" action="/Gestutenti/ModificaUtente" method="POST">
+  
+    <form id="formModifica" action="@Url.Action("ModificaUtente","Gestutenti")" method="POST">
         <input type="hidden" name="Id" value="@Model.Id" />
         <input type="hidden" name="CustomerId" value="@Model.CustomerId" />
 
@@ -113,33 +116,35 @@
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Nome</label>
-                        <input type="text" id="nome" name="FirstName" value="@Model.FirstName" class="form-control" />
+                        <input type="text" id="nome" name="FirstName" value="@Model.FirstName" class="form-control" placeholder="Inserire nome" />
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Cognome</label>
-                        <input type="text" id="cognome" name="LastName" value="@Model.LastName" class="form-control" />
+                        <input type="text" id="cognome" name="LastName" value="@Model.LastName" class="form-control" placeholder="Inserire cognome"/>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Città</label>
-                        <input type="text" name="City" value="@Model.City" class="form-control" />
+                        <input type="text" name="City" value="@Model.City" class="form-control" placeholder="Inserire città" />
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Nazione</label>
-                        <input type="text" name="Country" value="@Model.Country" class="form-control" />
+                        <input type="text" name="Country" value="@Model.Country" class="form-control" placeholder="Inserire nazione" />
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Telefono</label>
-                        <input type="text" name="Phone" value="@Model.Phone" class="form-control" />
+                        <input type="text" name="Phone" value="@Model.Phone" placeholder="Inserire numero telfonico" class="form-control" />
                     </div>
 
                 </div>
             </div>
 
         </div>
+
+
 
         <div class="d-flex justify-content-between align-items-center mt-4">
             <a href="/Gestutenti/GestioneUtenti" class="btn btn-animated fw-semibold px-4"
@@ -153,91 +158,76 @@
             </button>
         </div>
 
+
     </form>
+
 </main>
 
-<div class="modal fade" id="modalConferma" tabindex="-1" aria-hidden="true">
+<!-- Stampa messaggio di di successo e di errore  -->
+
+@*@if (TempData["Successo"] != null)
+{
+    <p> @TempData["Successo"] </p>
+}*@
+
+
+
+<!--MODAL di conferma-->
+<div class="modal fade" id="modalConferma">
+
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="border-radius: 16px; border: none;">
-            <div class="modal-header border-0">
+
+        <div class="modal-content shows" style="border-radius: 25px;">
+
+            <div class="modal-header">
                 <h5 class="modal-title fw-bold">Conferma modifiche</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
             </div>
-            <div class="modal-body">
-                <p class="text-muted mb-1">Sei sicuro di voler modificare i dati di:</p>
-                <p class="fw-bold fs-5 mb-0" id="nomeUtenteModal"></p>
-            </div>
-            <div class="modal-footer border-0">
-                <button type="button" class="btn px-4" data-bs-dismiss="modal"
-                        style="border: 1.5px solid #212529; border-radius: 25px;">
-                    No
-                </button>
-                <button type="button" class="btn fw-bold px-4" onclick="submitForm()"
-                        style="background-color: #ffc107; color: #212529; border-radius: 25px; border: none;">
-                    Sì, modifica
-                </button>
-            </div>
+
+                <div class="modal-body">
+                    <p>sei sicuro di voler modificare ?</p>
+                </div>
+
+                
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">anulla</button>
+
+                    <button class="btn"></button>
+                    <button type="submit" class="btn btn-primary" id="btnSalvaModifica" onclick="submitForm()">Si conferma</button>
+
+      
+                </div>
         </div>
+
     </div>
+  
 </div>
 
 
 
+@*------------------------------------------------------------------------------------------------------------------------*@
 
-@if (TempData["MessaggioSuccesso"] != null)
-{
+@if (TempData["Successo"] != null)
+{   
+
     <div class="alert alert-success alert-dismissible fade show border-2 shadow-sm d-flex align-items-center mb-4" role="alert">
         <i class="fa-solid fa-circle-check fs-5 me-3"></i>
 
-        <div>
-            <strong> @TempData["MessaggioSuccesso"]</strong>
+        <div id="successo">
+            <strong> @TempData["Successo"]</strong>
         </div>
 
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
     </div>
+
 }
-
-
 
 <div class="text-end">
 
-
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        mostraNascondiCustomer();
-    });
 
-    function mostraNascondiCustomer() {
-        const roleId = document.getElementById('roleId').value;
-        const selezioneDati = document.getElementById('DatiPersonali');
-        const inputsDati = selezioneDati.querySelectorAll('input');
-        if (roleId !== '' && roleId != '1') {
-            selezioneDati.style.display = 'block';
-        } else {
-            selezioneDati.style.display = 'none';
-            inputsDati.forEach(input => input.value = '');
-        }
-    }
+<script src="@Url.Content("~/Scripts/js/ModificaUtente.js")"></script>
 
-    function confermaModifica() {
-        const nome = document.getElementById('nome')?.value || '';
-        const cognome = document.getElementById('cognome')?.value || '';
-        const nomeCompleto = (nome + ' ' + cognome).trim() || document.getElementById('username')?.value || '';
-        document.getElementById('nomeUtenteModal').textContent = nomeCompleto;
-        const modal = new bootstrap.Modal(document.getElementById('modalConferma'));
-        modal.show();
-    }
-
-    function submitForm() {
-        document.getElementById('formModifica').submit();
-    }
-
-    function togglePass() {
-        const inp = document.getElementById('password');
-        const icona = document.getElementById('iconaEye');
-        inp.type = inp.type === 'password' ? 'text' : 'password';
-        icona.className = inp.type === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash';
-    }
-</script>

@@ -58,5 +58,9 @@
       <Name>DTO_Ecommerce</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="BACKUP-DB\BACKUP_RD.bak" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

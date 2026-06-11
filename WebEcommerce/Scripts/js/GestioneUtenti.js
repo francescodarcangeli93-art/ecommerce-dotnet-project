@@ -2,13 +2,16 @@
 function confermaEliminazione(id, username)
 {
 
-    document.getElementById('Id').value = id;
+    document.getElementById('idUtenteDaEliminare').value = id;
     document.getElementById('nomeUtenteDaEliminare').textContent = username;
 
-    const modal = new bootstrap.Modal(document.getElementById('modalElimina'));
+    const Modal = document.getElementById('modalElimina');
+    const istanza = new bootstrap.Modal(Modal, {
+        backdrop: 'static',
+        keyboard: false
+    });
 
-    modal.show();
-
+    istanza.show();
 }
 
 setTimeout(function ()
