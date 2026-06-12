@@ -65,6 +65,18 @@ namespace DTO_Ecommerce
 
     }
 
+    public class sp_GetCustomerAddresses_Result
+    {
+        public int? Id { get; set; }
+        public string Address { get; set; }
+        public string PostalCode { get; set; }
+        public string City { get; set; }
+        public bool IsDefault { get; set; }
+        public bool IsBilling { get; set; }
+        
+       
+    }
+
     public class sp_GetCustomerById_Result
     {
         public int? Id { get; set; }

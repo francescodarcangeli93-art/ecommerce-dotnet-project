@@ -18,7 +18,18 @@ namespace BLL_Ecommerce.Services
         {
             return Customer.sp_ManageCustomer(spParam);
         }
+
+        public List<sp_GetCustomerAddresses_Result> GetCustomerAddresses(int? customerId)
+        {
+            return Customer.GetCustomerAddresses(customerId);
+        }
+
+        public void sp_ManageCustomerAddress(sp_ManageCustomerAddress_Param spParam)
+        {
+           Customer.ManageCustomerAddress(spParam);
+        }
+
     }
 
-
+        
 }

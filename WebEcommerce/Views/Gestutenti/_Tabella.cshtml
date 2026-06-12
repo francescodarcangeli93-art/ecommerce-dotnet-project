@@ -1,8 +1,5 @@
-﻿<style>
-
-</style>
-
-
+﻿
+@model WebEcommerce.Models.GestioneUtentiViewModel
 
 @if (TempData["Successo"] != null)
 {
@@ -27,18 +24,21 @@
         </div>
 
         <div class="table-responsive" style="border-radius: 15px; overflow: hidden">
-            <table class="table table-hover table-bordered align-middle mb-0">
+            <table class="table table-striped table-hover table-bordered align-middle mb-0">
                 <thead class="table-dark  background-color: #212529;">
                     <tr>
-                        <th>Ruolo</th>
-                        <th>Username</th>
-                        <th>Nome</th>
-                        <th>Cognome</th>
-                        <th>Email</th>
+                        <th class="text-center">Ruolo</th>
+                        <th class="text-center">Username</th>
+                        <th class="text-center">Nome</th>
+                        <th class="text-center">Cognome</th>
+                        <th class="text-center">Email</th>
                         <th>Inizio Validità</th>
-                        <th>Fine Validità</th>
+                        <th class="text-center">Fine Validità</th>
+                        <th class="text-center px-4">INDIRIZZI</th>
                         <th class="text-center">Attivo</th>
-                        <th class="text-end px-4">COMANDI</th>
+                        <th class="text-center px-4">COMANDI</th>
+
+
                     </tr>
                 </thead>
 
@@ -64,11 +64,26 @@
 
                                     <td>@utente.FirstName</td>
                                     <td>@utente.LastName</td>
-                                    <td>@utente.Email</td>
+                                    <td class="text-center">@utente.Email</td>
                                     <td style="white-space: nowrap;">@utente.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td>
+
+
                                     <td></td>
 
-                                    <td>
+                                    <!-- GESTIONE DEGLI INDIRIZZI -->
+                                    <td class="text-center">
+
+                                        <form action="@Url.Action("Index","GestIndirizzi")" method="GET" class="d-inline">
+                                            <input type="hidden" name="id" value="@utente.Id" />
+                                            <button type="submit" class="btn btn-sm btn-outline-success py-1" style="border-radius:25px">
+                                                <i class="bi bi-pin-map-fill"></i>
+                                            </button>
+                                        </form>
+
+                                    </td>
+
+                                    <!-- GESTIONE ATTIVO NON ATTIVO -->
+                                    <td class="text-center">
                                         <form action="@Url.Action("CambiaStatoInTabella","Gestutenti")" method="POST" class="d-inline">
                                             <input type="hidden" name="id" value="@utente.Id" />
                                             <input type="hidden" name="customerId" value="@utente.CustomerId" />
@@ -92,6 +107,7 @@
                                             <i class="bi bi-pencil"></i>
                                         </a>
 
+                                        <!-- ELIMINA UTENTE -->
                                         <button type="button"
                                                 class="btn btn-sm btn-outline-danger py-1"
                                                 style="border-radius: 25px;"
@@ -99,10 +115,8 @@
                                                 onclick="confermaEliminazione('@utente.Id', '@utente.Username')">
                                             <i class="bi bi-trash"></i>
                                         </button>
-                                        <!-- GESTIONE DEGLI INDIRIZZI -->
-                                        <button type="button"  class="btn btn-sm btn-outline-success py-1" style="border-radius:25px">
-                                            <i class="bi bi-pin-map-fill"></i>
-                                        </button>
+
+
                                     </td>
                                 </tr>
                             }
@@ -125,6 +139,7 @@
 
 
 @*MODALE*@
+
 <div class="modal fade" id="modalElimina" tabindex="-1" aria-labelledby="modalEliminaLabel" aria-hidden="true"
      data-bs-backdrop="static" data-bs-keyboard="false"
      data-backdrop="static" data-keyboard="false">

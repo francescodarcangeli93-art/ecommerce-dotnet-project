@@ -2,55 +2,9 @@
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
 }
 
-<style>
-    body {
-        background: linear-gradient(160deg, #212529 0%, #343a40 100%);
-        min-height: 100vh;
-        font-family: 'Poppins', sans-serif;
-    }
-
-    .my-input-group {
-        overflow: hidden !important;
-        border-radius: 25px !important;
-        border: 1.5px solid #ddd !important;
-        display: flex;
-        align-items: center;
-        transition: all 0.3s ease;
-    }
-
-        .my-input-group:focus-within {
-            border-color: #212529 !important;
-            box-shadow: 0 0 0 3px rgba(33,37,41,0.1) !important;
-        }
-
-        .my-input-group .form-control {
-            border: none !important;
-            border-radius: 0 !important;
-            padding: 10px 18px !important;
-            box-shadow: none !important;
-            flex: 1;
-        }
-
-        .my-input-group .input-group-text {
-            border: none !important;
-            border-radius: 0 !important;
-        }
-
-        .btn-animated {
-            transition: all 0.3s ease;
-        }
-
-        .btn-animated:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(33,37,41,0.3);
-        }
-
-    input:-webkit-autofill {
-        -webkit-box-shadow: 0 0 0px 1000px white inset !important;
-        box-shadow: 0 0 0px 1000px white inset !important;
-    }
-
-</style>
+@section styles {
+    <link rel="stylesheet" href="@Url.Content("~/Content/Site.css")" />
+}
 
 <div class="d-flex flex-column align-items-center mt-5">
 
@@ -61,12 +15,12 @@
 
     <!-- Titolo fuori dalla card -->
     <div class="text-center mb-4">
-        <h4 style="color: white; font-size: 3rem;"><strong>Bentornato</strong></h4>
-        <p style="font-size: 1rem; color: rgba(255,255,255,0.75);">Accedi al tuo account ECOMMERCE HUB e gestisci il tuo store</p>
+        <h4 class="bentornato"><strong>Bentornato</strong></h4>
+        <p class="sottotitolo-login">Accedi al tuo account ECOMMERCE HUB e gestisci il tuo store</p>
     </div>
 
     <!-- Card -->
-    <div class="bg-white p-5" style="border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); width: 100%; max-width: 420px;">
+    <div class="bg-white p-5 login-card">
 
         <!-- Errore -->
         @if (ViewData["Errore"] != null)
@@ -80,36 +34,32 @@
     <form action="@Url.Action("Login", "Login")" method="POST">
 
         <!-- Username -->
-        <div class="mb-3 ">
-           
-            <div style="display: flex; align-items: stretch; border: 1px solid transparent; border-radius: 25px; overflow: hidden; background-color: #f8f9fa;">
-                <div  style="background-color: #212529; color: white; padding: 0 18px; display: flex; align-items: center; justify-content: center;">
+        <div class="mb-3">
+            <div class="login-input-group">
+                <div class="login-input-icon">
                     <i class="bi bi-person"></i>
                 </div>
-                <input type="text" name="user" placeholder="Inserisci username" required
-                       style="border: none !important; background: transparent !important; outline: none !important; width: 100%; padding: 12px 15px; box-shadow: none !important;" />
+                <input type="text" name="user" placeholder="Inserisci username" required class="login-input-field" />
             </div>
         </div>
 
         <!-- Password -->
         <div class="mb-4">
-            <div  style="display: flex; align-items: stretch; border: 1px solid transparent; border-radius: 25px; overflow: hidden; background-color: #f8f9fa;">
-                <div  style="background-color: #212529; color: white; padding: 0 18px; display: flex; align-items: center; justify-content: center;">
+            <div class="login-input-group">
+                <div class="login-input-icon">
                     <i class="bi bi-lock"></i>
                 </div>
-                <input type="password" name="password" placeholder="Inserisci password" required
-                       style="border: none !important; background: transparent !important; outline: none !important; width: 100%; padding: 12px 15px; box-shadow: none !important;" />
+                <input type="password" name="password" placeholder="Inserisci password" required class="login-input-field" />
             </div>
         </div>
 
-        <button type="submit" class="btn w-100 fw-bold btn-animated"
-                style="background-color: #ffc107; color: #212529; border-radius: 25px; padding: 12px; border: none; font-size: 1rem;">
+        <button type="submit" class="btn w-100 fw-bold btn-login-submit">
             <i class="bi bi-box-arrow-in-right me-2"></i> Accedi
         </button>
 
         <hr />
 
-        <p class="text-center">Non hai ancora un account? <a class="fw-bold" href="#" style="color: #ffc107; text-decoration: none;">Inizia ora</a></p>
+        <p class="text-center">Non hai ancora un account? <a class="fw-bold login-link-register" href="#">Inizia ora</a></p>
 
     </form>
     </div>

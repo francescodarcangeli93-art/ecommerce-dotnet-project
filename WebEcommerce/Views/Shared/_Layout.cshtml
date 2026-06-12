@@ -11,37 +11,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     @Scripts.Render("~/bundles/modernizr")
 
-    <style>
-        .logout {
-            color: #ffc107;
-            text-decoration: none;
-            border: 1.5px solid #ffc107;
-            border-radius: 25px;
-            padding: 6px 16px;
-            transition: all 0.3s ease;
-        }
-
-            .logout:hover {
-                background-color: #ffc107;
-                color: #212529;
-                text-decoration: none;
-            }
-
-        .user {
-            font-size: 1.7rem;
-        }
-
-            .user:hover {
-                color: #ffc107;
-            }
-    </style>
+    @RenderSection("styles", required: false)
 
 
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark" style="height: 80px;">
-        <div class="container-fluid d-flex align-items-center" style="padding-left: 8%; padding-right: 8%;">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark custom-navbar">
+        <div class="container-fluid d-flex align-items-center custom-navbar-container">
 
             <a class="navbar-brand d-flex align-items-center m-0 p-0" href="/Home">
                 <img src="~/Content/Image/LogoEcommerce.png" width="200" alt="Logo" class="img-fluid" />

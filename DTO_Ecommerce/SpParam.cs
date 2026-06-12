@@ -57,6 +57,11 @@ namespace DTO_Ecommerce
         public string ExpiryDate { get; set; }
         public string Cvv { get; set; }
     }
+    public class sp_GetCustomerAddresses_Param
+    {
+        public int? CustomerId { get; set; }
+
+    }
 
 
     public class sp_GetCustomerById_Param
@@ -196,6 +201,18 @@ namespace DTO_Ecommerce
         public string Phone { get; set; }
 
         public int? CustomerIdInserted { get; set; }
+    }
+
+    public class sp_ManageCustomerAddress_Param
+    {
+        public string Operation { get; set; }
+        public int? Id { get; set; }
+        public int? CustomerId { get; set; }
+        public string Address { get; set; }
+        public string Postalcode { get; set; }
+        public string City { get; set; }
+        public bool? IsDefault { get; set; }
+        public bool? @IsBilling { get; set; }
     }
 
     public class sp_ManageMovementReason_Param

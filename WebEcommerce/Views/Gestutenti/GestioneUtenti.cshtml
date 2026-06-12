@@ -4,59 +4,23 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style>
-    .input-animated {
-        transition: all 0.3s ease; 
-        border: 1.5px solid #ddd !important;
-    }
-
-        .input-animated:focus, .input-animated:hover {
-            border-color: #212529 !important;
-            box-shadow: 0 0 0 3px rgba(33,37,41,0.1) !important;
-            transform: translateY(-1px);
-        }
-
-    .btn-animated {
-        transition: all 0.3s ease;
-    }
-
-        .btn-animated:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(33,37,41,0.3);
-        }
-
-    .card-animated {
-        transition: all 0.3s ease;
-    }
-
-        .card-animated:hover {
-            box-shadow: 0 8px 25px rgba(0,0,0,0.12) !important;
-        }
-
- .titolo-animated {
-    transition: all 0.3s ease;
-    display: inline-block;
+@section styles {
+    <link rel="stylesheet" href="@Url.Content("~/Content/Site.css")" />
 }
-
-.titolo-animated:hover {
-    transform: translateY(-3px);
-    color: #ffc107 !important;
-    border-left-color: #ffc107 !important;
-}
-</style>
 
 
 <main class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="fw-bold text-black text-center w-100 titolo-animated" style="font-size: 2rem;">
+        <h1 class="fw-bold text-black text-center w-100 titolo-animated" >
             Gestione Utenti
         </h1>
     </div>
 
+
     <!-- Form -->
-    @Html.Partial("_Filtri")
+    @Html.Partial("_Filtri", Model)
     <!-- -----------------------------------------------------------------------------------------------------------------------  -->
     <!--     TABELLA        -->
 </main>
 
-    @Html.Partial("_Tabella")
+@Html.Partial("_Tabella", Model)

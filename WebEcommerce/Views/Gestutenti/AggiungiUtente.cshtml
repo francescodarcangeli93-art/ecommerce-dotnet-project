@@ -4,35 +4,10 @@
 
 @model WebEcommerce.Models.GestioneUtentiViewModel
 
+@section styles {
+    <link rel="stylesheet" href="@Url.Content("~/Content/Site.css")" />
+}
 
-<style>
-    .form-control, .form-select {
-        border-radius: 25px !important;
-        border: 1.5px solid #ddd !important;
-        padding: 10px 18px !important;
-        transition: all 0.3s ease;
-    }
-
-        .form-control:focus, .form-select:focus {
-            border-color: #212529 !important;
-            box-shadow: 0 0 0 3px rgba(33,37,41,0.1) !important;
-        }
-
-    .btn-animated {
-        transition: all 0.3s ease;
-    }
-
-        .btn-animated:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(33,37,41,0.3);
-        }
-
-    .sezione-titolo {
-        font-size: 11px;
-        letter-spacing: .08em;
-        color: #6c757d;
-    }
-</style>
 
 
 <main class="container mt-4">
@@ -94,7 +69,7 @@
                         </div>
                     </div>
 
-                
+
 
                     <hr style="border-color: #f0f0f0;" />
 
@@ -103,7 +78,7 @@
                     <div class="mb-3">
                         <label for="roleId" class="form-label fw-semibold">Ruolo</label>
                         <select id="roleId" name="RoleId" class="form-select" onchange="mostraNascondiCustomer()" required>
-                            <option value="" disabled >-- seleziona un ruolo --</option>
+                            <option value="" disabled>-- seleziona un ruolo --</option>
                             @if (Model != null && Model.ListRuoli != null)
                             {
                                 foreach (var ruolo in Model.ListRuoli)

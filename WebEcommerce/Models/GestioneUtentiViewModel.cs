@@ -19,7 +19,7 @@ namespace WebEcommerce.Models
 
         public List <sp_GetListUserRole_Result> ListRuoli { get; set; }
         public sp_SearchUser_Param Filtri { get; set; }
-
+        public List<sp_GetCustomerAddresses_Result> CustomerAddresses { get; set; }
         public List<sp_SearchUser_Result> ListaUtenti { get; set; }
 
         public sp_GetUserById_Result UserDetail;

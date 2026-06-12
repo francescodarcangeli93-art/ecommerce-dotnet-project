@@ -10,7 +10,9 @@ namespace BLL_Ecommerce.Interfaces
     public interface ILCustomerService
     {
          int sp_ManageCustomer(sp_ManageCustomer_Param spParam);
-       
-        
+
+         List<sp_GetCustomerAddresses_Result> GetCustomerAddresses(int? customerId);
+
+        void sp_ManageCustomerAddress(sp_ManageCustomerAddress_Param spParam);
     }
 }

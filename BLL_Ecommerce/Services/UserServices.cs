@@ -9,13 +9,15 @@ namespace BLL_Ecommerce.Services
     public class UserServices : ILUserService
     {
         DAL_User User =  new DAL_User();   
+
         public List<sp_SearchUser_Result> SearchUser(sp_SearchUser_Param spParam)
         {
 
-            List<sp_SearchUser_Result> retVal = new List<sp_SearchUser_Result>();   
+            //List<sp_SearchUser_Result> retVal = new List<sp_SearchUser_Result>();   
 
-            retVal = User.SearchUser(spParam);    
-            return retVal;
+            //retVal = User.SearchUser(spParam);    
+
+            return User.SearchUser(spParam);
         }
 
 

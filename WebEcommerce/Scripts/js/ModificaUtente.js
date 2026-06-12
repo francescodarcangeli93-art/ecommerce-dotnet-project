@@ -48,6 +48,11 @@
 setTimeout(function () {
     var successo = document.getElementById('successo');
 
-    successo.style.transition = '';
+    if (successo)
+    {
+        successo.style.transition = 'opacity 5s';
+        successo.style.opacity = '0';
+    }
+   
     
-})
+},1000)
