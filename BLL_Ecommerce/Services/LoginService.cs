@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BLL_Ecommerce.Services
 {
-    public class LoginService : ILoginServices
+    public class LoginService : ILoginService
     {
         DAL_LoginUser loginDal = new DAL_LoginUser();
 

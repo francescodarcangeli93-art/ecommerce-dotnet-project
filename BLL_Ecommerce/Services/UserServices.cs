@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace BLL_Ecommerce.Services
 {
-    public class UserServices : ILUserService
+    public class UserServices : IUserService
     {
         DAL_User User =  new DAL_User();   
 

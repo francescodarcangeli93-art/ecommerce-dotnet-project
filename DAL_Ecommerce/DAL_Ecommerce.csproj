@@ -45,6 +45,7 @@
     <Compile Include="Customer.cs" />
     <Compile Include="DbConnectionFactory.cs" />
     <Compile Include="ListUserRole.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="LoginUser.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="Payment.cs" />

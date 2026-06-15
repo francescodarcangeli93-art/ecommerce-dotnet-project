@@ -114,10 +114,10 @@ namespace DAL_Ecommerce
                 cmd.Parameters.Add(new SqlParameter("@IsDefault", (object)spParam.IsDefault ?? DBNull.Value));
                 cmd.Parameters.Add(new SqlParameter("@IsBilling", (object)spParam.IsBilling ?? DBNull.Value));
 
-                // Definisci il parametro output
-                SqlParameter outParam = new SqlParameter("@CustomerIdInserted", SqlDbType.Int);
-                outParam.Direction = ParameterDirection.Output;
-                cmd.Parameters.Add(outParam);
+                //Definisci il parametro output
+                //SqlParameter outParam = new SqlParameter("@CustomerIdInserted", SqlDbType.Int);
+                //outParam.Direction = ParameterDirection.Output;
+                //cmd.Parameters.Add(outParam);
 
                 try
                 {

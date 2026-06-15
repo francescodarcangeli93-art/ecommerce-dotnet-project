@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BLL_Ecommerce.Interfaces
 {
-    public interface ILUserService
+    public interface IUserService
     {
         List<sp_SearchUser_Result> SearchUser (sp_SearchUser_Param param);
 

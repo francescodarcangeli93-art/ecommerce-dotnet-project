@@ -1,32 +1,28 @@
 ﻿using BLL_Ecommerce.Interfaaces;
 using BLL_Ecommerce.Services;
-using DAL_Ecommerce;
 using DTO_Ecommerce;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 
 
 namespace WebEcommerce.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly ILoginServices _loginService;
-
+        private readonly ILoginService _loginService;
+        private readonly ILogService _logService;
 
         public LoginController()
         {
             _loginService = new LoginService();
+             _logService = new LogService();
         }
 
-        public LoginController(ILoginServices loginService)
+        public LoginController(ILoginService loginService)
         {
             _loginService = loginService;
         }
-
 
         // GET: Login
         public ActionResult Index()
@@ -43,30 +39,43 @@ namespace WebEcommerce.Controllers
             param.Password = password;
 
             // B. Chiamiamo il LoginService (che cripta la password in automatico)
+            int idUser = 0;
 
             //LoginService loginService = new LoginService();
             List<sp_LoginUser_Result> listResult = _loginService.LoginUser(param);
-
-            // C. Facciamo il controllo sul risultato del Database
-            if (listResult != null && listResult.Count > 0)
+            try
             {
-                var utenteLoggato = listResult[0];
+                // C. Facciamo il controllo sul risultato del Database
+                if (listResult != null && listResult.Count > 0)
+                {
+                    sp_LoginUser_Result utenteLoggato = listResult[0];
+                    idUser = utenteLoggato.UserId;
+                    // D. Salviamo i dati in Sessione (così la Navbar li vede!)
+                    Session["User"] = utenteLoggato.UserName;
+                    Session["Role"] = utenteLoggato.RoleName;
+                    Session["UserId"] = utenteLoggato.UserId;
 
-                // D. Salviamo i dati in Sessione (così la Navbar li vede!)
-                Session["User"] = utenteLoggato.UserName;
-                Session["Role"] = utenteLoggato.RoleName;
-                Session["UserId"] = utenteLoggato.UserId;
-                
-                // E. Login corretto! Voliamo sulla Home Page
-                return RedirectToAction("Index", "Home");
+                    _logService.WriteLogLogin(utenteLoggato.UserId);
 
+                    // E. Login corretto! Voliamo sulla Home Page
+                    return RedirectToAction("Index", "Home");
+
+                }
+
+                _logService.WriteLogProcessWarning(idUser, "tentativo di Login fallito");
+            
+                // F. Se siamo qui, il login è fallito. Ricarichiamo la pagina con un errore
+
+                ViewData["Errore"] = "credenziali errate";
+
+                return View("Index");
             }
-
-            // F. Se siamo qui, il login è fallito. Ricarichiamo la pagina con un errore
-            ViewData["Errore"] = "credenziali errate";
-            return View("Index");
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false });
+            }   
         }
-
 
     }
         

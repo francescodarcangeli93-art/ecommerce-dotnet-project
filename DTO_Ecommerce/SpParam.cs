@@ -13,7 +13,13 @@ namespace DTO_Ecommerce
        }
     */
 
-
+    public class sp_ManageLog_Param
+    {
+        public int? IdUser {  get; set; }
+        public Enums.typeLog IdLogType { get; set; }
+        public Enums.severityLog IdLogSeverity { get; set; }
+        public string ErrorMessage { get; set; }
+    }
     public class sp_CheckProductReorderInWarehouse_Param
     {
         public int Id { get; set; }

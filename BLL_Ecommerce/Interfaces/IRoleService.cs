@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BLL_Ecommerce.Interfaces
 {
-    public interface ILRoleService
+    public interface IRoleService
     {
             List<sp_GetListUserRole_Result> UserRoleList();
     }

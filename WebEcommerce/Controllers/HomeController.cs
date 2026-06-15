@@ -1,4 +1,5 @@
 ﻿
+using BLL_Ecommerce.Interfaaces;
 using BLL_Ecommerce.Services;
 using DTO_Ecommerce;
 using System;
@@ -16,8 +17,17 @@ namespace WebEcommerce.Controllers
     {
         public class HomeController : Controller
         {
+
+            private readonly ILogService _logService;
             // Azione che gestisce la home
-            public ActionResult Index()
+
+            public HomeController()
+            {
+               
+                _logService = new LogService();
+            }
+
+        public ActionResult Index()
             {
 
                 if (Session["User"] == null)
@@ -46,7 +56,23 @@ namespace WebEcommerce.Controllers
             // azione che  gestisce il logout
             public ActionResult Logout()
             {
-                
+                 int idUser = 0;
+                try
+                {
+                    if(Session["UserId"] != null)
+                    {
+                         idUser = (int)Session["UserId"];
+
+                        _logService.WriteLogLogout(idUser);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logService.WriteLogProcessError(idUser, ex.Message);
+                    return Json(new { success = false });
+            }
+               
+
                 Session.Clear();
                 Session.Abandon();
             

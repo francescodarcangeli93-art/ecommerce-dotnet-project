@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BLL_Ecommerce.Interfaaces
 {
-    public interface ILoginServices
+    public interface ILoginService
     {
         List<sp_LoginUser_Result> LoginUser(sp_LoginUser_Param spParam);
     }

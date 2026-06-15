@@ -16,7 +16,7 @@
 input,
 select,
 
-
+/*   */
     textarea {
         max-width: 280px;
     }
@@ -103,16 +103,18 @@ select,
         color: rgba(255, 255, 255, 0.75);
     }
 
+    
+
+/* ==========================================================================
+   FORM DI LOGIN (Username, Password, Bottone e Link)
+   ========================================================================== */
+
     .login-card {
         border-radius: 20px;
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
         width: 100%;
         max-width: 420px;
     }
-
-/* ==========================================================================
-   FORM DI LOGIN (Username, Password, Bottone e Link)
-   ========================================================================== */
 
     /* Il contenitore arrotondato grigio chiaro di Username e Password */
     .login-input-group {
@@ -153,8 +155,8 @@ select,
 
     /* Il bottone giallo "Accedi" */
     .btn-login-submit {
-        background-color: #ffc107;
-        color: #212529;
+        background-color: #ffc107 !important;
+        color: #212529 !important;
         border-radius: 25px;
         padding: 12px;
         border: none;

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace BLL_Ecommerce.Services
 {
 
-   public class RoleServices : ILRoleService
+   public class RoleServices : IRoleService
     {
 
         public ListUserRole RoleDal = new ListUserRole();

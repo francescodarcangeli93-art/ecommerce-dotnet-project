@@ -24,14 +24,14 @@ namespace DTO_Ecommerce
             PROCESS  = 3
         }
 
-        public enum typeModeView
-        {
-            [Description("#Visualizzazione")]
-            V = 1,
-            [Description("#Inserimento")]
-            I = 2,
-            [Description("#Modifica")]
-            M = 3
-        }
+        //public enum typeModeView
+        //{
+        //    [Description("#Visualizzazione")]
+        //    V = 1,
+        //    [Description("#Inserimento")]
+        //    I = 2,
+        //    [Description("#Modifica")]
+        //    M = 3
+        //}
     }
 }
