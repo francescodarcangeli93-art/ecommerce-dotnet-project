@@ -133,6 +133,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\GestIndirizziController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\GestSupplierController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -184,6 +185,7 @@
     <Content Include="Scripts\js\AggiungiUtente.js" />
     <Content Include="Scripts\js\GestioneUtenti.js" />
     <Content Include="Scripts\js\ModificaUtente.js" />
+    <Content Include="Scripts\js\Password.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -210,6 +212,7 @@
     <Content Include="Views\Gestutenti\_Tabella.cshtml" />
     <Content Include="Views\Gestutenti\_Filtri.cshtml" />
     <Content Include="Views\GestIndirizzi\Index.cshtml" />
+    <Content Include="Views\GestSupplier\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

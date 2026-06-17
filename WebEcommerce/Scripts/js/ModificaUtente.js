@@ -5,6 +5,8 @@
 
     function mostraNascondiCustomer() {
         const roleId = document.getElementById('roleId').value;
+       
+
         const selezioneDati = document.getElementById('DatiPersonali');
         const inputsDati = selezioneDati.querySelectorAll('input');
         if (roleId !== '' && roleId != '1') {
@@ -38,12 +40,7 @@
         document.getElementById('formModifica').submit();
     }
 
-    function togglePass() {
-        const inp = document.getElementById('password');
-    const icona = document.getElementById('iconaEye');
-    inp.type = inp.type === 'password' ? 'text' : 'password';
-    icona.className = inp.type === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash';
-    }
+ 
 
 setTimeout(function () {
     var successo = document.getElementById('successo');

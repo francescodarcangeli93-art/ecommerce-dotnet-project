@@ -44,6 +44,11 @@ select,
         color: #ffc107;
     }
 
+    .titoli-2 {
+        font-size: 2em;
+        border-left: 4px solid #ffc107 !important;
+        padding-left: 12px;
+    }
     /* Login */
 
     .login-body {
@@ -115,6 +120,8 @@ select,
         width: 100%;
         max-width: 420px;
     }
+
+
 
     /* Il contenitore arrotondato grigio chiaro di Username e Password */
     .login-input-group {
@@ -202,7 +209,7 @@ select,
         transform: translateY(0);
     }
 }
-
+    
     .card-fadein {
         opacity: 0;
         animation: fadeInUp 0.5s ease forwards;
@@ -307,6 +314,17 @@ select,
         font-weight: 600;
     }
 
+    /* ==========================================================================
+       INPUT GRAPHICS
+       ========================================================================== */
+
+    .card-detail {
+        border-radius: 16px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    
+
     /* MODIFICA UTENTE */
     .card-custom-shadow {
         border-radius: 16px !important;
@@ -363,7 +381,25 @@ select,
         letter-spacing: .08em;
         color: #6c757d;
     }
-    /* GestioneUtente */
+
+
+    /* ==========================================================================
+            GESTIONE UTENTE
+       ========================================================================== */
+    .test{
+        background-color:red;
+    }
+
+    .noborder {
+        border-radius: 16px;
+        border: none;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    .bevel {
+        border-radius: 15px !important;
+      
+    }
 
     .input-animated {
         transition: all 0.3s ease;
@@ -393,6 +429,10 @@ select,
         box-shadow: 0 8px 25px rgba(0,0,0,0.12) !important;
     }
 
+    .simpleBevel {
+        border-radius: 25px !important;
+    }
+
     .titolo-animated {
         font-size: 2rem; /* Spostato qui dall'html */
         transition: all 0.3s ease;
@@ -404,6 +444,51 @@ select,
         color: #ffc107 !important;
         border-left-color: #ffc107 !important;
     }
+    .attivo {
+        font-size: 11px !important;
+        letter-spacing: .05em !important;
+        min-width: 105px !important;
+        height: 31px;
+        border-radius: 25px !important;
+        white-space: nowrap !important;
+    }
+
+
+/* ==========================================================================
+    PASSWORD GRAPHICS
+   ========================================================================== */
+.password-wrapper {
+    display: flex;
+    align-items: stretch;
+    border: 1.5px solid #ddd;
+    border-radius: 25px;
+    overflow: hidden;
+    max-width: 330px;
+    width: 100%;
+}
+
+.password-input {
+    border: none;
+    outline: none;
+    padding: 10px 18px;
+    flex: 1;
+    width: 100%;
+    box-shadow: none;
+    border-radius: 0;
+    background-color: transparent;
+}
+
+.password-toggle-btn {
+    background-color: #212529;
+    color: white;
+    border: none;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
 
     /* DATI UTENTE */
     /*    .form-control, .form-select {

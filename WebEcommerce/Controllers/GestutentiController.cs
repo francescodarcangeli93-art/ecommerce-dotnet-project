@@ -48,10 +48,20 @@ namespace WebEcommerce.Controllers
         public ActionResult GestioneUtenti(int? Id)
         {
             sp_SearchUser_Param param = new sp_SearchUser_Param ();
-            int idUser = (int)Session["UserId"];
+
+            //se scade la sessione va al login
+            if (Session["Utente"] == null)
+            {
+                RedirectToAction("Index", "Login");
+            }
+
+            int idUser = 0;
+
             try
             {
-            // carico il model nella view
+                idUser = (int)Session["UserId"];
+
+                // carico il model nella view
                 GestioneUtentiViewModel model = new GestioneUtentiViewModel
                 {
                 

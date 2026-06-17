@@ -32,5 +32,14 @@ setTimeout(function ()
 
 }, 1000)
 
+function clearFilters()
+{
+    const filtri = document.querySelectorAll('#filtri input, #filtri select');
 
+    filtri.forEach(filtro => {
+        filtro.value = '';
+    });
+
+    document.getElementById('filtri').submit();
+}
 

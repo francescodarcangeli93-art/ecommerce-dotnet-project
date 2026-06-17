@@ -26,95 +26,92 @@
 
     <!-- Riga da rimuovere -->
     <input type="hidden" id="indirizzoDaEliminare" value="" />
-
-    <table class="table table-striped table-hover">
-        <thead>
-            <tr>
-                <th class="text-center">Indirizzo</th>
-                <th class="text-center">CAP</th>
-                <th class="text-center">Città</th>
-                <th class="text-center">Spedizione</th>
-                <th class="text-center">Fatturazione</th>
-                <th class="text-center">COMANDI</th>
-            </tr>
-        </thead>
-        <tbody>
-
-            @foreach (var indirizzo in Model.CustomerAddresses)
-            {
-                <tr data-id="@indirizzo.Id">
-
-                    <td class="text-center">@indirizzo.Address</td>
-                    <td class="text-center" >@indirizzo.PostalCode</td>
-                    <td class="text-center">@indirizzo.City</td>
-
-                    <td class="text-center">
-                        @if (indirizzo.IsDefault)
-                        {
-                            <i class="bi bi-house-fill text-success"></i>
-                            <span class="text-success fw-semibold ms-1">Predefinito</span>
-                        }
-                        else
-                        {
-                            <span class="text-muted">Alternativo</span>
-                        }
-
-                    </td>
-
-                    <td class="text-center">
-
-                        @if (indirizzo.IsBilling)
-                        {
-
-                            <i class="bi bi-file-earmark-text-fill text-primary"></i>
-                        }
-                        else
-                        {
-                            <span class="text-muted">-- --</span>
-                        }
-
-                    </td>
-                    <td class="text-center">
-
-                        <!-- TASTO MODIFICA -->
-                        <a href="" class="btn btn-sm btn-outline-warning py-1 btnModifica" style="border-radius: 25px;" title="Modifica riga"
-                           data-bs-toggle="modal"
-                           data-bs-target="#mdlModifica"
-                           data-id ="@indirizzo.Id"
-                           data-address ="@indirizzo.Address"
-                           data-postalCode ="@indirizzo.PostalCode"
-                           data-city ="@indirizzo.City"
-                           data-isDefault ="@indirizzo.IsDefault.ToString().ToLower()"
-                           data-isBilling ="@indirizzo.IsBilling.ToString().ToLower()">                  
-                        
-                           <i class="bi bi-pencil"></i>
-                        </a>
-
-                        <!-- Tasto elimina-->
-                        <button type="button"
-                                class="btn btn-sm btn-outline-danger py-1 btnElimina"
-                                style="border-radius: 25px;"
-                                title="Cancella utente"
-                                data-id="@indirizzo.Id">
-                            <!-- id che  viene passato alla funzione javascript -->
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </td>
+    
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th class="text-center">Indirizzo</th>
+                    <th class="text-center">CAP</th>
+                    <th class="text-center">Città</th>
+                    <th class="text-center">Spedizione</th>
+                    <th class="text-center">Fatturazione</th>
+                    <th class="text-center">COMANDI</th>
                 </tr>
-            }
+            </thead>
+            <tbody>
 
-        </tbody>
-    </table>
+                @foreach (var indirizzo in Model.CustomerAddresses)
+                {
+                    <tr data-id="@indirizzo.Id">
 
+                        <td class="text-center">@indirizzo.Address</td>
+                        <td class="text-center">@indirizzo.PostalCode</td>
+                        <td class="text-center">@indirizzo.City</td>
+
+                        <td class="text-center">
+                            @if (indirizzo.IsDefault)
+                            {
+                                <i class="bi bi-house-fill text-success"></i>
+                                <span class="text-success fw-semibold ms-1">Predefinito</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">Alternativo</span>
+                            }
+
+                        </td>
+
+                        <td class="text-center">
+
+                            @if (indirizzo.IsBilling)
+                            {
+
+                                <i class="bi bi-file-earmark-text-fill text-primary"></i>
+                            }
+                            else
+                            {
+                                <span class="text-muted">-- --</span>
+                            }
+
+                        </td>
+                        <td class="text-center">
+
+                            <!-- TASTO MODIFICA -->
+                            <a href="" class="btn btn-sm btn-outline-warning py-1 btnModifica" style="border-radius: 25px;" title="Modifica riga"
+                               data-bs-toggle="modal"
+                               data-bs-target="#mdlModifica"
+                               data-id="@indirizzo.Id"
+                               data-address="@indirizzo.Address"
+                               data-postalCode="@indirizzo.PostalCode"
+                               data-city="@indirizzo.City"
+                               data-isDefault="@indirizzo.IsDefault.ToString().ToLower()"
+                               data-isBilling="@indirizzo.IsBilling.ToString().ToLower()">
+
+                                <i class="bi bi-pencil"></i>
+                            </a>
+
+                            <!-- Tasto elimina-->
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-danger py-1 btnElimina"
+                                    style="border-radius: 25px;"
+                                    title="Cancella utente"
+                                    data-id="@indirizzo.Id">
+                                <!-- id che  viene passato alla funzione javascript -->
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+  
     <div class="d-flex justify-content-between align-items-center mt-4">
         <a href="/Gestutenti/GestioneUtenti" class="btn btn-animated fw-semibold px-4"
            style="border: 1.5px solid #212529; border-radius: 25px; color: #212529; line-height: 24px;">
             ← Indietro
         </a>
-        <button type="button" class="btn btn-animated fw-bold px-4"
-                style="background-color: #ffc107; color: #212529; border-radius: 25px; border: none; padding: 10px 24px;">
-            ✓ Salva modifiche
-        </button>
+        
     </div>
 
     <!-- Modale Modifica-->
@@ -127,6 +124,8 @@
                 </div>
                 <div class="modal-body">
                     <!-- Inizio Form  -->
+                    <input type="hidden" id="editId" value=""/>  <!--  valore popolato quando si clicca sul bottone modifica  -->
+
                     <!-- Campo hidden per prendere l'id del Customer'-->
                     <input type="hidden" id="editCustomerId" value="@Model.UserDetail.CustomerId" />
 
@@ -347,20 +346,51 @@
 
             });
 
-            // click el bottone Modifica
+            // click del bottone Modifica
             $('.btnModifica').on('click', function () {
 
                 var bottone = $(this);
 
+                $('#editId').val(bottone.data('id'));
                 $('#editAddress').val(bottone.data('address'));
-                $('#editPostalcode').val(bottone.data('PostalCode'));
+                $('#editPostalcode').val(bottone.data('postalcode'));
                 $('#editCity').val(bottone.data('city'));
 
                 $('#editIsDefault').prop('checked', bottone.data('isdefault') === true);
                 $('#editIsBilling').prop('checked', bottone.data('isbilling') === true);
+
             });
 
+            $('#btnModificaIndirizzo').on('click', function () {
 
+                var model = {
+                    Id: $('#editId').val(),
+                    CustomerId: $('#editCustomerId').val(),
+                    Address: $('#editAddress').val(),
+                    PostalCode: $('#editPostalcode').val(),
+                    City: $('#editCity').val(),
+                    IsDefault: $('#editIsDefault').is(':checked'),
+                    IsBilling: $('#editIsBilling').is(':checked')
+                };
+
+                $.ajax({
+                    url: '@Url.Action("ModificaIndirizzo", "GestIndirizzi")',
+                    type: 'POST',
+
+                    data: model,
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.success) {
+                            $('#mdlModifica').modal('hide');
+                            // ricarico la pagina per mostrare il nuovo indirizzo
+                            location.reload();
+                        } else {
+                            $('#resultMessageAdd').html('<span style="color:red">' + response.message + '</span>');
+                        }
+                    }
+                })
+
+            });
         });
     </script>
 

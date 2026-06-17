@@ -35,9 +35,17 @@
                     <input type="text" class="form-control" value="@Model.UserDetail.Username" readonly />
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-4">
+
                     <label class="form-label fw-semibold">Password</label>
-                    <input type="password" class="form-control" value="@Model.UserDetail.Password" readonly />
+
+                    <div class="password-wrapper">
+                        <input type="password" class="password-input" id="password" value="@Model.UserDetail.Password" readonly />
+                        <button type="button" onclick="togglePass()" class="password-toggle-btn">
+                            <i id="iconaEye" class="bi bi-eye"></i>
+                        </button>
+                    </div>
+
                 </div>
 
                 <div class="mb-3">
@@ -108,4 +116,8 @@
             ← Indietro
         </a>
     </div>
+
+
 </main>
+
+<script src="@Url.Content("~/Scripts/js/Password.js")"></script>

@@ -119,7 +119,7 @@ namespace WebEcommerce.Controllers
 
                 _customerservices.sp_ManageCustomerAddress(param);
 
-                return Json(new { success = true, Message = "Salvato con successo!"});
+                return Json(new { success = true, message = "Salvato con successo!"});
             }
             catch (Exception ex)
             {
