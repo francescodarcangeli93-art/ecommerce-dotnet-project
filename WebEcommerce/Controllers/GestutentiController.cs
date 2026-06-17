@@ -50,9 +50,9 @@ namespace WebEcommerce.Controllers
             sp_SearchUser_Param param = new sp_SearchUser_Param ();
 
             //se scade la sessione va al login
-            if (Session["Utente"] == null)
+            if (Session["UserId"] == null)
             {
-                RedirectToAction("Index", "Login");
+               return RedirectToAction("Index", "Login");
             }
 
             int idUser = 0;

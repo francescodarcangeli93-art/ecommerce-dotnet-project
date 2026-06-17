@@ -43,3 +43,45 @@ function clearFilters()
     document.getElementById('filtri').submit();
 }
 
+    $(document).ready(function () {
+
+        $("#tblUser th").click(function () {
+
+        var table = $("#tblUser");
+        var tbody = table.find("tbody");
+        var columnIndex = $(this).data("column");
+
+        var currentDirection = $(this).data("direction") || "ASC";
+        var newDirection = currentDirection === "ASC" ? "DESC" : "ASC";
+
+            $("#tblUser th").data("direction", null);
+            $("#tblUser th span").text("");
+
+        $(this).data("direction", newDirection);
+        $(this).find("span").text(newDirection === "ASC" ? " ▲" : " ▼");
+
+        var rows = tbody.find("tr").toArray();
+
+        rows.sort(function (a, b) {
+
+            var valueA = $(a).children("td").eq(columnIndex).text().trim();
+            var valueB = $(b).children("td").eq(columnIndex).text().trim();
+
+            var numberA = parseFloat(valueA.replace(",", "."));
+            var numberB = parseFloat(valueB.replace(",", "."));
+
+            if (!isNaN(numberA) && !isNaN(numberB)) {
+                return newDirection === "ASC"
+                    ? numberA - numberB
+                    : numberB - numberA;
+            }
+
+            return newDirection === "ASC"
+                ? valueA.localeCompare(valueB)
+                : valueB.localeCompare(valueA);
+        });
+
+        tbody.empty().append(rows);
+    });
+
+});

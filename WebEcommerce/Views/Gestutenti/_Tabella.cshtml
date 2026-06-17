@@ -16,21 +16,21 @@
         @*TASTO AGGIUNGI*@
         <div class="d-flex justify-content-between align-items-end mb-3">
             <h3 class="m-0">Lista Utenti</h3>
-            <a href="@Url.Action("AggiungiUtente", "Gestutenti")" class="btn fw-semibold px-4 btn-animated"
-               style="background-color: #ffc107; color: #212529; border-radius: 25px; padding: 6px 24px; border: none;">
+            <a href="@Url.Action("AggiungiUtente", "Gestutenti")" class="btn fw-semibold px-4 btn-animated btn-add-cart"
+              >
                 <i class="bi bi-person-plus-fill me-2"></i> Aggiungi
             </a>
         </div>
 
-        <div class="table-responsive bevel">
-            <table class="table table-striped table-hover table-bordered align-middle mb-0">
-                <thead class="table-dark  background-color: #212529;">
+        <div class="table-responsive bevel" >
+            <table id="tblUser" class="table table-striped table-hover table-bordered align-middle mb-0" >
+                <thead class="table-dark">
                     <tr>
-                        <th class="text-center">Ruolo</th>
-                        <th class="text-center">Username</th>
-                        <th class="text-center">Nome</th>
-                        <th class="text-center">Cognome</th>
-                        <th class="text-center">Email</th>
+                        <th data-column="0" class="text-center">Ruolo<span></span></th>
+                        <th data-column="1" class="text-center">Username<span></span></th>
+                        <th data-column="2" class="text-center">Nome<span></span></th>
+                        <th data-column="3" class="text-center">Cognome<span></span></th>
+                        <th data-column="4" class="text-center">Email<span></span></th>
                         <th>Inizio Validità</th>
                         <th class="text-center">Fine Validità</th>
                         <th class="text-center px-4">INDIRIZZI</th>
@@ -69,15 +69,15 @@
                                    
                                     <!-- GESTIONE DEGLI INDIRIZZI -->
                                     <td class="text-center">
-                                        @if (utente.RoleName.ToString().ToLower() != "admin")
+                                        @if (utente.CustomerId != null && utente.RoleName.ToString().ToLower() != "admin")
                                         {
                                             <a href="@Url.Action("Index", "GestIndirizzi", new { id = utente.Id })"
-                                               class="btn btn-sm btn-outline-success py-1 d-inline-block"
-                                               style="border-radius:25px">
+                                               class="btn btn-sm btn-outline-success py-1 d-inline-block simpleBevel">
                                                 <i class="bi bi-pin-map-fill"></i>
                                             </a>
                                         }
-                                        </td>
+                                       
+                                    </td>
                                  
                                     <!-- GESTIONE ATTIVO NON ATTIVO -->
                                     <td class="text-center">

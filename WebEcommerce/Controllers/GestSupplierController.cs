@@ -21,10 +21,7 @@ namespace WebEcommerce.Controllers
         // GET: Supplier
         public ActionResult Index()
         {
-            if (Session["Utente"] == null)
-            {
-                RedirectToAction("Index", "Login");
-            }
+            CheckSession();
 
             sp_SearchSupplier_Param param = new sp_SearchSupplier_Param();
 
@@ -41,6 +38,7 @@ namespace WebEcommerce.Controllers
         // GET: Supplier/Details
         public ActionResult Details(int id)
         {
+            CheckSession();
             return View();
         }
 
@@ -79,7 +77,6 @@ namespace WebEcommerce.Controllers
             try
             {
                 // TODO: Add update logic here
-
                 return RedirectToAction("Index");
             }
             catch
@@ -109,5 +106,15 @@ namespace WebEcommerce.Controllers
                 return View();
             }
         }
+
+        private ActionResult CheckSession()
+        {
+            if (Session["UserId"] == null)
+            {
+               return RedirectToAction("Index", "Login");
+            }
+            return null;
+        }
+
     }
 }
