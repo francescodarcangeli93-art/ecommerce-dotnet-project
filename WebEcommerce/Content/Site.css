@@ -317,6 +317,22 @@ select,
     /* ==========================================================================
        INPUT GRAPHICS
        ========================================================================== */
+    .bt-cerca {
+        background-color: #ffc107;
+        color: #212529;
+        border-radius: 25px;
+        padding: 6px 24px;
+        border: none;
+    }
+
+    .bt-pulisci {
+        background-color: white;
+        color: #212529;
+        border: 2px solid #ffc107;
+        border-radius: 25px;
+        padding: 6px 24px;
+    
+    }
 
     .card-detail {
         border-radius: 16px;
@@ -390,7 +406,13 @@ select,
         background-color:red;
     }
 
-
+    .buttonAdd{
+        background-color: #ffc107;
+        color: #212529;
+        border-radius: 25px;
+        padding: 6px 24px;
+        border: none;
+    }
 
     .noborder {
         border-radius: 16px;

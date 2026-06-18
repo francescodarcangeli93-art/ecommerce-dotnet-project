@@ -10,128 +10,127 @@
 <!-- Tasto indirizzi -->
 
 <div class="d-flex justify-content-end align-items-end mb-3">
-   
 
-    <a href="" class="btn fw-semibold px-4 btn-animated"
+
+    <a href="" id="btnAggiungi" class="btn fw-semibold px-4 buttonAdd"
        data-bs-toggle="modal"
-       data-bs-target="#mdlAggiungi"
-       style="background-color: #ffc107; color: #212529; border-radius: 25px; padding: 6px 24px; border: none;">
+       data-bs-target="#mdlAggiungi">
         <i class="bi bi-pin-map-fill"></i>+ Aggiungi
     </a>
 
 </div>
 
 
-<div class="card" style="border:none">
+<div class="card" style="border:none;" id="interf">
 
     <!-- Riga da rimuovere -->
     <input type="hidden" id="indirizzoDaEliminare" value="" />
-    
-        <table class="table table-striped table-hover table-bordered">
-            <thead class="table-dark">
-                <tr>
-                    <th class="text-center">Indirizzo</th>
-                    <th class="text-center">CAP</th>
-                    <th class="text-center">Città</th>
-                    <th class="text-center">Spedizione</th>
-                    <th class="text-center">Fatturazione</th>
-                    <th class="text-center">COMANDI</th>
+
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th class="text-center">Indirizzo</th>
+                <th class="text-center">CAP</th>
+                <th class="text-center">Città</th>
+                <th class="text-center">Spedizione</th>
+                <th class="text-center">Fatturazione</th>
+                <th class="text-center">COMANDI</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var indirizzo in Model.CustomerAddresses)
+            {
+                <tr data-id="@indirizzo.Id" data-isdefault="@indirizzo.IsDefault.ToString().ToLower().Trim()">
+
+                    <td class="text-center">@indirizzo.Address</td>
+                    <td class="text-center">@indirizzo.PostalCode</td>
+                    <td class="text-center">@indirizzo.City</td>
+
+                    <td class="text-center">
+                        @if (indirizzo.IsDefault)
+                        {
+                            <i class="bi bi-house-fill text-success"></i>
+                            <span class="text-success fw-semibold ms-1">Predefinito</span>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Alternativo</span>
+                        }
+
+                    </td>
+
+                    <td class="text-center">
+
+                        @if (indirizzo.IsBilling)
+                        {
+
+                            <i class="bi bi-file-earmark-text-fill text-primary"></i>
+                        }
+                        else
+                        {
+                            <span class="text-muted">-- --</span>
+                        }
+
+                    </td>
+                    <td class="text-center">
+
+                        <!-- TASTO MODIFICA -->
+                        <a href="" class="btn btn-sm btn-outline-warning py-1 btnModifica" style="border-radius: 25px;" title="Modifica riga"
+                           data-bs-toggle="modal"
+                           data-bs-target="#mdlModifica"
+                           data-id="@indirizzo.Id"
+                           data-address="@indirizzo.Address"
+                           data-postalCode="@indirizzo.PostalCode"
+                           data-city="@indirizzo.City"
+                           data-isDefault="@indirizzo.IsDefault.ToString().ToLower()"
+                           data-isBilling="@indirizzo.IsBilling.ToString().ToLower()">
+
+                            <i class="bi bi-pencil"></i>
+                        </a>
+
+                        <!-- Tasto elimina-->
+                        <button type="button"
+                                class="btn btn-sm btn-outline-danger py-1 btnElimina"
+                                style="border-radius: 25px;"
+                                title="Cancella utente"
+                                data-id="@indirizzo.Id">
+                            <!-- id che  viene passato alla funzione javascript -->
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
+            }
 
-                @foreach (var indirizzo in Model.CustomerAddresses)
-                {
-                    <tr data-id="@indirizzo.Id">
+        </tbody>
+    </table>
 
-                        <td class="text-center">@indirizzo.Address</td>
-                        <td class="text-center">@indirizzo.PostalCode</td>
-                        <td class="text-center">@indirizzo.City</td>
-
-                        <td class="text-center">
-                            @if (indirizzo.IsDefault)
-                            {
-                                <i class="bi bi-house-fill text-success"></i>
-                                <span class="text-success fw-semibold ms-1">Predefinito</span>
-                            }
-                            else
-                            {
-                                <span class="text-muted">Alternativo</span>
-                            }
-
-                        </td>
-
-                        <td class="text-center">
-
-                            @if (indirizzo.IsBilling)
-                            {
-
-                                <i class="bi bi-file-earmark-text-fill text-primary"></i>
-                            }
-                            else
-                            {
-                                <span class="text-muted">-- --</span>
-                            }
-
-                        </td>
-                        <td class="text-center">
-
-                            <!-- TASTO MODIFICA -->
-                            <a href="" class="btn btn-sm btn-outline-warning py-1 btnModifica" style="border-radius: 25px;" title="Modifica riga"
-                               data-bs-toggle="modal"
-                               data-bs-target="#mdlModifica"
-                               data-id="@indirizzo.Id"
-                               data-address="@indirizzo.Address"
-                               data-postalCode="@indirizzo.PostalCode"
-                               data-city="@indirizzo.City"
-                               data-isDefault="@indirizzo.IsDefault.ToString().ToLower()"
-                               data-isBilling="@indirizzo.IsBilling.ToString().ToLower()">
-
-                                <i class="bi bi-pencil"></i>
-                            </a>
-
-                            <!-- Tasto elimina-->
-                            <button type="button"
-                                    class="btn btn-sm btn-outline-danger py-1 btnElimina"
-                                    style="border-radius: 25px;"
-                                    title="Cancella utente"
-                                    data-id="@indirizzo.Id">
-                                <!-- id che  viene passato alla funzione javascript -->
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                }
-
-            </tbody>
-        </table>
-  
     <div class="d-flex justify-content-between align-items-center mt-4">
         <a href="/Gestutenti/GestioneUtenti" class="btn btn-animated fw-semibold px-4"
            style="border: 1.5px solid #212529; border-radius: 25px; color: #212529; line-height: 24px;">
             ← Indietro
         </a>
-        
+
     </div>
 
-    <!-- Modale Modifica-->
+    <!-- Modale Modifica -->
+
     <div class="modal fade" id="mdlModifica">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Aggiungi Indirizzo</h5>
+                    <h5 class="modal-title">Modifica Indirizzo</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <!-- Inizio Form  -->
-                    <input type="hidden" id="editId" value=""/>  <!--  valore popolato quando si clicca sul bottone modifica  -->
-
+                    <input type="hidden" id="editId" value="" />  <!--  valore popolato quando si clicca sul bottone modifica  -->
                     <!-- Campo hidden per prendere l'id del Customer'-->
                     <input type="hidden" id="editCustomerId" value="@Model.UserDetail.CustomerId" />
 
                     <div class="mb-3">
                         <label>Indirizzo</label>
-                        <input type="text" id="editAddress" placeholder="Aggiungi indirizzo"  class="form-control input-animated" />
+                        <input type="text" id="editAddress" placeholder="Aggiungi indirizzo" class="form-control input-animated" />
                     </div>
 
                     <div class="mb-3">
@@ -163,7 +162,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn px-4" data-bs-dismiss="modal" style="border: 1.5px solid #212529; border-radius: 25px;">
+                    <button id="editAnnulla"  type="button" class="btn px-4 btn-secondary" data-bs-dismiss="modal" >
                         Annulla
                     </button>
 
@@ -224,7 +223,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn px-4" data-bs-dismiss="modal" style="border: 1.5px solid #212529; border-radius: 25px;">
+                    <button type="button" id="addAnnulla" class="btn px-4  btn-secondary" data-bs-dismiss="modal">
                         Annulla
                     </button>
 
@@ -238,18 +237,17 @@
     </div>
 
 
-    <!-- MODALE ELIMiNA -->
+    <!-- MODALE ELIMINA -->
     <div class="modal fade" id="modalElimina">
 
         <div class="modal-dialog">
 
             <div class="modal-content">
                 <div class="modal-body">
-                    Sei sicuro di voler elminare
+                    Sei sicuro di voler elminare questo indirizzo?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn px-4" data-bs-dismiss="modal"
-                            style="border: 1.5px solid #212529; border-radius: 25px;">
+                    <button type="button" id="btnAnnulla" class="btn px-4  btn-secondary" data-bs-dismiss="modal">
                         Annulla
                     </button>
 
@@ -265,134 +263,12 @@
 
 
 @section scripts {
-
     <script>
-
-        $(document).ready(function () {
-
-            // click sul bottone elimina
-            $('.btnElimina').on('click', function () {
-
-                var id = $(this).data('id');
-                $('#indirizzoDaEliminare').val(id);
-                $('#modalElimina').modal('show');
-            });
-
-
-            // click conferma elimina viene lanciato questo metodo
-            $('#btnConfermaElimina').on('click', function () {
-
-                // credo il modello da passare al controller con l'id dell'indirizzo da eliminare
-                var model = {
-                    id: $('#indirizzoDaEliminare').val()
-                }
-
-                $.ajax({
-                    url: '@Url.Action("EliminaIndirizzo", "GestIndirizzi")',
-                    type: 'POST',
-                    contentType: 'application/json; charset=utf-8',
-                    data: JSON.stringify(model),
-                    dataType: 'json',
-
-                    success: function (response) {
-                        if (response.success) {
-                            $('#modalElimina').modal('hide');
-                            // rimuovo la riga della tabella corrispondente all'indirizzo eliminato
-                            $('tr[data-id="' + $('#indirizzoDaEliminare').val() + '"]').remove();
-
-                        } else {
-                            $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
-                        }
-                    },
-
-                    error: function (xhr, status, error) {
-                        $('#resultMessage').html('<span style="color:red">Errore: ' + xhr.responseText + '</span>');
-                    }
-
-                });
-            });
-
-            $('#btnSalvaIndirizzo').on('click', function () {
-                // creo il modello da passare al controller con i dati del nuovo indirizzo
-                var model = {
-                    // passiamo l'id del customer per associarlo al nuovo indirizzo
-                    CustomerId: $('#CustomerId').val(),
-                    Address: $('#txtAddress').val(),
-                    PostalCode: $('#txtPostalcode').val(),
-                    City: $('#txtCity').val(),
-                    IsDefault: $('#txtIsDefault').is(':checked'),
-                    IsBilling: $('#txtIsBilling').is(':checked')
-                };
-
-                $.ajax({
-                    url: '@Url.Action("AggiungiIndirizzo", "GestIndirizzi")',
-                    type: 'POST',
-                   // contentType: 'application/json; charset=utf-8',
-                    data: model,
-                    dataType: 'json',
-                    success: function (response) {
-                        if (response.success) {
-                            $('#mdlAggiungi').modal('hide');
-                            // ricarico la pagina per mostrare il nuovo indirizzo
-                            location.reload();
-                        } else {
-                            $('#resultMessageAdd').html('<span style="color:red">' + response.message + '</span>');
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        $('#resultMessageAdd').html('<span style="color:red">Errore: ' + xhr.responseText + '</span>');
-                    }
-                });
-
-            });
-
-            // click del bottone Modifica
-            $('.btnModifica').on('click', function () {
-
-                var bottone = $(this);
-
-                $('#editId').val(bottone.data('id'));
-                $('#editAddress').val(bottone.data('address'));
-                $('#editPostalcode').val(bottone.data('postalcode'));
-                $('#editCity').val(bottone.data('city'));
-
-                $('#editIsDefault').prop('checked', bottone.data('isdefault') === true);
-                $('#editIsBilling').prop('checked', bottone.data('isbilling') === true);
-
-            });
-
-            $('#btnModificaIndirizzo').on('click', function () {
-
-                var model = {
-                    Id: $('#editId').val(),
-                    CustomerId: $('#editCustomerId').val(),
-                    Address: $('#editAddress').val(),
-                    PostalCode: $('#editPostalcode').val(),
-                    City: $('#editCity').val(),
-                    IsDefault: $('#editIsDefault').is(':checked'),
-                    IsBilling: $('#editIsBilling').is(':checked')
-                };
-
-                $.ajax({
-                    url: '@Url.Action("ModificaIndirizzo", "GestIndirizzi")',
-                    type: 'POST',
-
-                    data: model,
-                    dataType: 'json',
-                    success: function (response) {
-                        if (response.success) {
-                            $('#mdlModifica').modal('hide');
-                            // ricarico la pagina per mostrare il nuovo indirizzo
-                            location.reload();
-                        } else {
-                            $('#resultMessageAdd').html('<span style="color:red">' + response.message + '</span>');
-                        }
-                    }
-                })
-
-            });
-        });
+        var urls = {
+            eliminaIndirizzo: '@Url.Action("EliminaIndirizzo", "GestIndirizzi")',
+            aggiungiIndirizzo: '@Url.Action("AggiungiIndirizzo", "GestIndirizzi")',
+            modificaIndirizzo: '@Url.Action("ModificaIndirizzo", "GestIndirizzi")'
+        };
     </script>
-
+    <script src="@Url.Content("~/Scripts/js/IndirizziCustomer.js")"></script>
 }
-

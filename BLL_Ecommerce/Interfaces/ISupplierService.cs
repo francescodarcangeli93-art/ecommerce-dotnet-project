@@ -9,6 +9,6 @@ namespace BLL_Ecommerce.Interfaces
 {
     public interface ISupplierService
     {
-        List<sp_SearchSupplier_Result> SearchSupplier(sp_SearchSupplier_Param param);
+       Task <List<sp_SearchSupplier_Result>> SearchSupplierAsync(sp_SearchSupplier_Param param);
     }
 }

@@ -12,9 +12,12 @@ namespace BLL_Ecommerce.Services
     public class SupplierService : ISupplierService
     {
         DAL_Supplier Supplier = new DAL_Supplier();
-        public  List<sp_SearchSupplier_Result> SearchSupplier(sp_SearchSupplier_Param param)
+
+     
+
+        public async Task <List<sp_SearchSupplier_Result>> SearchSupplierAsync(sp_SearchSupplier_Param param)
         {
-             return Supplier.SearchSupplier(param);
+             return await Supplier.SearchSupplier(param);
         }
     }
 }

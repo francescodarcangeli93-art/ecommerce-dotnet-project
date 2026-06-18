@@ -182,6 +182,8 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\js\GestioneSupplier.js" />
+    <Content Include="Scripts\js\IndirizziCustomer.js" />
     <Content Include="Scripts\js\AggiungiUtente.js" />
     <Content Include="Scripts\js\GestioneUtenti.js" />
     <Content Include="Scripts\js\ModificaUtente.js" />

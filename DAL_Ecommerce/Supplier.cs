@@ -12,7 +12,7 @@ namespace DAL_Ecommerce
 {
     public class DAL_Supplier
     {
-        public List<sp_SearchSupplier_Result> SearchSupplier(sp_SearchSupplier_Param spParam)
+        public async Task<List<sp_SearchSupplier_Result>> SearchSupplier(sp_SearchSupplier_Param spParam)
         {
             string spName = "dbo.sp_SearchSupplier";
 
@@ -33,11 +33,13 @@ namespace DAL_Ecommerce
                     cmd.Parameters.Add(new SqlParameter("@Phone", spParam.Phone));
                     cmd.Parameters.Add(new SqlParameter("@Fax", spParam.Fax));
 
-                    conn.Open();
+                    // apertura connessione asincrona
+                    await conn.OpenAsync();
 
-                    using (var da = new SqlDataAdapter(cmd))
+                    // Lettura asincrona dei dati tramite reader
+                    using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                     {
-                        da.Fill(dtSupplier);
+                        dtSupplier.Load(reader);
                     }
 
                     if (dtSupplier.Rows.Count > 0)
@@ -48,7 +50,7 @@ namespace DAL_Ecommerce
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
 
             return retVal;

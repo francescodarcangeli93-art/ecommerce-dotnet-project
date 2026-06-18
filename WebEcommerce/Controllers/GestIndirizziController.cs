@@ -28,8 +28,12 @@ namespace WebEcommerce.Controllers
         [HttpGet]
         public ActionResult Index(int? id)
         {
-            int idUser = 0;
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
 
+            int idUser = 0;
 
             try
             {

@@ -1,6 +1,9 @@
 ﻿using BLL_Ecommerce.Interfaces;
 using BLL_Ecommerce.Services;
 using DTO_Ecommerce;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using WebEcommerce.Models;
 
@@ -19,26 +22,50 @@ namespace WebEcommerce.Controllers
 
 
         // GET: Supplier
-        public ActionResult Index()
-        {
-            CheckSession();
+        public async Task<ActionResult> Index()
+        {   
+
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
 
             sp_SearchSupplier_Param param = new sp_SearchSupplier_Param();
 
             SupplierViewModel Model = new SupplierViewModel
             {
-                SupplierList = _supplierService.SearchSupplier(param)
+                SupplierList = await _supplierService.SearchSupplierAsync(param),
             };
-
-           
 
             return View(Model);
         }
 
+
+        [HttpPost]
+        public async Task<JsonResult> SearchSupplier(DTO_Ecommerce.sp_SearchSupplier_Param param)
+        {
+
+            try
+            {
+                List<sp_SearchSupplier_Result> risultati = await _supplierService.SearchSupplierAsync(param);
+
+                return Json(risultati);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Success = false, Message = ex.Message });
+            }
+        }
+
+
+
+
+
+
         // GET: Supplier/Details
         public ActionResult Details(int id)
         {
-            CheckSession();
+        
             return View();
         }
 
@@ -107,14 +134,7 @@ namespace WebEcommerce.Controllers
             }
         }
 
-        private ActionResult CheckSession()
-        {
-            if (Session["UserId"] == null)
-            {
-               return RedirectToAction("Index", "Login");
-            }
-            return null;
-        }
+      
 
     }
 }
