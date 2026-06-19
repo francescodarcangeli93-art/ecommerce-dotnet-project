@@ -158,6 +158,11 @@ namespace WebEcommerce.Controllers
         [HttpGet]
         public ActionResult ModificaUtente(int Id)
         {
+            if (Session["Role"] == null || Session["Role"].ToString().ToLower() != "admin")
+            {
+                return View("Error");
+            }
+
             int idUser = 0;
 
             try
@@ -204,13 +209,12 @@ namespace WebEcommerce.Controllers
         public ActionResult ModificaUtente(GestioneUtentiViewModel model)
         {
 
-            int idUser = 0;
-
             if (Session["Role"] == null || Session["Role"].ToString().ToLower() != "admin")
             {
                 return View("Error");
             }
 
+            int idUser = 0;
 
             model.ListRuoli = _roleservices.UserRoleList();
 
@@ -365,6 +369,12 @@ namespace WebEcommerce.Controllers
         [HttpPost]
         public ActionResult CambiaStatoInTabella(int id, bool? isActive, int? customerId)
         {
+
+            if (Session["Role"] == null || Session["Role"].ToString().ToLower() != "admin")
+            {
+                return View("Error");
+            }
+
             int idUser = 0;
 
             try
@@ -402,6 +412,11 @@ namespace WebEcommerce.Controllers
         public ActionResult AggiungiUtente()
         {
 
+            if (Session["Role"] == null || Session["Role"].ToString().ToLower() != "admin")
+            {
+                return View("Error");
+            }
+
             int? idUser = Session["UserId"] != null ? (int?)Session["UserId"] : null;
 
             try
@@ -425,6 +440,11 @@ namespace WebEcommerce.Controllers
         [HttpPost] 
         public ActionResult AggiungiUtente(GestioneUtentiViewModel model)
         {
+            if (Session["Role"] == null || Session["Role"].ToString().ToLower() != "admin")
+            {
+                return View("Error");
+            }
+
             int idUser = 0;
 
             //  istanziamo il role model 
@@ -494,7 +514,7 @@ namespace WebEcommerce.Controllers
                 model.ListRuoli = role.UserRoleList();
 
                 ViewBag.Errore = "Errore durante il salvataggio: " + ex.Message;
-          
+                _logService.WriteLogProcessError(idUser, ex.Message);
                 return View(model); // Ritorna alla view col modello per mostrare l'errore
             }
         }
@@ -512,6 +532,11 @@ namespace WebEcommerce.Controllers
         [HttpPost]
         public ActionResult EliminaUtente(int Id)
         {
+            if (Session["Role"] == null || Session["Role"].ToString().ToLower() != "admin")
+            {
+                return View("Error");
+            }
+
             int? idUser = Session["UserId"] != null ? (int?)Session["UserId"] : null;
 
             try
@@ -575,6 +600,5 @@ namespace WebEcommerce.Controllers
             }
         }
 
-  
     }
 }

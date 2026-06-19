@@ -14,24 +14,48 @@
         </h1>
     </div>
 
-    <div class="card">
-        <h5 class="card-header">FILTRI</h5>
-        <div class="card-body">
-       
-            <label for="txtCompany">Company</label>
-            <input type="text" id="txtCompany" name="CompanyName" />
+    <div class="mb-4 p-4 bg-white card-animated card-detail">
+        <h5 class="mb-4 fw-semibold text-dark">Ricerca Fornitori</h5>
+        <div >
+            <div class="card-body row g-3" id="filtri">
+                <div class="col-md-3">
+                    @*<label for="txtCompany">Azienda</label>*@
+                    <input type="text" id="txtCompany" name="CompanyName" placeholder="Azienda" class="form-control input-animated"/>
+                </div>
 
-            <label for="txtReferente">Referente</label>
-            <input type="text" id="txtReferente" name="ContactName" />
+                <div class="col-md-3">
+                    @*<label for="txtReferente">Referente</label>*@
+                    <input type="text" id="txtReferente" name="ContactName" placeholder="Referente" class="form-control input-animated"/>
+                </div>
 
-            <label for="txtRuolo">Ruolo</label>
-            <input type="text" id="txtRuolo" name="ContactTitle" />
+                <div class="col-md-3">
+                    @*<label for="txtRuolo">Ruolo</label>*@
+                    <input type="text" id="txtRuolo" name="ContactTitle"  placeholder="Ruolo" class="form-control input-animated"/>
+                </div>
+                <div class="col-md-3">
+                    @*<label for="txtcitta">Città</label>*@
+                    <input type="text" id="txtCitta" name="City"  placeholder="Città" class="form-control input-animated"/>
+                </div>
+                <div class="col-md-3">
+                    @*<label for="txtPaese">Paese</label>*@
+                    <input type="text" id="txtPaese" name="Country"  placeholder="Paese" class="form-control input-animated"/>
+                </div>
 
-            <a href="#" id="btnCerca" class="btn btn-primary">Cerca</a>
-            <a href="#" id="btnPulisci" class="btn btn-secondary">Pulisci</a>
+                <div class="col-md-3">
+                    @*<label for="txtTelefono">Telefono</label>*@
+                    <input type="text" id="txtTelefono" name="Phone"  placeholder="Telefono" class="form-control input-animated"/>
+                </div>
+                <div class="col-md-3">
+                    @*<label for="txtFax">Fax</label>*@
+                    <input type="text" id="txtFax" name="Fax" placeholder="Fax" class="form-control input-animated" />
+                </div>
+                <div class="col-md-3 d-flex align-items-center gap-2 justify-content-end">
+                    <button type="button" id="btnCerca" data-url="@Url.Action("SearchSupplier","GestSupplier")" class="btn fw-semibold px-4 btn-animated bt-cerca">Cerca</button>
+                    <button type="button" id="btnPulisci" class="btn fw-semibold px-4 btn-animated bt-pulisci">Pulisci</button>
+                </div>
+            </div>
         </div>
-    </div>
-
+        </div>
 
     @*TASTO AGGIUNGI*@
     <div class="d-flex justify-content-between align-items-end mb-3">
@@ -41,8 +65,8 @@
             <i class="bi bi-truck"></i> Aggiungi
         </a>
 
-
     </div>
+
     <div class="table-responsive bevel">
         <table class="table table-striped table-hover table-bordered align-middle mb-0">
             <thead class="table-dark table-bordered">
@@ -57,7 +81,7 @@
                     <th class="text-center px-4">COMANDI</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="corpoTabella">
                 @foreach (var sup in Model.SupplierList)
                 {
                     <tr>
@@ -93,6 +117,5 @@
 </main>
 
 @section scripts {
-
-   
+    <script src="@Url.Content("~/Scripts/js/GestioneSupplier.js")"></script>
     }

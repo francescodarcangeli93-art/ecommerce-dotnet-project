@@ -305,8 +305,7 @@ namespace DTO_Ecommerce
         public decimal BasedUnitPrice { get; set; }
         public string Package { get; set; }
         public bool IsDiscontinued { get; set; }
-       
-
+        public bool VisibleInHP { get; set; }
     }
     public class sp_ManageProductCategory_Param
     {

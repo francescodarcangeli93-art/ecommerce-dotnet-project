@@ -25,13 +25,13 @@ namespace DAL_Ecommerce
                 using (SqlCommand cmd = new SqlCommand(spName, conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("@CompanyName", spParam.CompanyName));
-                    cmd.Parameters.Add(new SqlParameter("@ContactName", spParam.ContactName));
-                    cmd.Parameters.Add(new SqlParameter("@ContactTitle", spParam.ContactTitle));
-                    cmd.Parameters.Add(new SqlParameter("@City", spParam.City));
-                    cmd.Parameters.Add(new SqlParameter("@Country", spParam.Country));
-                    cmd.Parameters.Add(new SqlParameter("@Phone", spParam.Phone));
-                    cmd.Parameters.Add(new SqlParameter("@Fax", spParam.Fax));
+                    cmd.Parameters.Add(new SqlParameter("@CompanyName", (object)spParam.CompanyName ?? DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@ContactName", (object)spParam.ContactName ?? DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@ContactTitle", (object)spParam.ContactTitle ?? DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@City", (object)spParam.City ?? DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@Country", (object)spParam.Country ?? DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@Phone", (object)spParam.Phone ?? DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@Fax", (object)spParam.Fax ?? DBNull.Value));
 
                     // apertura connessione asincrona
                     await conn.OpenAsync();

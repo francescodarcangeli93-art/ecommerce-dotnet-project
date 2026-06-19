@@ -212,7 +212,8 @@ namespace DTO_Ecommerce
         public decimal BasedUnitPrice { get; set; }
         public string Package { get; set; }
         public bool IsDiscontinued { get; set; }
-      
+        public bool VisibleinHP { get; set; }
+
     }
 
     public class GetProductCategoryById_Result
@@ -397,6 +398,8 @@ namespace DTO_Ecommerce
         public decimal BasedUnitPrice { get; set; }
         public string Package { get; set; }
         public bool IsDiscontinued { get; set; }
+
+
     }
 
     public class sp_SearchProductCategory_Result
