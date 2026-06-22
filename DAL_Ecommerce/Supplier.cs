@@ -56,19 +56,24 @@ namespace DAL_Ecommerce
             return retVal;
         }
 
-        public async Task<sp_GetSupplierById_Result> GetSupplierById(int? id)
+        public async Task<sp_GetSupplierById_Result> GetSupplierById(int id)
         {
             string spName = "dbo.sp_GetSupplierById";
 
-            sp_GetSupplierById_Result Supplier = new sp_GetSupplierById_Result();
+            sp_GetSupplierById_Param param = new sp_GetSupplierById_Param
+            {
+                IdSupplier = id
+            };
 
+            sp_GetSupplierById_Result Supplier = new sp_GetSupplierById_Result();
+            
             try
             {
                 using (SqlConnection conn = DbConnectionFactory.CreateConnection())
                 using (SqlCommand cmd = new SqlCommand(spName, conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("@Id", (object)id ?? DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@IdSupplier", param.IdSupplier));
 
                     await conn.OpenAsync();
 

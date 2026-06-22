@@ -83,6 +83,7 @@ namespace WebEcommerce.Controllers
 
 
         // GET: Supplier/Details
+        [HttpGet]
         public async Task <JsonResult> Details(int id)
         {
             
@@ -98,9 +99,10 @@ namespace WebEcommerce.Controllers
                 idUser = (int)Session["UserId"];
 
                 sp_GetSupplierById_Result Supplier = await _supplierService.GetSupplierByIdAsync(id);
+
                 if (Supplier == null)
                 {
-                    return Json(new { success = false, Message = "Il fornitore corrispondete è stato trovato"}, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = false, Message = "Il fornitore corrispondete non è stato trovato"}, JsonRequestBehavior.AllowGet);
                    
                 }
                 return Json(new { success = true, data = Supplier}, JsonRequestBehavior.AllowGet);
@@ -109,14 +111,14 @@ namespace WebEcommerce.Controllers
             {
               
                 _logService.WriteLogProcessError(idUser, ex.Message);
-                return Json(new { Success = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
 
         // POST: Supplier/Create
         [HttpPost]
-        public async Task<JsonResult> Create(sp_ManageSupplier_Param param)
+        public async Task<JsonResult> Save(sp_ManageSupplier_Param param)
         {
             int idUser = 0;
 

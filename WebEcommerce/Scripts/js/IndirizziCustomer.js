@@ -29,10 +29,10 @@
    
     $('#btnConfermaElimina').on('click', function () {
 
-        const test = document.getElementById('interf');
+        const interface = document.getElementById('interf');
        
         // credo il modello da passare al controller con l'id dell'indirizzo da eliminare
-        var model = {
+        const model = {
             id: $('#indirizzoDaEliminare').val()
         }
 
@@ -50,7 +50,7 @@
                    
                     // rimuovo la riga della tabella corrispondente all'indirizzo eliminato
                     $('tr[data-id="' + $('#indirizzoDaEliminare').val() + '"]').remove();
-                    test.removeAttribute('style');
+                    interface.removeAttribute('style');
                 } else {
                     $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
                 }

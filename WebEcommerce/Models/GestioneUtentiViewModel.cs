@@ -78,7 +78,9 @@ namespace WebEcommerce.Models
 
     public class SupplierViewModel
     {
-       public List<sp_SearchSupplier_Result> SupplierList {  get; set; }
+        public List<sp_SearchSupplier_Result> SupplierList {  get; set; }
+
+        public sp_GetSupplierById_Result TheSupplier { get; set; }
 
     }
 }

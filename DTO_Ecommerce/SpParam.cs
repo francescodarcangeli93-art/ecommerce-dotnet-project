@@ -159,7 +159,7 @@ namespace DTO_Ecommerce
     }
     public class sp_GetSupplierById_Param
     {
-        public int? Id { get; set; }
+        public int? IdSupplier { get; set; }
 
     }
     public class sp_GetUserById_Param

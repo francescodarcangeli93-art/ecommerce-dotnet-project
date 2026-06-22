@@ -20,7 +20,7 @@ namespace BLL_Ecommerce.Services
              return await Supplier.SearchSupplier(param);
         }
 
-        public async Task<sp_GetSupplierById_Result> GetSupplierByIdAsync(int? id)
+        public async Task<sp_GetSupplierById_Result> GetSupplierByIdAsync(int id)
         {
            return await Supplier.GetSupplierById(id);
         }
