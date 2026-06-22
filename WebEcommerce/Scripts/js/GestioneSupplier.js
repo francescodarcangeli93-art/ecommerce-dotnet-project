@@ -44,31 +44,9 @@
                     rows = "<tr><td colspan='8' class='text-center text-muted'> Nessun fornitore trovato</td></tr>";
                 } else {
                     $.each(data, function (i, item) {
-                        rows += `<tr data-id="${item.Id}">
-                            <td class="text-center">${item.CompanyName ?? ''}</td>
-                            <td class="text-center">${item.ContactName ?? ''}</td>
-                            <td class="text-center">${item.ContactTitle ?? ''}</td>
-                            <td class="text-center">${item.City ?? ''}</td>
-                            <td class="text-center">${item.Country ?? ''}</td>
-                            <td>${item.Phone ?? ''}</td>
-                            <td>${item.Fax ?? ''}</td>
-                            <td class="text-end text-center px-4">
 
-                                <a class="btn btn-sm btn-outline-info py-1 simpleBevel me-1 btn-dettagli" data-id="${item.Id}" title="Visualizza Dettagli"><i class="bi bi-search"></i></a>
+                        rows += generaRigaFornitore(item);
 
-                                <a class="btn btn-sm btn-outline-warning py-1 simpleBevel me-1 btn-modifica" data-id="${item.Id}" title="Modifica riga"><i class="bi bi-pencil"></i></a>
-                                
-                                 <button type="button"                      
-                                    class="btn btn-sm btn-outline-danger py-1 simpleBevel btn-elimina"
-                                    title="Cancella fornitore"
-                                    data-id="${item.Id}"
-                                    data-companyname="${item.CompanyName}">
-
-                                <i class="bi bi-trash"></i>
-                            </button>
-
-                            </td>
-                        </tr>`;
                     });
                 }
 
@@ -193,42 +171,41 @@
 
         $('#modalAggiungi').modal('show');
 
+    });
 
-        $('#btnSalva').on('click', function () {
+    $('#btnSalva').on('click', function () {
 
-            const model = {
-                CompanyName: $('#Company').val(),
-                ContactName: $('#Referente').val(),
-                ContactTitle: $('#Ruolo').val(),
-                City: $('#Citta').val(),
-                Country: $('#Paese').val(),
-                Phone: $('#Telefono').val(),
-                Fax: $('#Fax').val(),
+        const model = {
+            CompanyName: $('#Company').val(),
+            ContactName: $('#Referente').val(),
+            ContactTitle: $('#Ruolo').val(),
+            City: $('#Citta').val(),
+            Country: $('#Paese').val(),
+            Phone: $('#Telefono').val(),
+            Fax: $('#Fax').val(),
+        }
+
+        $.ajax({
+            url: '/GestSupplier/Save',
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(model),
+            dataType: 'json',
+
+            success: function (response) {
+                if (response.success) {
+                    $('#modalAggiungi').modal('hide');
+                    $('#btnCerca').click();
+                } else {
+                    $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
+                }
+            },
+
+            error: function (xhr, status, error) {
+                $('#resultMessage').html('<span style="color:red">Errore: ' + xhr.responseText + '</span>');
             }
 
-            $.ajax({
-                url: '/GestSupplier/Save',
-                type: 'POST',
-                contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify(model),
-                dataType: 'json',
-
-                success: function (response) {
-                    if (response.success) {
-                        $('#modalAggiungi').modal('hide');
-                        $('#btnCerca').click();
-                    } else {
-                        $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
-                    }
-                },
-
-                error: function (xhr, status, error) {
-                    $('#resultMessage').html('<span style="color:red">Errore: ' + xhr.responseText + '</span>');
-                }
-
-            });
         });
-
     });
 
     // modifica fornitori
@@ -270,40 +247,64 @@
 
         });
 
-        $('#btnModifica').on('click', function () {
+    });
 
-            const model = {
-                Id: $('#editId').val(), 
-                CompanyName: $('#editCompany').val(),
-                ContactName: $('#editReferente').val(),
-                ContactTitle: $('#editRuolo').val(),
-                City: $('#editCitta').val(),
-                Country: $('#editPaese').val(),
-                Phone: $('#editTelefono').val(),
-                Fax: $('#editFax').val(),
+    $('#btnModifica').on('click', function () {
+
+        const model = {
+            Id: $('#editId').val(),
+            CompanyName: $('#editCompany').val(),
+            ContactName: $('#editReferente').val(),
+            ContactTitle: $('#editRuolo').val(),
+            City: $('#editCitta').val(),
+            Country: $('#editPaese').val(),
+            Phone: $('#editTelefono').val(),
+            Fax: $('#editFax').val(),
+        }
+
+        $.ajax({
+            url: '/GestSupplier/Edit',
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(model),
+            dataType: 'json',
+
+            success: function (response) {
+                if (response.success) {
+                    $('#modalEdit').modal('hide');
+                  
+                    const newRow = generaRigaFornitore(model);
+
+                    $('tr[data-id="' + model.Id + '"]').replaceWith(newRow);
+
+                } else {
+                    $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
+                }
+            },
+
+            error: function (xhr, status, error) {
+                $('#resultMessage').html('<span style="color:red">Errore: ' + xhr.responseText + '</span>');
             }
 
-            $.ajax({
-                url: '/GestSupplier/Edit',
-                type: 'POST',
-                contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify(model),
-                dataType: 'json',
-
-                success: function (response) {
-                    if (response.success) {
-                        $('#modalEdit').modal('hide');
-                        $('#btnCerca').click();
-                    } else {
-                        $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
-                    }
-                },
-
-                error: function (xhr, status, error) {
-                    $('#resultMessage').html('<span style="color:red">Errore: ' + xhr.responseText + '</span>');
-                }
-
-            });
         });
     });
 });
+
+function generaRigaFornitore(item) {
+    return `<tr data-id="${item.Id}">
+        <td class="text-center">${item.CompanyName ?? ''}</td>
+        <td class="text-center">${item.ContactName ?? ''}</td>
+        <td class="text-center">${item.ContactTitle ?? ''}</td>
+        <td class="text-center">${item.City ?? ''}</td>
+        <td class="text-center">${item.Country ?? ''}</td>
+        <td>${item.Phone ?? ''}</td>
+        <td>${item.Fax ?? ''}</td>
+        <td class="text-end text-center px-4">
+            <a href="#" class="btn btn-sm btn-outline-info py-1 simpleBevel me-1 btn-dettagli" data-id="${item.Id}" title="Visualizza Dettagli"><i class="bi bi-search"></i></a>
+            <a href="#" class="btn btn-sm btn-outline-warning py-1 simpleBevel me-1 btn-modifica" data-id="${item.Id}" title="Modifica riga"><i class="bi bi-pencil"></i></a>
+            <button type="button" class="btn btn-sm btn-outline-danger py-1 simpleBevel btn-elimina" data-id="${item.Id}" data-companyname="${item.CompanyName}" title="Cancella fornitore">
+                <i class="bi bi-trash"></i>
+            </button>
+        </td>
+    </tr>`;
+}
