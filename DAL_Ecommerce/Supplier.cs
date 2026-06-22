@@ -56,5 +56,87 @@ namespace DAL_Ecommerce
             return retVal;
         }
 
+        public async Task<sp_GetSupplierById_Result> GetSupplierById(int? id)
+        {
+            string spName = "dbo.sp_GetSupplierById";
+
+            sp_GetSupplierById_Result Supplier = new sp_GetSupplierById_Result();
+
+            try
+            {
+                using (SqlConnection conn = DbConnectionFactory.CreateConnection())
+                using (SqlCommand cmd = new SqlCommand(spName, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@Id", (object)id ?? DBNull.Value));
+
+                    await conn.OpenAsync();
+
+                    // esegue la stored procedure e restituisce il cursore il reader 
+                    using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                    {   
+                        // qui avviene la lettura vera 
+                        if (await reader.ReadAsync())
+                        {
+                            Supplier = new sp_GetSupplierById_Result
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                CompanyName = reader["CompanyName"].ToString(),
+                                ContactName = reader["ContactName"].ToString(),
+                                ContactTitle = reader["ContactTitle"].ToString(),
+                                City = reader["City"].ToString(),
+                                Country = reader["Country"].ToString(),
+                                Phone = reader["Phone"].ToString(),
+                                Fax = reader["Fax"].ToString(),
+                               
+                            };
+                        }
+                    }
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+
+            return Supplier;
+        }
+
+        public async Task sp_ManageSupplier (sp_ManageSupplier_Param spParam)
+        {
+            string spName = "dbo.sp_ManageSupplier";
+
+
+            using (SqlConnection conn = DbConnectionFactory.CreateConnection())
+            using (SqlCommand cmd = new SqlCommand(spName, conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new SqlParameter("@Operation", spParam.Operation));
+                cmd.Parameters.Add(new SqlParameter("@Id", spParam.Id));
+                cmd.Parameters.Add(new SqlParameter("@CompanyName", spParam.CompanyName));
+                cmd.Parameters.Add(new SqlParameter("@ContactName", spParam.ContactName));
+                cmd.Parameters.Add(new SqlParameter("@ContactTitle", spParam.ContactTitle));
+                cmd.Parameters.Add(new SqlParameter("@City", spParam.City));
+                cmd.Parameters.Add(new SqlParameter("@Country", spParam.Country));
+                cmd.Parameters.Add(new SqlParameter("@Phone", spParam.Phone));
+                cmd.Parameters.Add(new SqlParameter("@Fax", spParam.Fax));
+                try
+                {
+                   await conn.OpenAsync();
+                   await cmd.ExecuteNonQueryAsync();
+                }
+                catch (SqlException ex)
+                {
+                    throw ex;
+                }
+
+
+            }
+        }
+
     }
 }

@@ -6,10 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 using WebEcommerce.Models;
 
 namespace WebEcommerce.Controllers
 {
+    // tenere ex message solo per lo sviluppo poi  sostituire con un messaggio di errore scritto 
     public class GestSupplierController : Controller
     {
 
@@ -56,16 +58,18 @@ namespace WebEcommerce.Controllers
             }
         }
 
+
+        // LISTA DEI SUPPLIER
         [HttpPost]
-        public async Task<JsonResult> SearchSupplier(DTO_Ecommerce.sp_SearchSupplier_Param param)
+        public async Task<JsonResult> SearchSupplier(sp_SearchSupplier_Param param)
         {
            
-
             int idUser = 0;
 
             try
             {
                 idUser = (int)Session["UserId"];
+
                 List<sp_SearchSupplier_Result> risultati = await _supplierService.SearchSupplierAsync(param);
 
                 return Json(risultati);
@@ -77,75 +81,131 @@ namespace WebEcommerce.Controllers
             }
         }
 
+
         // GET: Supplier/Details
-        public ActionResult Details(int id)
+        public async Task <JsonResult> Details(int id)
         {
-        
-            return View();
+            
+            int idUser = 0;
+
+            if (Session["UserId"] == null)
+            {
+                return Json(new { success = false, sessionExpired = true }, JsonRequestBehavior.AllowGet);
+            }
+
+            try
+            {
+                idUser = (int)Session["UserId"];
+
+                sp_GetSupplierById_Result Supplier = await _supplierService.GetSupplierByIdAsync(id);
+                if (Supplier == null)
+                {
+                    return Json(new { success = false, Message = "Il fornitore corrispondete è stato trovato"}, JsonRequestBehavior.AllowGet);
+                   
+                }
+                return Json(new { success = true, data = Supplier}, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+              
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { Success = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
-        // GET: Supplier/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
 
         // POST: Supplier/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public async Task<JsonResult> Create(sp_ManageSupplier_Param param)
         {
+            int idUser = 0;
+
+            if (Session["UserId"] == null)
+            {
+                return Json(new { success = false, sessionExpired = true });
+            }
+
             try
             {
+                idUser = (int)Session["UserId"];
                 // TODO: Add insert logic here
+                param.Operation = "I";
 
-                return RedirectToAction("Index");
+                await _supplierService.sp_ManageSupplierAsync(param);
+
+                return Json(new { success = true });
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, ex.Message});
             }
         }
 
+
         // GET: Supplier/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<JsonResult> Edit(int id)
         {
-            return View();
+            int idUser = 0;
+            try
+            {
+                idUser = (int)Session["UserId"];
+                //  prendere i dati dal database del supplier tramite id
+            sp_GetSupplierById_Result Supplier = await _supplierService.GetSupplierByIdAsync(id);
+                // impaccettare i dati e spedirli  alla pagina
+
+                return Json(new { success = true, Supplier}, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, ex.Message });
+            }
         }
 
         // POST: Supplier/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public async Task<JsonResult> Edit(sp_ManageSupplier_Param param)
         {
+            int idUser = 0;
             try
             {
+                idUser = (int)Session["UserId"];
                 // TODO: Add update logic here
-                return RedirectToAction("Index");
+                return Json(new { success = true });
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, ex.Message});
             }
         }
 
-        // GET: Supplier/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+       
 
         // POST: Supplier/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public async Task<JsonResult>Delete(int id)
         {
+            int idUser = 0;
             try
             {
-                // TODO: Add delete logic here
+                idUser = (int)Session["UserId"];
 
-                return RedirectToAction("Index");
+                sp_ManageSupplier_Param param = new sp_ManageSupplier_Param
+                {
+                    Operation = "D",
+                    Id = id
+                };
+
+                await _supplierService.sp_ManageSupplierAsync(param);
+
+                return Json( new { success = true});
             }
-            catch
+            catch (Exception ex) 
             {
-                return View();
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, Message = ex.Message });
             }
         }
 
