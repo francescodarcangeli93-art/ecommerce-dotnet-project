@@ -154,9 +154,9 @@ namespace WebEcommerce.Controllers
                 idUser = (int)Session["UserId"];
                 //  prendere i dati dal database del supplier tramite id
             sp_GetSupplierById_Result Supplier = await _supplierService.GetSupplierByIdAsync(id);
-                // impaccettare i dati e spedirli  alla pagina
+                // impacchettare i dati e spedirli  alla pagina
 
-                return Json(new { success = true, Supplier}, JsonRequestBehavior.AllowGet);
+                return Json(new { success = true, data = Supplier}, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -174,6 +174,10 @@ namespace WebEcommerce.Controllers
             {
                 idUser = (int)Session["UserId"];
                 // TODO: Add update logic here
+                param.Operation = "U";
+                await _supplierService.sp_ManageSupplierAsync(param);
+
+
                 return Json(new { success = true });
             }
             catch (Exception ex)

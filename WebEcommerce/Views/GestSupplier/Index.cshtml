@@ -100,7 +100,7 @@
                             <a class="btn btn-sm btn-outline-info py-1 simpleBevel btn-dettagli" data-id="@sup.Id" title="Visualizza Dettagli">
                                 <i class="bi bi-search"></i>
                             </a>
-                            <a class="btn btn-sm btn-outline-warning py-1 simpleBevel btn-modifica" title="Modifica riga">
+                            <a class="btn btn-sm btn-outline-warning py-1 simpleBevel btn-modifica" data-id="@sup.Id" title="Modifica riga">
                                 <i class="bi bi-pencil"></i>
                             </a>
 
@@ -200,6 +200,7 @@
                     <div>
                         <div class="card-body row g-3" id="filtri">
                             <div class="col-md-6">
+
                                 <div class="mb-3">
                                     <label for="Company">Azienda</label>
                                     <input type="text" id="Company" name="CompanyName" placeholder="nome Azienda" class="form-control input-animated" required />
@@ -266,6 +267,9 @@
                     <div>
                         <div class="card-body row g-3" id="filtri">
                             <div class="col-md-6">
+
+                                <input type="hidden" id="editId" />
+
                                 <div class="mb-3">
                                     <label for="editCompany">Azienda</label>
                                     <input type="text" id="editCompany" name="CompanyName" placeholder="nome Azienda" class="form-control input-animated" required />
@@ -311,7 +315,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" id="btnSalva" class="btn btn-success">Salva</button>
+                <button type="button" id="btnModifica" class="btn btn-success">Modifica</button>
             </div>
         </div>
     </div>

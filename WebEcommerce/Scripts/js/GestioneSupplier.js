@@ -56,7 +56,7 @@
 
                                 <a class="btn btn-sm btn-outline-info py-1 simpleBevel me-1 btn-dettagli" data-id="${item.Id}" title="Visualizza Dettagli"><i class="bi bi-search"></i></a>
 
-                                <a class="btn btn-sm btn-outline-warning py-1 simpleBevel me-1 btn-modifica" title="Modifica riga"><i class="bi bi-pencil"></i></a>
+                                <a class="btn btn-sm btn-outline-warning py-1 simpleBevel me-1 btn-modifica" data-id="${item.Id}" title="Modifica riga"><i class="bi bi-pencil"></i></a>
                                 
                                  <button type="button"                      
                                     class="btn btn-sm btn-outline-danger py-1 simpleBevel btn-elimina"
@@ -232,5 +232,78 @@
     });
 
     // modifica fornitori
+    $corpoTabella.on('click','.btn-modifica', function () {
 
+        const model = {
+            id: $(this).data('id')
+        }
+
+        $.ajax({
+            url: '/GestSupplier/Edit',
+            type: 'GET',
+            data: model,
+            dataType: 'json',
+
+            success: function (response) {
+                if (response.success) {
+                    $('#editId').val(response.data.Id);
+                    $('#editCompany').val(response.data.CompanyName);
+                    $('#editReferente').val(response.data.ContactName);
+                    $('#editRuolo').val(response.data.ContactTitle);
+                    $('#editCitta').val(response.data.City);
+                    $('#editPaese').val(response.data.Country);
+                    $('#editTelefono').val(response.data.Phone);
+                    $('#editFax').val(response.data.Fax);
+
+                    $('#modalEdit').modal('show'); 
+
+
+
+                } else {
+                    $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
+                }
+            },
+
+            error: function (xhr, status, error) {
+                $('#resultMessage').html('<span style="color:red">Errore: ' + xhr.responseText + '</span>');
+            }
+
+        });
+
+        $('#btnModifica').on('click', function () {
+
+            const model = {
+                Id: $('#editId').val(), 
+                CompanyName: $('#editCompany').val(),
+                ContactName: $('#editReferente').val(),
+                ContactTitle: $('#editRuolo').val(),
+                City: $('#editCitta').val(),
+                Country: $('#editPaese').val(),
+                Phone: $('#editTelefono').val(),
+                Fax: $('#editFax').val(),
+            }
+
+            $.ajax({
+                url: '/GestSupplier/Edit',
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(model),
+                dataType: 'json',
+
+                success: function (response) {
+                    if (response.success) {
+                        $('#modalEdit').modal('hide');
+                        $('#btnCerca').click();
+                    } else {
+                        $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
+                    }
+                },
+
+                error: function (xhr, status, error) {
+                    $('#resultMessage').html('<span style="color:red">Errore: ' + xhr.responseText + '</span>');
+                }
+
+            });
+        });
+    });
 });
