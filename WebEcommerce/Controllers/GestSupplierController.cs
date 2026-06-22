@@ -4,6 +4,7 @@ using BLL_Ecommerce.Services;
 using DTO_Ecommerce;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Services.Description;
@@ -72,12 +73,12 @@ namespace WebEcommerce.Controllers
 
                 List<sp_SearchSupplier_Result> risultati = await _supplierService.SearchSupplierAsync(param);
 
-                return Json(risultati);
+                return Json(new { success = true, data = risultati });
             }
             catch (Exception ex)
             {
                 _logService.WriteLogProcessError(idUser, ex.Message);
-                return Json(new { Success = false, Message = ex.Message });
+                return Json(new { success = false, message = ex.Message });
             }
         }
 
@@ -102,7 +103,7 @@ namespace WebEcommerce.Controllers
 
                 if (Supplier == null)
                 {
-                    return Json(new { success = false, Message = "Il fornitore corrispondete non è stato trovato"}, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = false, message = "Il fornitore corrispondete non è stato trovato"}, JsonRequestBehavior.AllowGet);
                    
                 }
                 return Json(new { success = true, data = Supplier}, JsonRequestBehavior.AllowGet);
@@ -111,7 +112,7 @@ namespace WebEcommerce.Controllers
             {
               
                 _logService.WriteLogProcessError(idUser, ex.Message);
-                return Json(new { success = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -140,7 +141,7 @@ namespace WebEcommerce.Controllers
             catch (Exception ex)
             {
                 _logService.WriteLogProcessError(idUser, ex.Message);
-                return Json(new { success = false, ex.Message});
+                return Json(new { success = false, message = ex.Message});
             }
         }
 
@@ -161,7 +162,7 @@ namespace WebEcommerce.Controllers
             catch (Exception ex)
             {
                 _logService.WriteLogProcessError(idUser, ex.Message);
-                return Json(new { success = false, ex.Message });
+                return Json(new { success = false, message = ex.Message });
             }
         }
 
@@ -183,7 +184,7 @@ namespace WebEcommerce.Controllers
             catch (Exception ex)
             {
                 _logService.WriteLogProcessError(idUser, ex.Message);
-                return Json(new { success = false, ex.Message});
+                return Json(new { success = false, message = ex.Message});
             }
         }
 
@@ -211,7 +212,7 @@ namespace WebEcommerce.Controllers
             catch (Exception ex) 
             {
                 _logService.WriteLogProcessError(idUser, ex.Message);
-                return Json(new { success = false, Message = ex.Message });
+                return Json(new { success = false, message = ex.Message });
             }
         }
 

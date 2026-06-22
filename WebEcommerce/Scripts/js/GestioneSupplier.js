@@ -34,9 +34,16 @@
             dataType: 'json',
 
             //se  il controller ritorna success
-            success: function (data) {
+            success: function (response) {
                 // pulisce la tabella
                 $corpoTabella.empty();
+
+                if (!response.success) {
+                    $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
+                    return;
+                }
+
+                const data = response.data;
 
                 let rows = "";
 
