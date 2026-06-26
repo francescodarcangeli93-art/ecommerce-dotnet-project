@@ -4,8 +4,22 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3>Indirizzi di @Model.UserDetail.FirstName</h3>
-<p>email: @Model.UserDetail.Email</p>
+<h3 class="indirizzi">Indirizzi</h3>
+
+@*<p>email: @Model.UserDetail.Email</p>*@
+
+<div class="d-flex align-items-center gap-3 mb-4">
+    <div class="d-flex align-items-center justify-content-center fw-bold text-white flex-shrink-0 avatar-circle">
+        @(Model.UserDetail.FirstName?.Length > 0 ? Model.UserDetail.FirstName[0].ToString().ToUpper() : "U")@(Model.UserDetail.LastName?.Length > 0 ? Model.UserDetail.LastName[0].ToString().ToUpper() : "")
+    </div>
+    <div>
+        <h5 class="mb-0 fw-bold">@Model.UserDetail.Username</h5>
+        <small class="text-muted">@Model.UserDetail.Email</small>
+    </div>
+</div>
+
+
+
 
 <!-- Tasto indirizzi -->
 
@@ -15,7 +29,7 @@
     <a href="" id="btnAggiungi" class="btn fw-semibold px-4 buttonAdd"
        data-bs-toggle="modal"
        data-bs-target="#mdlAggiungi">
-        <i class="bi bi-pin-map-fill"></i>+ Aggiungi
+        <i class="bi bi-pin-map-fill"> </i>  Aggiungi
     </a>
 
 </div>
@@ -66,10 +80,11 @@
                         {
 
                             <i class="bi bi-file-earmark-text-fill text-primary"></i>
+                            <span class="text-primary fw-semibold ms-1">Predefinito</span>
                         }
                         else
                         {
-                            <span class="text-muted">-- --</span>
+                            <span class="text-muted">Alternativo</span>
                         }
 
                     </td>
@@ -88,16 +103,29 @@
 
                             <i class="bi bi-pencil"></i>
                         </a>
-
-                        <!-- Tasto elimina-->
-                        <button type="button"
-                                class="btn btn-sm btn-outline-danger py-1 btnElimina"
-                                style="border-radius: 25px;"
-                                title="Cancella utente"
-                                data-id="@indirizzo.Id">
-                            <!-- id che  viene passato alla funzione javascript -->
-                            <i class="bi bi-trash"></i>
-                        </button>
+                        @if (indirizzo.IsBilling || indirizzo.IsDefault)
+                        {
+                            <!-- Tasto elimina-->
+                            <button 
+                                    class="btn btn-sm btn-outline-secondary py-1" disabled
+                                    style="border-radius: 25px;"
+                                    title="bottone disattivato">
+                                <!-- id che  viene passato alla funzione javascript -->
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        }
+                        else
+                        {
+                            <!-- Tasto elimina-->
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-danger py-1 btnElimina"
+                                    style="border-radius: 25px;"
+                                    title="Cancella utente"
+                                    data-id="@indirizzo.Id">
+                                <!-- id che  viene passato alla funzione javascript -->
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        }
                     </td>
                 </tr>
             }
@@ -130,17 +158,17 @@
 
                     <div class="mb-3">
                         <label>Indirizzo</label>
-                        <input type="text" id="editAddress" placeholder="Aggiungi indirizzo" class="form-control input-animated" />
+                        <input type="text" id="editAddress" placeholder="Aggiungi indirizzo" class="form-control input-animated" required/>
                     </div>
 
                     <div class="mb-3">
                         <label>CAP</label>
-                        <input type="number" id="editPostalcode" placeholder="Aggiungi Cap" class="form-control input-animated" />
+                        <input type="number" id="editPostalcode" placeholder="Aggiungi Cap" class="form-control input-animated" required/>
                     </div>
 
                     <div class="mb-3">
                         <label>Città</label>
-                        <input type="text" id="editCity" placeholder="Aggiungi Città" class="form-control input-animated" />
+                        <input type="text" id="editCity" placeholder="Aggiungi Città" class="form-control input-animated" required/>
                     </div>
 
                     <div class="mb-3">
@@ -157,12 +185,13 @@
                         </div>
                     </div>
 
-                    <!--risultato messaggio errore o successo-->
-                    <div id="resultMessageModifica"></div>
+                  
                 </div>
 
                 <div class="modal-footer">
-                    <button id="editAnnulla"  type="button" class="btn px-4 btn-secondary" data-bs-dismiss="modal" >
+
+                    <div id="resultMessageEdit"></div>
+                    <button id="editAnnulla" type="button" class="btn px-4 btn-secondary" data-bs-dismiss="modal">
                         Annulla
                     </button>
 
@@ -180,42 +209,64 @@
 
                 <div class="modal-header">
                     <h5 class="modal-title">Aggiungi Indirizzo</h5>
+
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
+                @if (Model.CustomerAddresses.Count == 0)
+                {
+                    <div class="alert alert-primary d-flex align-items-center" role="alert" style="margin:20px 15px 0px ">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+                            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                        </svg>
+                        <div>
+                            <p> Questo è il primo indirizzo del <strong>cliente</strong>, verrà impostato automaticamente come predefinito per <strong>spedizione</strong> e <strong>fatturazione</strong></p>
+                        </div>
+                    </div>
+                }
+
                 <div class="modal-body">
                     <!-- Inizio Form  -->
-                    <!-- Campo hidden per prendere l'id del Customer'-->
-                    <input type="hidden" id="CustomerId" value="@Model.UserDetail.CustomerId" />
+                    <form id="formAggiungiIndirizzo">
+                        <!-- Campo hidden per prendere l'id del Customer'-->
+                        <input type="hidden" id="CustomerId" value="@Model.UserDetail.CustomerId" />
 
-                    <div class="mb-3">
-                        <label>Indirizzo</label>
-                        <input type="text" id="txtAddress" placeholder="Aggiungi indirizzo" class="form-control input-animated" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label>CAP</label>
-                        <input type="number" id="txtPostalcode" placeholder="Aggiungi Cap" class="form-control input-animated" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Città</label>
-                        <input type="text" id="txtCity" placeholder="Aggiungi Città" class="form-control input-animated" />
-                    </div>
-
-                    <div class="mb-3">
-                        <div class="form-check">
-                            <input type="checkbox" id="txtIsDefault" class="form-check-input" />
-                            <label class="form-check-label">Predefinito</label>
+                        <div class="mb-3">
+                            <label>Indirizzo</label>
+                            <input type="text" id="txtAddress" placeholder="Aggiungi indirizzo" class="form-control input-animated" required minlength="5"
+                                   maxlength="100"
+                                   pattern="^(?=.*\d)[A-Za-zÀ-ÿ0-9\s,.\-\/]+$"
+                                   title="Inserisci un indirizzo valido (es. Via Roma, 12)" />
                         </div>
-                    </div>
 
-                    <div class="mb-3">
-                        <div class="form-check">
-                            <input type="checkbox" id="txtIsBilling" class="form-check-input" />
-                            <label class="form-check-label">Fatturazione</label>
+                        <div class="mb-3">
+                            <label>CAP</label>
+                            <input type="text" id="txtPostalcode" placeholder="Aggiungi Cap" class="form-control input-animated" required
+                                   pattern="^\d{5}$"
+                                   maxlength="5"
+                                    title="Il CAP deve essere composto da esattamente 5 cifre"
+                                   inputmode="numeric" />
                         </div>
-                    </div>
+
+                        <div class="mb-3">
+                            <label>Città</label>
+                            <input type="text" id="txtCity" placeholder="Aggiungi Città" class="form-control input-animated" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" id="txtIsDefault" class="form-check-input" @(Model.CustomerAddresses.Count == 0 ? "disabled" : "") @(Model.CustomerAddresses.Count == 0 ? "checked" : "") />
+                                <label class="form-check-label">Predefinito</label>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" id="txtIsBilling" class="form-check-input" @(Model.CustomerAddresses.Count == 0 ? "disabled" : "") @(Model.CustomerAddresses.Count == 0 ? "checked" : "") />
+                                <label class="form-check-label">Fatturazione</label>
+                            </div>
+                        </div>
+                    </form>
 
                     <!--risultato messaggio errore o successo-->
                     <div id="resultMessageAdd"></div>
@@ -223,6 +274,7 @@
                 </div>
 
                 <div class="modal-footer">
+                    <div id="resultMessageAdd"></div>
                     <button type="button" id="addAnnulla" class="btn px-4  btn-secondary" data-bs-dismiss="modal">
                         Annulla
                     </button>
@@ -246,6 +298,10 @@
                 <div class="modal-body">
                     Sei sicuro di voler elminare questo indirizzo?
                 </div>
+
+                <!--risultato messaggio errore o successo-->
+                <div id="resultMessageDel"></div>
+
                 <div class="modal-footer">
                     <button type="button" id="btnAnnulla" class="btn px-4  btn-secondary" data-bs-dismiss="modal">
                         Annulla

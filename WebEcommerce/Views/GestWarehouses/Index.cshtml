@@ -1,0 +1,88 @@
+﻿@model WebEcommerce.Models.WarehousesViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+    <link rel="stylesheet" href="@Url.Content("~/Content/Site.css")" />
+}
+
+<main class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="fw-bold text-black text-center w-100 titolo-animated">
+            Gestione Magazzini
+        </h1>
+    </div>
+
+    <span id="resultMessage"></span>
+
+    <div class="mb-4 p-4 bg-white card-animated card-detail">
+        <h5 class="mb-4 fw-semibold text-dark">Ricerca Fornitori</h5>
+        <div>
+            <div class="card-body row g-3" id="filtri">
+                <div class="col-md-3">
+                    @*<label for="txtCompany">Azienda</label>*@
+                    <input type="text" id="txtCompany" name="CompanyName" placeholder="Azienda" class="form-control input-animated" />
+                </div>
+
+                <div class="col-md-3">
+                    @*<label for="txtReferente">Referente</label>*@
+                    <input type="text" id="txtReferente" name="ContactName" placeholder="Referente" class="form-control input-animated" />
+                </div>
+
+                <div class="col-md-3">
+                    @*<label for="txtRuolo">Ruolo</label>*@
+                    <input type="text" id="txtRuolo" name="ContactTitle" placeholder="Ruolo" class="form-control input-animated" />
+                </div>
+                <div class="col-md-3">
+                    @*<label for="txtcitta">Città</label>*@
+                    <input type="text" id="txtCitta" name="City" placeholder="Città" class="form-control input-animated" />
+                </div>
+                <div class="col-md-3">
+                    @*<label for="txtPaese">Paese</label>*@
+                    <input type="text" id="txtPaese" name="Country" placeholder="Paese" class="form-control input-animated" />
+                </div>
+
+                <div class="col-md-3">
+                    @*<label for="txtPaese">Paese</label>*@
+                    <input type="text" id="txtPaese" name="Country" placeholder="Città" class="form-control input-animated" />
+                </div>
+
+                <!--<div class="col-md-3">-->
+                @*<label for="txtTelefono">Telefono</label>*@
+                <!--<input type="text" id="txtTelefono" name="Phone" placeholder="Telefono" class="form-control input-animated" />
+    </div>-->
+                <!--<div class="col-md-3">-->
+                @*<label for="txtFax">Fax</label>*@
+                <!--<input type="text" id="txtFax" name="Fax" placeholder="Fax" class="form-control input-animated" />
+    </div>-->
+                <div class="col-md-6 d-flex align-items-center gap-2 justify-content-end">
+                    <button type="button" id="btnCerca" class="btn fw-semibold px-4 btn-animated bt-cerca">Cerca</button>
+                    <button type="button" id="btnPulisci" class="btn fw-semibold px-4 btn-animated bt-pulisci">Pulisci</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    @*TASTO AGGIUNGI*@
+    <div class="d-flex justify-content-between align-items-end mb-3">
+        <h3 class="m-0">Lista Magazzini</h3>
+
+        <a id="btnAggiungi" class="btn fw-semibold px-4 btn-animated buttonAdd">
+            <i class="bi bi-truck"></i> Aggiungi
+        </a>
+
+    </div>
+
+    <div id="tabellaContainer">
+        @Html.Partial("_WarehousesTable", Model)
+    </div>
+
+
+
+</main>
+
+
+

@@ -15,19 +15,19 @@ namespace BLL_Ecommerce.Services
 
      
 
-        public async Task <List<sp_SearchSupplier_Result>> SearchSupplierAsync(sp_SearchSupplier_Param param)
+        public   List<sp_SearchSupplier_Result> SearchSupplier(sp_SearchSupplier_Param param)
         {
-             return await Supplier.SearchSupplier(param);
+             return  Supplier.SearchSupplier(param);
         }
 
-        public async Task<sp_GetSupplierById_Result> GetSupplierByIdAsync(int id)
+        public  sp_GetSupplierById_Result GetSupplierById(int id)
         {
-           return await Supplier.GetSupplierById(id);
+           return  Supplier.GetSupplierById(id);
         }
 
-        public async Task sp_ManageSupplierAsync(sp_ManageSupplier_Param param)
+        public void sp_ManageSupplier(sp_ManageSupplier_Param param)
         {
-            await Supplier.sp_ManageSupplier(param);
+             Supplier.sp_ManageSupplier(param);
         }
     }
 }

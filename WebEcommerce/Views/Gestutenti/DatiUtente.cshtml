@@ -2,31 +2,31 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 @section styles {
     <link rel="stylesheet" href="@Url.Content("~/Content/Site.css")" />
 }
-
 <main class="container mt-4">
 
     <h1 class="fw-bold mb-4 details-page-title">
         Dettagli Utente
     </h1>
 
-    <div class="row g-4">
+    <div class="d-flex align-items-center gap-3 mb-4">
+        <div class="d-flex align-items-center justify-content-center fw-bold text-white flex-shrink-0 avatar-circle">
+            @(Model.UserDetail.FirstName?.Length > 0 ? Model.UserDetail.FirstName[0].ToString().ToUpper() : "U")@(Model.UserDetail.LastName?.Length > 0 ? Model.UserDetail.LastName[0].ToString().ToUpper() : "")
+        </div>
+        <div>
+            <h5 class="mb-0 fw-bold">@Model.UserDetail.Username</h5>
+            <small class="text-muted">@Model.UserDetail.Email</small>
+        </div>
+    </div>
+
+    <div class="row g-4 align-items-stretch">
 
         <div class="col-md-6">
-            <div class="bg-white p-4 card-custom-shadow">
+            <div class="bg-white p-4 h-100 card-custom-shadow">
 
-                <div class="d-flex align-items-center gap-3 mb-4">
-                    <div class="d-flex align-items-center justify-content-center fw-bold text-white flex-shrink-0 avatar-circle">
-                        @(Model.UserDetail.FirstName?.Length > 0 ? Model.UserDetail.FirstName[0].ToString().ToUpper() : "U")@(Model.UserDetail.LastName?.Length > 0 ? Model.UserDetail.LastName[0].ToString().ToUpper() : "")
-                    </div>
-                    <div>
-                        <h5 class="mb-0 fw-bold">@Model.UserDetail.Username</h5>
-                        <small class="text-muted">@Model.UserDetail.Email</small>
-                    </div>
-                </div>
+
 
                 <p class="text-uppercase fw-semibold sezione-titolo mb-3">Credenziali</p>
 
@@ -36,16 +36,13 @@
                 </div>
 
                 <div class="mb-4">
-
                     <label class="form-label fw-semibold">Password</label>
-
                     <div class="password-wrapper">
                         <input type="password" class="password-input" id="password" value="@Model.UserDetail.Password" readonly />
                         <button type="button" onclick="togglePass()" class="password-toggle-btn">
                             <i id="iconaEye" class="bi bi-eye"></i>
                         </button>
                     </div>
-
                 </div>
 
                 <div class="mb-3">
@@ -73,33 +70,33 @@
         @if (Model.CustomerId != null)
         {
             <div class="col-md-6">
-                <div class="bg-white p-4 card-custom-shadow">
+                <div class="bg-white p-4 h-100 card-custom-shadow">
 
                     <p class="text-uppercase fw-semibold sezione-titolo mb-3">Dati personali</p>
 
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label class="form-label fw-semibold">Nome</label>
                         <input type="text" class="form-control" value="@Model.UserDetail.FirstName" readonly />
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label class="form-label fw-semibold">Cognome</label>
                         <input type="text" class="form-control" value="@Model.UserDetail.LastName" readonly />
-                    </div>
+                    </div><br />
 
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label class="form-label fw-semibold">Città</label>
                         <input type="text" class="form-control" value="@Model.UserDetail.City" readonly />
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label class="form-label fw-semibold">Nazione</label>
                         <input type="text" class="form-control" value="@Model.UserDetail.Country" readonly />
                     </div>
 
                     @if (Model.UserDetail.Phone != null)
                     {
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label class="form-label fw-semibold">Telefono</label>
                             <input type="text" class="form-control" value="@Model.UserDetail.Phone" readonly />
                         </div>
@@ -109,15 +106,11 @@
             </div>
         }
 
-    </div>
-
-    <div class="d-flex justify-content-start align-items-center mt-4">
+    </div> <div class="d-flex justify-content-start align-items-center mt-4">
         <a href="javascript:history.back();" class="btn btn-animated fw-semibold px-4 btn-details-back">
             ← Indietro
         </a>
     </div>
-
-
 </main>
 
 <script src="@Url.Content("~/Scripts/js/Password.js")"></script>

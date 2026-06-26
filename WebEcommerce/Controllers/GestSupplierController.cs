@@ -4,34 +4,35 @@ using BLL_Ecommerce.Services;
 using DTO_Ecommerce;
 using System;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using System.Web.Services.Description;
 using WebEcommerce.Models;
+using  WebEcommerce.Filters;
+
 
 namespace WebEcommerce.Controllers
 {
     // tenere ex message solo per lo sviluppo poi  sostituire con un messaggio di errore scritto 
+
+    [CheckSession]
+    [CheckAdmin]
     public class GestSupplierController : Controller
     {
 
         private readonly ISupplierService _supplierService;
         private readonly ILogService _logService;
+        private readonly ICountryService _countryService;
         public GestSupplierController ()
         {
             _supplierService = new SupplierService ();
             _logService = new LogService();
+            _countryService = new CountryService ();
         }
 
         // GET: Supplier
-        public async Task<ActionResult> Index()
+        public  ActionResult Index()
         {
-            if (Session["Role"] == null || Session["Role"].ToString().ToLower() != "admin")
-            {
-                return View("Error");
-            }
-
+           
             int idUser = 0;
 
             try
@@ -47,7 +48,8 @@ namespace WebEcommerce.Controllers
 
                 SupplierViewModel Model = new SupplierViewModel
                 {
-                    SupplierList = await _supplierService.SearchSupplierAsync(param),
+                    SupplierList =  _supplierService.SearchSupplier(param),
+                    Country =  _countryService.GetListCountry()
                 };
 
                 return View(Model);
@@ -59,33 +61,34 @@ namespace WebEcommerce.Controllers
             }
         }
 
-
-        // LISTA DEI SUPPLIER
+        // metodo per gernare una tabella nella partialview
         [HttpPost]
-        public async Task<JsonResult> SearchSupplier(sp_SearchSupplier_Param param)
+        public  PartialViewResult SearchSupplierPartial(sp_SearchSupplier_Param param)
         {
-           
-            int idUser = 0;
 
+            int idUser = 0;
             try
             {
                 idUser = (int)Session["UserId"];
 
-                List<sp_SearchSupplier_Result> risultati = await _supplierService.SearchSupplierAsync(param);
+                SupplierViewModel Model = new SupplierViewModel
+                {
+                    SupplierList = _supplierService.SearchSupplier(param),
+                };
 
-                return Json(new { success = true, data = risultati });
+                return PartialView("_SupplierTable", Model);
             }
             catch (Exception ex)
             {
                 _logService.WriteLogProcessError(idUser, ex.Message);
-                return Json(new { success = false, message = ex.Message });
+                return PartialView("_SupplierTable", new List<sp_SearchSupplier_Result>());
             }
         }
 
 
         // GET: Supplier/Details
         [HttpGet]
-        public async Task <JsonResult> Details(int id)
+        public JsonResult Details(int id)
         {
             
             int idUser = 0;
@@ -99,7 +102,7 @@ namespace WebEcommerce.Controllers
             {
                 idUser = (int)Session["UserId"];
 
-                sp_GetSupplierById_Result Supplier = await _supplierService.GetSupplierByIdAsync(id);
+                sp_GetSupplierById_Result Supplier =  _supplierService.GetSupplierById(id);
 
                 if (Supplier == null)
                 {
@@ -119,7 +122,7 @@ namespace WebEcommerce.Controllers
 
         // POST: Supplier/Create
         [HttpPost]
-        public async Task<JsonResult> Save(sp_ManageSupplier_Param param)
+        public JsonResult Save(sp_ManageSupplier_Param param)
         {
             int idUser = 0;
 
@@ -134,7 +137,7 @@ namespace WebEcommerce.Controllers
                 // TODO: Add insert logic here
                 param.Operation = "I";
 
-                await _supplierService.sp_ManageSupplierAsync(param);
+                 _supplierService.sp_ManageSupplier(param);
 
                 return Json(new { success = true });
             }
@@ -147,14 +150,14 @@ namespace WebEcommerce.Controllers
 
 
         // GET: Supplier/Edit/5
-        public async Task<JsonResult> Edit(int id)
+        public JsonResult Edit(int id)
         {
             int idUser = 0;
             try
             {
                 idUser = (int)Session["UserId"];
                 //  prendere i dati dal database del supplier tramite id
-            sp_GetSupplierById_Result Supplier = await _supplierService.GetSupplierByIdAsync(id);
+            sp_GetSupplierById_Result Supplier =  _supplierService.GetSupplierById(id);
                 // impacchettare i dati e spedirli  alla pagina
 
                 return Json(new { success = true, data = Supplier}, JsonRequestBehavior.AllowGet);
@@ -168,7 +171,7 @@ namespace WebEcommerce.Controllers
 
         // POST: Supplier/Edit/5
         [HttpPost]
-        public async Task<JsonResult> Edit(sp_ManageSupplier_Param param)
+        public JsonResult Edit(sp_ManageSupplier_Param param)
         {
             int idUser = 0;
             try
@@ -176,7 +179,7 @@ namespace WebEcommerce.Controllers
                 idUser = (int)Session["UserId"];
                 // TODO: Add update logic here
                 param.Operation = "U";
-                await _supplierService.sp_ManageSupplierAsync(param);
+                 _supplierService.sp_ManageSupplier(param);
 
 
                 return Json(new { success = true });
@@ -192,7 +195,7 @@ namespace WebEcommerce.Controllers
 
         // POST: Supplier/Delete/5
         [HttpPost]
-        public async Task<JsonResult>Delete(int id)
+        public JsonResult Delete(int id)
         {
             int idUser = 0;
             try
@@ -205,7 +208,7 @@ namespace WebEcommerce.Controllers
                     Id = id
                 };
 
-                await _supplierService.sp_ManageSupplierAsync(param);
+                 _supplierService.sp_ManageSupplier(param);
 
                 return Json( new { success = true});
             }

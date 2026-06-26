@@ -112,6 +112,14 @@ namespace DTO_Ecommerce
 
     }
 
+    public class sp_GetListCountry_Result
+    {
+        public int? Id { get; set; }
+        public string Name { get; set; }
+        public string CountryCode { get; set; }
+        
+    }
+
     public class sp_GetListUserRole_Result
     {
         public int? Id { get; set; }
@@ -266,6 +274,7 @@ namespace DTO_Ecommerce
         public string ContactTitle { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
+        public string CountryCode { get; set; }
         public string Phone { get; set; }
         public string Fax { get; set; }
     }
@@ -344,6 +353,7 @@ namespace DTO_Ecommerce
     public class sp_GetWarehouseById_Result
     {
         public int? Id { get; set; }
+        public string Type { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
         public string PostalCode { get; set; }
@@ -360,6 +370,8 @@ namespace DTO_Ecommerce
         public string City { get; set; }
         public string Country { get; set; }
         public string Phone { get; set; }
+
+
     }
 
     public class sp_SearchOrder_Result
@@ -443,14 +455,75 @@ namespace DTO_Ecommerce
         public bool IsFreeShipping { get; set; }
     }
 
-    public class sp_SearchSupplier_Result : sp_GetSupplierById_Result
+    public class sp_SearchSupplier_Result
     {
-       
+        public int? Id { get; set; }
+        public string CompanyName { get; set; }
+        public string ContactName { get; set; }
+        public string ContactTitle { get; set; }
+        public string City { get; set; }
+        public string Country { get; set; }
+        public string CountryCode { get; set; } 
+        public string Phone { get; set; }
+        public string Fax { get; set; }
     }
 
-    public class sp_SearchUser_Result : sp_GetUserById_Result
+    public class sp_SearchUser_Result
     {
+        public int? Id { get; set; }
+        public int? RoleId { get; set; }
+        public string RoleName { get; set; }
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public bool IsActive { get; set; }
+        public int? CustomerId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Password { get; set; }
+        public string IconUserRole
+        {
+            get
+            {
+                switch (this.RoleName.ToUpper())
+                {
+                    case "ADMIN":
+                        {
+                            return "bi bi-shield-lock-fill";
+                        }
+                    case "CUSTOMER":
+                        {
+                            return "bi bi-person-circle";
+                        }
+                    case "ADMIN-CUSTOMER":
+                        {
+                            return "bi bi-person-lock";
+                        }
+                    default:
+                        {
+                            return "";
+                        }
+                }
+            }
+        }
 
+        public string emptyName
+        {
+            get
+            {
+                // Controlla se FirstName è null o vuoto; se sì mette "-- --", altrimenti mette il valore reale
+                return string.IsNullOrWhiteSpace(this.FirstName) ? "-- --" : this.FirstName;
+            }
+        }
+
+        public string emptyLastName
+        {
+            get
+            {
+                // Controlla se LastName è null o vuoto; se sì mette "-- --", altrimenti mette il valore reale
+                return string.IsNullOrWhiteSpace(this.LastName) ? "-- --" : this.LastName;
+            }
+        }
     }
 
     public class sp_SearchUserRole_Result : sp_GetUserRoleById_Result

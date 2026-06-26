@@ -1,0 +1,60 @@
+﻿@model WebEcommerce.Models.WarehousesViewModel
+
+<div class="table-responsive bevel">
+
+    <input type="hidden" id="indirizzoDaEliminare" value="" />
+
+    <table class="table table-striped table-hover table-bordered align-middle mb-0">
+        <thead class="table-dark table-bordered">
+            <tr>
+                <th scope="col" class="text-center">Tipo</th>
+                <th scope="col" class="text-center">Nome</th>
+                <th scope="col" class="text-center">Indirizzo</th>
+                <th scope="col" class="text-center">CAP</th>
+                <th scope="col" class="text-center">Città</th>
+                <th scope="col" class="text-center">Logistica</th>
+                <th class="text-center px-4">COMANDI</th>
+            </tr>
+        </thead>
+        <tbody id="corpoTabella">
+          @foreach(var ware in Model.WarehousesList)
+            {
+                <tr data-id="@ware.Id">
+                    <td class="text-center">@ware.Type</td>
+                    <td class="text-center">@ware.Name</td>
+                    <td class="text-center">@ware.Address</td>
+                    <td class="text-center">@ware.PostalCode</td>
+                    <td class="text-center">@ware.City</td>               
+              
+                    <td class="text-center text-ce px-4">
+                            <a class="btn btn-sm py-1">
+                                <i class="bi bi-truck"></i>
+                            </a>
+                    </td>
+                   
+                    <td class="text-center text-ce px-4">
+                        <a class="btn btn-sm btn-outline-info py-1 simpleBevel btn-dettagli" data-id="@ware.Id" title="Visualizza Dettagli">
+                            <i class="bi bi-search"></i>
+                        </a>
+                        <a class="btn btn-sm btn-outline-warning py-1 simpleBevel btn-modifica" data-id="@ware.Id" title="Modifica riga">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+
+                        <!-- ELIMINA UTENTE -->
+                        <button type="button"
+                                class="btn btn-sm btn-outline-danger py-1 simpleBevel btn-elimina"
+                                @*data-bs-toggle="modal"*@
+                                @*data-bs-target="#delateModal"*@
+                                title="Cancella fornitore"
+                                data-id="@ware.Id"
+                                data-name="@ware.Name">
+
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

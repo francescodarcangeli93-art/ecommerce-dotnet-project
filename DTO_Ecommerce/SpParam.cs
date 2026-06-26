@@ -476,8 +476,9 @@ namespace DTO_Ecommerce
         public string Email { get; set; }
         public bool? IsActive { get; set; }
         public int? CustomerId { get; set; }
-        public string @FirstName { get; set; }
-        public string @LastName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    
     }
     public class sp_SearchUserRole_Param
     {
@@ -486,13 +487,15 @@ namespace DTO_Ecommerce
         public bool IsActive { get; set; }
        
     }
+
     public class sp_SearchWarehouses_Param
     {
         public string Name { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
         public string PostalCode { get; set; }
-        public bool IsActive { get; set; }
+        public string Type { get; set; }
+        public bool? IsActive { get; set; }
 
     }
 

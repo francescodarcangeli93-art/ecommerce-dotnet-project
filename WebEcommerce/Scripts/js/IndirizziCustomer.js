@@ -13,14 +13,14 @@
         $('#indirizzoDaEliminare').val(id);
         $('#modalElimina').modal('show');
 
-        const test = document.getElementById('interf');
-        test.style = 'pointer-events: none';
+        const test = document.getElementById('interf').classList.add('no-pointer-events');
+     
     });
 
     // 
     document.getElementById('btnAnnulla').addEventListener('click', function () {
-        const test = document.getElementById('interf');
-        test.removeAttribute('style');
+        const test = document.getElementById('interf').classList.remove('no-pointer-events');
+      
 
     });
 
@@ -46,18 +46,42 @@
             success: function (response) {
                 if (response.success) {
 
-                    $('#modalElimina').modal('hide');
-                   
-                    // rimuovo la riga della tabella corrispondente all'indirizzo eliminato
-                    $('tr[data-id="' + $('#indirizzoDaEliminare').val() + '"]').remove();
-                    interface.removeAttribute('style');
+                    var messaggio = response.message || response.Message || "Indirizzo ";
+
+                    $('#resultMessageDel').html('<span style="color:green; font-weight:bold;">' + messaggio + '</span>');
+
+                    // 2. Attendiamo 1.5 secondi (1500 ms) prima di far sparire tutto
+                    setTimeout(function () {
+                        // 3. Chiudiamo la modal
+                        $('#modalElimina').modal('hide');
+
+                        
+
+                        // 4. Rimuoviamo la riga della tabella (con un effetto di sfumatura soft!)
+                        $('tr[data-id="' + $('#indirizzoDaEliminare').val() + '"]').fadeOut(400, function () {
+                            $(this).remove();
+                        });
+
+                        // Ripristiniamo lo stile dell'interfaccia 
+                        // (Nota: se prima l'hai chiamato 'interf', usa document.getElementById('interf'))
+                        if (typeof interface !== 'undefined') {
+                            interface.classList.remove('no-pointer-events');
+                        } else if (document.getElementById('interf')) {
+                            document.getElementById('interf').classList.remove('no-pointer-events');
+                        }
+
+                        // Puliamo il messaggio per la prossima volta che si aprirà la modal
+                        $('#resultMessageDel').html('');
+
+                    }, 1500);
                 } else {
                     $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
                 }
             },
 
             error: function (xhr, status, error) {
-                $('#resultMessage').html('<span style="color:red">Errore: ' + xhr.responseText + '</span>');
+                // Se il server risponde con un errore, lo mostriamo in rosso
+                $('#resultMessage').html('<span style="color:red">' + messaggio + '</span>');
             }
 
         });
@@ -74,20 +98,27 @@
   
     document.getElementById('btnAggiungi').addEventListener('click', function () {
 
-        const hide = document.getElementById('interf').style = "pointer-events: none";
+        const hide = document.getElementById('interf').classList.add('no-pointer-events');
     
     });
 
     document.getElementById('addAnnulla').addEventListener('click', function () {
 
-        const show = document.getElementById('interf').removeAttribute('style');
+        const show = document.getElementById('interf').classList.remove('no-pointer-events');
  
     });
 
     // METODO CHE SI ATTIVA QUANDO IL TASTO DELLA MODALE SALVA VIENE CLICCATO
     $('#btnSalvaIndirizzo').on('click', function () {
 
+        const form = document.getElementById('formAggiungiIndirizzo');
         // creo il modello da passare al controller con i dati del nuovo indirizzo
+
+        if (!form.checkValidity()) {
+            form.reportValidity(); // mostra i popup nativi di errore del browser
+            return; // blocca l'invio AJAX
+        }
+
         var model = {
             // passiamo l'id del customer per associarlo al nuovo indirizzo
             CustomerId: $('#CustomerId').val(),
@@ -105,12 +136,22 @@
             data: model,
             dataType: 'json',
             success: function (response) {
-                if (response.success) {
-                    $('#mdlAggiungi').modal('hide');
-                    // ricarico la pagina per mostrare il nuovo indirizzo
-                    document.getElementById('interf').removeAttribute('style');
 
-                    location.reload();
+                var messaggio = response.message || response.Message || "Operazione completata";
+
+                if (response.success) {
+
+                    $('#resultMessageAdd').html('<span style="color:green; font-weight:bold;">' + messaggio + '</span>');
+
+                    // 2. Aspettiamo 1.5 secondi (1500 ms) prima di chiudere la modal e ricaricare
+                    setTimeout(function () {
+                        $('#mdlAggiungi').modal('hide');
+
+                        document.getElementById('interf').classList.remove('no-pointer-events');;
+
+                        // 3. Ora che l'utente ha letto il messaggio, ricarichiamo la pagina
+                        location.reload();
+                    }, 1000);
                 } else {
                     $('#resultMessageAdd').html('<span style="color:red">' + response.message + '</span>');
                 }
@@ -133,13 +174,13 @@
     // quando viene cliccato il bottone della modale annulla si attiva questo  evento
     document.getElementById('editAnnulla').addEventListener('click', function () {
 
-        document.getElementById('interf').removeAttribute('style');
+        document.getElementById('interf').classList.remove('no-pointer-events');;
     });
 
 
     $('.btnModifica').on('click', function () {
 
-        document.getElementById('interf').style = 'pointer-events: none';
+        document.getElementById('interf').classList.add('no-pointer-events');;
 
         var bottone = $(this);
         $('#editId').val(bottone.data('id'));
@@ -172,12 +213,20 @@
             data: model,
             dataType: 'json',
             success: function (response) {
+                var messaggio = response.message || response.Message || "Modificato con successo!";
+
                 if (response.success) {
+
+                    $('#resultMessageEdit').html('<span style="color:green; font-weight:bold;">' + messaggio + '</span>');
+
+                   setTimeout(function () {
                     $('#mdlModifica').modal('hide');
 
-                    document.getElementById('interf').removeAttribute('style');
-                    // ricarico la pagina per mostrare il nuovo indirizzo
+                       document.getElementById('interf').classList.remove('no-pointer-events');;
+                    
+                    // 4. Ricarichiamo la pagina per mostrare l'indirizzo aggiornato in tabella
                     location.reload();
+                }, 1500);
                 } else {
                     $('#resultMessageAdd').html('<span style="color:red">' + response.message + '</span>');
                 }

@@ -5,11 +5,13 @@ using DTO_Ecommerce;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using WebEcommerce.Filters;
 using WebEcommerce.Models;
 
 namespace WebEcommerce.Controllers
 {
-
+    [CheckSession]
+    [CheckAdmin]
     public class GestIndirizziController : Controller
     {
 
@@ -28,10 +30,7 @@ namespace WebEcommerce.Controllers
         [HttpGet]
         public ActionResult Index(int? id)
         {
-            if (Session["UserId"] == null)
-            {
-                return RedirectToAction("Index", "Login");
-            }
+            
 
             int idUser = 0;
 
@@ -70,16 +69,18 @@ namespace WebEcommerce.Controllers
             try
             {
                 idUser = (int)Session["UserId"];
+
+
                 param.Operation = "I";
 
                 _customerservices.sp_ManageCustomerAddress(param);
 
-                return Json(new { success = true, Message = "Salvato con successo!"});
+                return Json(new { success = true, message = "Salvato con successo!"});
             }
             catch (Exception ex)
             {
                 _logService.WriteLogProcessError(idUser, ex.Message);
-                return Json(new { success = false, Message = ex.Message });
+                return Json(new { success = false, message = ex.Message });
             }
 
         }
@@ -123,7 +124,7 @@ namespace WebEcommerce.Controllers
 
                 _customerservices.sp_ManageCustomerAddress(param);
 
-                return Json(new { success = true, message = "Salvato con successo!"});
+                return Json(new { success = true, message = "Modificato con successo!"});
             }
             catch (Exception ex)
             {

@@ -25,6 +25,7 @@ namespace WebEcommerce.Models
 
         public sp_GetUserById_Result UserDetail;
 
+   
 
         // singoli valori 
         public int? Id { get; set; }
@@ -82,5 +83,15 @@ namespace WebEcommerce.Models
 
         public sp_GetSupplierById_Result TheSupplier { get; set; }
 
+        public List<sp_GetListCountry_Result> Country { get; set; }
+    }
+
+    public class WarehousesViewModel
+    {
+        public List<sp_SearchWarehouses_Result> WarehousesList { get; set; }
+
+        public sp_GetSupplierById_Result TheWarehouses { get; set; }
+
+     
     }
 }

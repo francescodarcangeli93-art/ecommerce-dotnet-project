@@ -25,39 +25,16 @@
 
         $.ajax({
 
-            url: $searchUrl,
+            url: '/GestSupplier/SearchSupplierPartial',
             type: 'POST',
-
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(param),
-
-            dataType: 'json',
+           
 
             //se  il controller ritorna success
-            success: function (response) {
-                // pulisce la tabella
-                $corpoTabella.empty();
-
-                if (!response.success) {
-                    $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
-                    return;
-                }
-
-                const data = response.data;
-
-                let rows = "";
-
-                if (data.length === 0) {
-                    rows = "<tr><td colspan='8' class='text-center text-muted'> Nessun fornitore trovato</td></tr>";
-                } else {
-                    $.each(data, function (i, item) {
-
-                        rows += generaRigaFornitore(item);
-
-                    });
-                }
-
-                $corpoTabella.html(rows);
+            success: function (tabella) {
+               
+                $('#tabellaContainer').html(tabella);
             },
 
             error: function (xhr, status, error) {
@@ -68,8 +45,8 @@
 
     });
 
-    //  funzoine che pulisce i filtri 
-    $btnPulisci.click(function () {
+    //  funzione che pulisce i filtri 
+    $('#btnPulisci').click(function () {
 
         $('#txtCompany').val('');
         $('#txtReferente').val('');
@@ -84,7 +61,7 @@
     });
 
     //gestione evento cancella con la delega al corpo della tabella
-    $corpoTabella.on('click', '.btn-elimina', function () {
+    $('#tabellaContainer').on('click','.btn-elimina', function () {
         const id = $(this).data('id');
         const name = $(this).data('companyname');
 
@@ -97,7 +74,7 @@
     });
 
     $('#confermaElimina').on('click', function () {
-        console.log('CLICK RICEVUTO');
+     
 
         const $btnElimina = $('#confermaElimina');
         const $deleteUrl = $btnElimina.attr('data-url');
@@ -134,7 +111,7 @@
 
     });
 
-    $corpoTabella.on('click', '.btn-dettagli', function () {
+    $('#tabellaContainer').on('click', '.btn-dettagli', function () {
        
         const model = {
             id: $(this).data('id')
@@ -178,6 +155,15 @@
 
         $('#modalAggiungi').modal('show');
 
+        //puliamo i campi della modale aggiungi
+        $('#Company').val('');
+        $('#Referente').val('');
+        $('#Ruolo').val('');
+        $('#Citta').val('');
+        $('#Paese').val('');
+        $('#Telefono').val('');
+        $('#Fax').val('');
+
     });
 
     $('#btnSalva').on('click', function () {
@@ -203,6 +189,13 @@
                 if (response.success) {
                     $('#modalAggiungi').modal('hide');
                     $('#btnCerca').click();
+
+                    $('#resultMessage').html('<span style="color:green">Nuovo fornitore aggiunto con successo!</span>');
+
+                    setTimeout(function () {
+                        $('#resultMessage').html('');
+                    }, 3000);
+
                 } else {
                     $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
                 }
@@ -216,7 +209,7 @@
     });
 
     // modifica fornitori
-    $corpoTabella.on('click','.btn-modifica', function () {
+    $('#tabellaContainer').on('click','.btn-modifica', function () {
 
         const model = {
             id: $(this).data('id')
@@ -279,10 +272,7 @@
             success: function (response) {
                 if (response.success) {
                     $('#modalEdit').modal('hide');
-                  
-                    const newRow = generaRigaFornitore(model);
-
-                    $('tr[data-id="' + model.Id + '"]').replaceWith(newRow);
+                    $('#btnCerca').click();
 
                 } else {
                     $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
@@ -297,21 +287,3 @@
     });
 });
 
-function generaRigaFornitore(item) {
-    return `<tr data-id="${item.Id}">
-        <td class="text-center">${item.CompanyName ?? ''}</td>
-        <td class="text-center">${item.ContactName ?? ''}</td>
-        <td class="text-center">${item.ContactTitle ?? ''}</td>
-        <td class="text-center">${item.City ?? ''}</td>
-        <td class="text-center">${item.Country ?? ''}</td>
-        <td>${item.Phone ?? ''}</td>
-        <td>${item.Fax ?? ''}</td>
-        <td class="text-end text-center px-4">
-            <a href="#" class="btn btn-sm btn-outline-info py-1 simpleBevel me-1 btn-dettagli" data-id="${item.Id}" title="Visualizza Dettagli"><i class="bi bi-search"></i></a>
-            <a href="#" class="btn btn-sm btn-outline-warning py-1 simpleBevel me-1 btn-modifica" data-id="${item.Id}" title="Modifica riga"><i class="bi bi-pencil"></i></a>
-            <button type="button" class="btn btn-sm btn-outline-danger py-1 simpleBevel btn-elimina" data-id="${item.Id}" data-companyname="${item.CompanyName}" title="Cancella fornitore">
-                <i class="bi bi-trash"></i>
-            </button>
-        </td>
-    </tr>`;
-}

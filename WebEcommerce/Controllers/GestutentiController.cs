@@ -4,12 +4,17 @@ using BLL_Ecommerce.Services;
 using DTO_Ecommerce;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
-using System.Web.Services.Description;
+using System.Web.UI;
+using WebEcommerce.Filters;
 using WebEcommerce.Models;
 
 namespace WebEcommerce.Controllers
-{   
+{
+  
+    [CheckSession]
+    [CheckAdmin]
     public class GestutentiController : Controller
     {   
         private readonly IUserService _userservices;
@@ -36,7 +41,7 @@ namespace WebEcommerce.Controllers
         [HttpGet]
         public ActionResult ClearPage()
         {
-            
+           
             //Session.Clear();
             GestioneUtentiViewModel model = new GestioneUtentiViewModel ();
             model.Filtri = null;
@@ -45,18 +50,26 @@ namespace WebEcommerce.Controllers
         }
 
         [HttpGet]
-        public ActionResult GestioneUtenti(int? Id)
+        public ActionResult GestioneUtenti(int? Id, int page = 1)
         {
-            sp_SearchUser_Param param = new sp_SearchUser_Param ();
 
-            //se scade la sessione va al login
-            if (Session["UserId"] == null)
-            {
-               return RedirectToAction("Index", "Login");
-            }
+            sp_SearchUser_Param param = new sp_SearchUser_Param ();
 
             int idUser = 0;
 
+            // logica per la pagina
+            int rowForPage = 10;
+
+            // troviamo il totale
+           List <sp_SearchUser_Result> userList = _userservices.SearchUser(param);
+            int tot = userList.Count;
+
+            // calcolare il totale delle pagine  se ho 30 utenti  devo fare 30 / 10
+            int totPage = (int)Math.Ceiling((double)tot / rowForPage);
+
+            // poi bisogna prendere gli utenti che vengono scelti
+
+            List<sp_SearchUser_Result> userPage = userList.OrderBy(u => u.Username).Skip((page -1) * rowForPage).Take(rowForPage).ToList();
             try
             {
                 idUser = (int)Session["UserId"];
@@ -64,13 +77,17 @@ namespace WebEcommerce.Controllers
                 // carico il model nella view
                 GestioneUtentiViewModel model = new GestioneUtentiViewModel
                 {
-                
+
                     ListRuoli = _roleservices.UserRoleList(),
-                    ListaUtenti = _userservices.SearchUser(param)
+                    ListaUtenti = userPage
 
                 };
+                ViewBag.PaginaCorrente = page;
+                ViewBag.TotalePagine = totPage;
+                ViewBag.TotaleUtenti = tot;
 
-                 ViewData["Id"] = Id;
+
+                ViewData["Id"] = Id;
                
                 return View(model);
             }
@@ -86,18 +103,13 @@ namespace WebEcommerce.Controllers
         [HttpPost]
         public ActionResult GestioneUtenti(sp_SearchUser_Param valori)
         {
-            
-
-            if (Session["Role"] == null || Session["Role"].ToString().ToLower() != "admin")
-            {
-                return View("Error");
-            }
 
             int idUser = 0;
             // istanziare l'oggetto UserServicer che contiene tutti gli oggetti ricevuti dalla proc
             try
             {
                 idUser = (int)Session["UserId"];
+
 
                 GestioneUtentiViewModel model = new GestioneUtentiViewModel
                 {
@@ -116,14 +128,53 @@ namespace WebEcommerce.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult SearchUtentiPartial(sp_SearchUser_Param valori, int page = 1)
+        {
+            int idUser = 0;
+
+            // logica per la pagina
+            int rowForPage = 10;
+
+            // troviamo il totale
+            List<sp_SearchUser_Result> userList = _userservices.SearchUser(valori);
+            int tot = userList.Count;
+
+            // calcolare il totale delle pagine  se ho 30 utenti  devo fare 30 / 10
+            int totPage = (int)Math.Ceiling((double)tot / rowForPage);
+
+            List<sp_SearchUser_Result> userPage = userList.OrderBy(u => u.Username)
+                                                  .Skip((page - 1) * rowForPage)
+                                                  .Take(rowForPage)
+                                                  .ToList();
+
+            try
+            {
+                idUser = (int)Session["UserId"];
+
+                GestioneUtentiViewModel model = new GestioneUtentiViewModel
+                {
+                    Filtri = valori,
+                    ListaUtenti = _userservices.SearchUser(valori),
+                    ListRuoli = _roleservices.UserRoleList()
+                };
+
+                ViewBag.PaginaCorrente = page;
+                ViewBag.TotalePagine = totPage;
+                ViewBag.TotaleUtenti = tot;
+
+                return PartialView("_Tabella", model);
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Content("<tr><td colspan='10' class='text-center text-danger'>Errore durante la ricerca</td></tr>");
+            }
+        }
+
         [HttpGet]
         public ActionResult DatiUtente(int id, int? CustomerId)
         {
-            
-            if (Session["Role"] == null || Session["Role"].ToString().ToLower() != "admin")
-            {
-                return View("Error");
-            }
 
             int idUser = 0;
 
@@ -158,10 +209,6 @@ namespace WebEcommerce.Controllers
         [HttpGet]
         public ActionResult ModificaUtente(int Id)
         {
-            if (Session["Role"] == null || Session["Role"].ToString().ToLower() != "admin")
-            {
-                return View("Error");
-            }
 
             int idUser = 0;
 
@@ -209,15 +256,10 @@ namespace WebEcommerce.Controllers
         public ActionResult ModificaUtente(GestioneUtentiViewModel model)
         {
 
-            if (Session["Role"] == null || Session["Role"].ToString().ToLower() != "admin")
-            {
-                return View("Error");
-            }
-
             int idUser = 0;
 
             model.ListRuoli = _roleservices.UserRoleList();
-
+            
       
             // recupero l'utente dal database 
             sp_GetUserById_Result user = _userservices.GetUserById(model.Id);
@@ -370,11 +412,6 @@ namespace WebEcommerce.Controllers
         public ActionResult CambiaStatoInTabella(int id, bool? isActive, int? customerId)
         {
 
-            if (Session["Role"] == null || Session["Role"].ToString().ToLower() != "admin")
-            {
-                return View("Error");
-            }
-
             int idUser = 0;
 
             try
@@ -412,11 +449,6 @@ namespace WebEcommerce.Controllers
         public ActionResult AggiungiUtente()
         {
 
-            if (Session["Role"] == null || Session["Role"].ToString().ToLower() != "admin")
-            {
-                return View("Error");
-            }
-
             int? idUser = Session["UserId"] != null ? (int?)Session["UserId"] : null;
 
             try
@@ -440,10 +472,6 @@ namespace WebEcommerce.Controllers
         [HttpPost] 
         public ActionResult AggiungiUtente(GestioneUtentiViewModel model)
         {
-            if (Session["Role"] == null || Session["Role"].ToString().ToLower() != "admin")
-            {
-                return View("Error");
-            }
 
             int idUser = 0;
 
@@ -531,12 +559,7 @@ namespace WebEcommerce.Controllers
 
         [HttpPost]
         public ActionResult EliminaUtente(int Id)
-        {
-            if (Session["Role"] == null || Session["Role"].ToString().ToLower() != "admin")
-            {
-                return View("Error");
-            }
-
+        {  
             int? idUser = Session["UserId"] != null ? (int?)Session["UserId"] : null;
 
             try

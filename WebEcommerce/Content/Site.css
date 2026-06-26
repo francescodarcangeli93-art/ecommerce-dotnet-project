@@ -36,6 +36,10 @@ select,
         text-decoration: none;
     }
 
+    .no-pointer-events {
+        pointer-events: none;
+    }
+
     .user {
         font-size: 1.7rem;
     }
@@ -108,18 +112,29 @@ select,
         color: rgba(255, 255, 255, 0.75);
     }
 
-    
+/* ==========================================================================
+   ICON
+   ========================================================================== */
+    .productCol{
+        color:brown !important;
 
+    }
+
+    .wharehouseCol {
+        color: dodgerblue !important;
+    }
+    .iconSacle{
+        font-size:1.4rem;
+    }
 /* ==========================================================================
    FORM DI LOGIN (Username, Password, Bottone e Link)
    ========================================================================== */
-
-    .login-card {
-        border-radius: 20px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 420px;
-    }
+.login-card {
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 420px;
+}
 
 
 
@@ -318,7 +333,7 @@ select,
        INPUT GRAPHICS
        ========================================================================== */
     .bt-cerca {
-        background-color: #ffc107;
+        background-color: #ffc107 !important;
         color: #212529;
         border-radius: 25px;
         padding: 6px 24px;
@@ -326,12 +341,11 @@ select,
     }
 
     .bt-pulisci {
-        background-color: white;
+        background-color: white !important;
         color: #212529;
         border: 2px solid #ffc107;
         border-radius: 25px;
         padding: 6px 24px;
-    
     }
 
     .card-detail {
@@ -407,7 +421,7 @@ select,
     }
 
     .buttonAdd{
-        background-color: #ffc107;
+        background-color: #ffc107 !important;
         color: #212529;
         border-radius: 25px;
         padding: 6px 24px;
@@ -487,8 +501,15 @@ select,
     border: 1.5px solid #ddd;
     border-radius: 25px;
     overflow: hidden;
-    max-width: 330px;
+    max-width: 280px;
     width: 100%;
+}
+
+.indirizzi {
+    text-align:center;
+    color: #212529;
+    font-family: sans-serif;
+    font-weight: bold;
 }
 
 .password-input {

@@ -1,7 +1,7 @@
 ﻿function mostraNascondiCustomer() {
 
     const roleId = document.getElementById('roleId').value;
-    const selezioneDati = document.getElementById('sezioneDatiPersonali');
+    const selezioneDati = document.getElementById('DatiPersonali');
     const inputsDati = selezioneDati.querySelectorAll('input');
 
     // Se il ruolo selezione è 1 viene mostrato il form dei customer
@@ -39,12 +39,22 @@ document.querySelectorAll('#formModifica input:not([type=hidden]), #formModifica
 
 
 function confermaModifica() {
-    const nome = document.getElementById('nome')?.value || '';
-    const cognome = document.getElementById('cognome')?.value || '';
-    const nomeCompleto = (nome + ' ' + cognome).trim() || document.getElementById('username')?.value || '';
-    document.getElementById('nomeUtenteModal').textContent = nomeCompleto;
-    const modal = new bootstrap.Modal(document.getElementById('modalConferma'));
-    modal.show();
+
+    const form = document.getElementById('formAggiungi');
+
+
+    if (form && form.checkValidity()) {
+
+        const nome = document.getElementById('nome')?.value || '';
+        const cognome = document.getElementById('cognome')?.value || '';
+        const nomeCompleto = (nome + ' ' + cognome).trim() || document.getElementById('username')?.value || '';
+        document.getElementById('nomeUtenteModal').textContent = nomeCompleto;
+        const modal = new bootstrap.Modal(document.getElementById('modalConferma'));
+        modal.show();
+    } else if (form) {
+        form.reportValidity();
+    }
+
 }
 
 function submitForm() {
