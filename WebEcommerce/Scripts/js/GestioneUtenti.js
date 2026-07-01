@@ -27,30 +27,108 @@ setTimeout(function () {
 
 }, 1000);
 
+
+
 $(document).ready(function () {
 
     const $btnCerca = $('#btnCerca');
     const $searchUrl = $btnCerca.attr('data-url');
     const $tabellaContainer = $('#tabellaUtentiContainer');
 
-    // FUNZIONE DI RICERCA
-    function eseguiRicerca(param) {
-        // FACCIAMO APPARIRE IL LOADER E ASSICURIAMOCI CHE IL CONTENITORE SIA VISIBILE
-        $tabellaContainer.show().html('<div class="text-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Caricamento...</span></div></div>');
+    let paginaCorrente = 1;
+
+    function eseguiRicerca() {
+
+        var filtri = {
+            Username: $('input[name="Username"]').val(),
+            RoleId: $('select[name="RoleId"]').val(),
+            LastName: $('input[name="LastName"]').val(),
+            FirstName: $('input[name="FirstName"]').val(),
+            Email: $('input[name="Email"]').val(),
+            IsActive: $('#isActive').val(),
+            page: paginaCorrente
+        };
+
+        sessionStorage.setItem('filtriUtenti', JSON.stringify(filtri));
 
         $.ajax({
             url: $searchUrl,
-            type: 'POST',
-            data: param,
-            success: function (html) {
-                $tabellaContainer.html(html);
+            type: 'GET',
+            data: filtri,
+            success: function (response) {
+                $tabellaContainer.html(response).show();
             },
-            error: function (xhr) {
-                alert("Errore durante la ricerca: " + xhr.responseText);
-                $tabellaContainer.show();
+            error: function (xhr, status, error) {
+                console.error("Errore ricerca:", error);
+                $tabellaContainer.html('<tr><td colspan="10" class="text-center text-danger">Errore di connessione durante la ricerca.</td></tr>');
             }
         });
     }
+
+    // Click sul bottone: esegue la ricerca, sempre da pagina 1
+    $btnCerca.on('click', function (e) {
+        e.preventDefault();
+        paginaCorrente = 1;
+        eseguiRicerca();
+    });
+
+    // RIPRISTINO: eseguito SOLO al caricamento della pagina, una volta
+    const filtriSalvati = sessionStorage.getItem('filtriUtenti');
+
+    if (filtriSalvati) {
+        const filtri = JSON.parse(filtriSalvati);
+        let haFiltriReali = false;
+
+        Object.keys(filtri).forEach(key => {
+            if (key !== 'page' && filtri[key] !== null && filtri[key] !== undefined && filtri[key] !== "") {
+                if (key === 'IsActive') {
+                    $('#isActive').val(filtri[key]);
+                } else {
+                    $(`[name="${key}"]`).val(filtri[key]);
+                }
+                haFiltriReali = true;
+            }
+        });
+
+        paginaCorrente = filtri.page ? parseInt(filtri.page) : 1;
+
+        if (haFiltriReali) {
+            $tabellaContainer.hide();
+            eseguiRicerca(); // chiama direttamente la funzione, non il click
+        }
+    }
+
+    // funzione per pulire i filtri
+    $('#btnPulisci').on('click', function (e) {
+
+        $('input[name="Username"]').val('');
+        $('select[name="RoleId"]').val('');
+        $('input[name="LastName"]').val('');
+        $('input[name="FirstName"]').val('');
+        $('input[name="Email"]').val('');
+        $('#isActive').val('');
+        paginaCorrente = 1;
+        $btnCerca.click();
+    });
+
+    // Gestione click sui link di paginazione (Precedente / Successiva)
+    // I link nella view puntano a GestioneUtenti con ?page=N: qui intercettiamo
+    // il click, blocchiamo la navigazione reale, ed estraiamo il numero di pagina
+    // dall'href per rilanciare la ricerca via AJAX con i filtri correnti.
+    $tabellaContainer.on('click', '.page-link', function (e) {
+        e.preventDefault();
+
+        if ($(this).closest('li').hasClass('disabled')) {
+            return;
+        }
+
+        var paginaRichiesta = parseInt($(this).data('page'));
+
+        if (paginaRichiesta >= 1) {
+            paginaCorrente = paginaRichiesta;
+            eseguiRicerca();
+        }
+    });
 
     // ORDINAMENTO COLONNE
     $('#tabellaUtentiContainer').on('click', '#tblUser th', function () {
@@ -86,52 +164,4 @@ $(document).ready(function () {
         tbody.empty().append(rows);
     });
 
-    // CLICK SUL BOTTONE CERCA
-    $btnCerca.click(function () {
-        const param = {
-            Username: $('input[name="Username"]').val(),
-            RoleId: $('select[name="RoleId"]').val(),
-            LastName: $('input[name="LastName"]').val(),
-            FirstName: $('input[name="FirstName"]').val(),
-            Email: $('input[name="Email"]').val(),
-            IsActive: $('#isActive').val()
-        };
-
-        sessionStorage.setItem('filtriRicercaUtenti', JSON.stringify(param));
-        eseguiRicerca(param);
-    });
-
-    // RIPRISTINO DEI FILTRI AL CARICAMENTO
-    const filtriSalvati = sessionStorage.getItem('filtriRicercaUtenti');
-    if (filtriSalvati) {
-        const f = JSON.parse(filtriSalvati);
-
-        $('input[name="Username"]').val(f.Username);
-        $('select[name="RoleId"]').val(f.RoleId);
-        $('input[name="LastName"]').val(f.LastName);
-        $('input[name="FirstName"]').val(f.FirstName);
-        $('input[name="Email"]').val(f.Email);
-        $('#isActive').val(f.IsActive);
-
-        eseguiRicerca(f);
-    } else {
-        // Se NON ci sono filtri salvati, l'HTML è stato nascosto per niente dal trucco inline? 
-        // No, lo script inline lo nasconde SOLO se ci sono i filtri. Ma per sicurezza lo forziamo visibile.
-        $tabellaContainer.show();
-    }
 });
-
-function clearFilters() {
-    $('input[name="Username"]').val('');
-    $('select[name="RoleId"]').val('');
-    $('input[name="LastName"]').val('');
-    $('input[name="FirstName"]').val('');
-    $('input[name="Email"]').val('');
-    $('#isActive').val('');
-
-    sessionStorage.removeItem('filtriRicercaUtenti');
-
-    setTimeout(function () {
-        $('#btnCerca').click();
-    }, 50);
-}

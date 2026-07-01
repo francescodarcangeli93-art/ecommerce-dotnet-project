@@ -175,7 +175,7 @@
             City: $('#Citta').val(),
             Country: $('#Paese').val(),
             Phone: $('#Telefono').val(),
-            Fax: $('#Fax').val(),
+            Fax: $('#Fax').val()
         }
 
         $.ajax({

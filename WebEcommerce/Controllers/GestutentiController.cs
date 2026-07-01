@@ -1,4 +1,4 @@
-﻿using BLL_Ecommerce.Interfaaces;
+﻿﻿using BLL_Ecommerce.Interfaaces;
 using BLL_Ecommerce.Interfaces;
 using BLL_Ecommerce.Services;
 using DTO_Ecommerce;
@@ -70,6 +70,8 @@ namespace WebEcommerce.Controllers
             // poi bisogna prendere gli utenti che vengono scelti
 
             List<sp_SearchUser_Result> userPage = userList.OrderBy(u => u.Username).Skip((page -1) * rowForPage).Take(rowForPage).ToList();
+
+            
             try
             {
                 idUser = (int)Session["UserId"];
@@ -128,7 +130,7 @@ namespace WebEcommerce.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult SearchUtentiPartial(sp_SearchUser_Param valori, int page = 1)
         {
             int idUser = 0;
@@ -155,7 +157,7 @@ namespace WebEcommerce.Controllers
                 GestioneUtentiViewModel model = new GestioneUtentiViewModel
                 {
                     Filtri = valori,
-                    ListaUtenti = _userservices.SearchUser(valori),
+                    ListaUtenti = userPage,
                     ListRuoli = _roleservices.UserRoleList()
                 };
 

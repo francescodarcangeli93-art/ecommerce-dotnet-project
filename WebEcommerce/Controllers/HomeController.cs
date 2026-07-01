@@ -11,11 +11,15 @@ using System.Web;
 using System.Web.ApplicationServices;
 using System.Web.Mvc;
 using System.Xml.Linq;
+using WebEcommerce.Filters;
 using WebEcommerce.Models;
 
 namespace WebEcommerce.Controllers
     {
-        public class HomeController : Controller
+
+    [CheckSession]
+    [CheckAdmin]
+    public class HomeController : Controller
         {
 
             private readonly ILogService _logService;

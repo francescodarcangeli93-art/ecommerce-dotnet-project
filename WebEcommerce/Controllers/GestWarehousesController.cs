@@ -58,8 +58,8 @@ namespace WebEcommerce.Controllers
         }
 
         // metodo per generare una tabella nella partialview
-        [HttpPost]
-        public PartialViewResult SearchWarehousesPartial(sp_SearchWarehouses_Param param)
+        [HttpGet]
+        public ActionResult SearchWarehousesPartial(sp_SearchWarehouses_Param param)
         {
 
             int idUser = 0;
@@ -72,149 +72,93 @@ namespace WebEcommerce.Controllers
                     WarehousesList = _warehousesService.SearchWarehouses(param)
                 };
 
-                return PartialView("_WarehousesTable", Model.WarehousesList);
+                return PartialView("_WarehousesTable", Model);
             }
             catch (Exception ex)
             {
                 _logService.WriteLogProcessError(idUser, ex.Message);
-                return PartialView("_WarehousesTable", new List<sp_SearchWarehouses_Result>());
+                return Content("<tr><td colspan='10' class='text-center text-danger'>Errore durante la ricerca</td></tr>");
             }
         }
 
-        //// GET: Supplier/Details
-        //[HttpGet]
-        //public JsonResult  Details(int id)
-        //{
-            
-        //    int idUser = 0;
-
-        //    if (Session["UserId"] == null)
-        //    {
-        //        return Json(new { success = false, sessionExpired = true }, JsonRequestBehavior.AllowGet);
-        //    }
-
-        //    try
-        //    {
-        //        idUser = (int)Session["UserId"];
-
-        //        sp_GetSupplierById_Result Supplier = await _supplierService.GetSupplierByIdAsync(id);
-
-        //        if (Supplier == null)
-        //        {
-        //            return Json(new { success = false, message = "Il fornitore corrispondete non è stato trovato"}, JsonRequestBehavior.AllowGet);
-                   
-        //        }
-        //        return Json(new { success = true, data = Supplier}, JsonRequestBehavior.AllowGet);
-        //    }
-        //    catch (Exception ex)
-        //    {
-              
-        //        _logService.WriteLogProcessError(idUser, ex.Message);
-        //        return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
-        //    }
-        //}
+        [HttpGet]
+        public ActionResult Details(int id)
+        {
+            int idUser = 0;
 
 
-        //// POST: Supplier/Create
-        //[HttpPost]
-        //public async Task<JsonResult> Save(sp_ManageSupplier_Param param)
-        //{
-        //    int idUser = 0;
-
-        //    if (Session["UserId"] == null)
-        //    {
-        //        return Json(new { success = false, sessionExpired = true });
-        //    }
-
-        //    try
-        //    {
-        //        idUser = (int)Session["UserId"];
-        //        // TODO: Add insert logic here
-        //        param.Operation = "I";
-
-        //        await _supplierService.sp_ManageSupplierAsync(param);
-
-        //        return Json(new { success = true });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logService.WriteLogProcessError(idUser, ex.Message);
-        //        return Json(new { success = false, message = ex.Message});
-        //    }
-        //}
+            try
+            {
+                idUser = (int)Session["UserId"];
 
 
-        //// GET: Supplier/Edit/5
-        //public async Task<JsonResult> Edit(int id)
-        //{
-        //    int idUser = 0;
-        //    try
-        //    {
-        //        idUser = (int)Session["UserId"];
-        //        //  prendere i dati dal database del supplier tramite id
-        //    sp_GetSupplierById_Result Supplier = await _supplierService.GetSupplierByIdAsync(id);
-        //        // impacchettare i dati e spedirli  alla pagina
 
-        //        return Json(new { success = true, data = Supplier}, JsonRequestBehavior.AllowGet);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logService.WriteLogProcessError(idUser, ex.Message);
-        //        return Json(new { success = false, message = ex.Message });
-        //    }
-        //}
+                WarehousesViewModel Model = new WarehousesViewModel
+                {
+                    TheWarehouse = _warehousesService.GetWarehouseById(id),
+                    TheWarehouseMovementsList = _warehousesService.sp_GetWarehouseMovementsById(id)
+                };
+                return View(Model);
 
-        //// POST: Supplier/Edit/5
-        //[HttpPost]
-        //public async Task<JsonResult> Edit(sp_ManageSupplier_Param param)
-        //{
-        //    int idUser = 0;
-        //    try
-        //    {
-        //        idUser = (int)Session["UserId"];
-        //        // TODO: Add update logic here
-        //        param.Operation = "U";
-        //        await _supplierService.sp_ManageSupplierAsync(param);
+            }
+            catch(Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return View("Error");
+            }
+
+        }
 
 
-        //        return Json(new { success = true });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logService.WriteLogProcessError(idUser, ex.Message);
-        //        return Json(new { success = false, message = ex.Message});
-        //    }
-        //}
+        // POST: Supplier/Create
+        [HttpPost]
+        public JsonResult Save(sp_ManageWarehouse_Param param)
+        {
+            int idUser = 0;
 
-       
+            try
+            {
+                idUser = (int)Session["UserId"];
+                // TODO: Add insert logic here
+                param.Operation = "I";
 
-        //// POST: Supplier/Delete/5
-        //[HttpPost]
-        //public async Task<JsonResult>Delete(int id)
-        //{
-        //    int idUser = 0;
-        //    try
-        //    {
-        //        idUser = (int)Session["UserId"];
+                _warehousesService.sp_ManageWarehouses(param);
 
-        //        sp_ManageSupplier_Param param = new sp_ManageSupplier_Param
-        //        {
-        //            Operation = "D",
-        //            Id = id
-        //        };
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
 
-        //        await _supplierService.sp_ManageSupplierAsync(param);
+        // POST: Supplier/Delete/5
+        [HttpPost]
+        public JsonResult Delete(int id)
+        {
+            int idUser = 0;
+            try
+            {
+                idUser = (int)Session["UserId"];
 
-        //        return Json( new { success = true});
-        //    }
-        //    catch (Exception ex) 
-        //    {
-        //        _logService.WriteLogProcessError(idUser, ex.Message);
-        //        return Json(new { success = false, message = ex.Message });
-        //    }
-        //}
+                sp_ManageWarehouse_Param param = new sp_ManageWarehouse_Param
+                {
+                    Operation = "D",
+                    Id = id
+                };
 
-      
+                _warehousesService.sp_ManageWarehouses(param);
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
 
     }
 }

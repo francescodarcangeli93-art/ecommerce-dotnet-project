@@ -66,13 +66,12 @@
                                     <td class="text-center">-- --</td>
 
 
-
                                     <!-- GESTIONE DEGLI INDIRIZZI -->
                                     <td class="text-center">
                                         @if (utente.CustomerId != null && utente.RoleName.ToString().ToLower() != "admin")
                                         {
                                             <a href="@Url.Action("Index", "GestIndirizzi", new { id = utente.Id })"
-                                               class="btn btn-sm btn-outline-success py-1 d-inline-block simpleBevel">
+                                               class="btn btn-sm btn-outline-success py-1 d-inline-block simpleBevel" title="Indirizzi">
                                                 <i class="bi bi-pin-map-fill"></i>
                                             </a>
                                         }
@@ -146,13 +145,13 @@
                     <ul class="pagination pagination-sm mb-0">
 
                         <li class="page-item @(ViewBag.PaginaCorrente == 1 ? "disabled" : "")">
-                            <a class="page-link text-dark" href="@Url.Action("GestioneUtenti", "Gestutenti", new { page = ViewBag.PaginaCorrente - 1 })">
+                            <a class="page-link text-dark" href="#" data-page="@(ViewBag.PaginaCorrente - 1)">
                                 <i class="bi bi-chevron-left"></i> Precedente
                             </a>
                         </li>
 
                         <li class="page-item @(ViewBag.PaginaCorrente == ViewBag.TotalePagine ? "disabled" : "")">
-                            <a class="page-link text-dark" href="@Url.Action("GestioneUtenti", "Gestutenti", new { page = ViewBag.PaginaCorrente + 1 })">
+                            <a class="page-link text-dark" href="#" data-page="@(ViewBag.PaginaCorrente + 1)">
                                 Successiva <i class="bi bi-chevron-right"></i>
                             </a>
                         </li>

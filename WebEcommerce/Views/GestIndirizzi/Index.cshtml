@@ -233,10 +233,11 @@
 
                         <div class="mb-3">
                             <label>Indirizzo</label>
-                            <input type="text" id="txtAddress" placeholder="Aggiungi indirizzo" class="form-control input-animated" required minlength="5"
+                            <input type="text" id="txtAddress" placeholder="Aggiungi indirizzo" class="form-control input-animated"  minlength="5"
                                    maxlength="100"
-                                   pattern="^(?=.*\d)[A-Za-zÀ-ÿ0-9\s,.\-\/]+$"
-                                   title="Inserisci un indirizzo valido (es. Via Roma, 12)" />
+                                   pattern="^[A-Za-zÀ-ÿ\s]+\s\d+$"
+                                   title="Inserisci un indirizzo valido (es. Via Roma 12)"
+                                   required/>
                         </div>
 
                         <div class="mb-3">
@@ -274,7 +275,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <div id="resultMessageAdd"></div>
+                
                     <button type="button" id="addAnnulla" class="btn px-4  btn-secondary" data-bs-dismiss="modal">
                         Annulla
                     </button>

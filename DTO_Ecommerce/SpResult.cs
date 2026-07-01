@@ -361,6 +361,20 @@ namespace DTO_Ecommerce
         public bool IsActive { get; set; }
     }
 
+    public class sp_GetWarehouseMovementsById_Result
+    {
+        public int WarehouseId { get; set; }
+        public DateTime Date { get; set; }
+        public string DescrizioneVisualizzata { get; set; } 
+        public string Code { get; set; }                
+        public int ProductId { get; set; }                     
+        public string ProductName { get; set; }
+        public int QuantitaStock { get; set; }             
+        public int QuantitaMovimento { get; set; }  
+        public string MovementType { get; set; }         
+        public int? SupplierId { get; set; }               
+    }
+
     // SEARCH 
     public class sp_SearchCustomer_Result
     {

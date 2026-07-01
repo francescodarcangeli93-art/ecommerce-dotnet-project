@@ -18,5 +18,21 @@ namespace BLL_Ecommerce.Services
 
           return  Warehouses.sp_SearchWarehouses(param);
         }
+
+        public void sp_ManageWarehouses(sp_ManageWarehouse_Param param)
+        {
+            Warehouses.ManageWarehouse(param);
+        }
+
+        public sp_GetWarehouseById_Result GetWarehouseById(int? id)
+        {
+           return Warehouses.sp_GetWarehouseById(id);
+        }
+
+        public List<sp_GetWarehouseMovementsById_Result> sp_GetWarehouseMovementsById(int WarehouseId)
+        {
+            return Warehouses.sp_GetWarehouseMovementsById(WarehouseId);
+        }
+
     }
 }

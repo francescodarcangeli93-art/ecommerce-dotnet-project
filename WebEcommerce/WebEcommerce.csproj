@@ -728,6 +728,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\js\GestioneWarehouse.js" />
     <Content Include="Scripts\js\GestioneSupplier.js" />
     <Content Include="Scripts\js\IndirizziCustomer.js" />
     <Content Include="Scripts\js\AggiungiUtente.js" />
@@ -764,6 +765,7 @@
     <Content Include="Views\GestSupplier\_SupplierTable.cshtml" />
     <Content Include="Views\GestWarehouses\_WarehousesTable.cshtml" />
     <Content Include="Views\GestWarehouses\Index.cshtml" />
+    <Content Include="Views\GestWarehouses\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

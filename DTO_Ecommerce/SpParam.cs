@@ -178,6 +178,11 @@ namespace DTO_Ecommerce
 
     }
 
+    public class sp_GetWarehouseMovementsById_Param
+    {
+        public int WarehouseId { get; set; }
+    }
+
     public class sp_LoginUser_Param
     {
         public string Username { get; set; }
@@ -378,6 +383,20 @@ namespace DTO_Ecommerce
         public bool @IsActive { get; set; }
       
     }
+
+    public class sp_ManageWarehouse_Param
+    {
+        public string Operation { get; set; }
+        public int? Id { get; set; }
+        public string Type { get; set; }
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public string PostalCode { get; set; }
+        public string City { get; set; }
+        public bool? IsActive { get; set; }
+
+    }
+
     public class sp_SearchCustomer_Param
     {
         public string @FirstName { get; set; }

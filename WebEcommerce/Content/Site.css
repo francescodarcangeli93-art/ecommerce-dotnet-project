@@ -48,6 +48,8 @@ select,
         color: #ffc107;
     }
 
+   
+
     .titoli-2 {
         font-size: 2em;
         border-left: 4px solid #ffc107 !important;
@@ -129,14 +131,12 @@ select,
 /* ==========================================================================
    FORM DI LOGIN (Username, Password, Bottone e Link)
    ========================================================================== */
-.login-card {
-    border-radius: 20px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 420px;
-}
-
-
+    .login-card {
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 420px;
+    }
 
     /* Il contenitore arrotondato grigio chiaro di Username e Password */
     .login-input-group {
@@ -209,11 +209,15 @@ select,
         padding-right: 8% !important;
     }
 
+
+.dropdown:hover .dropdown-menu{
+    display:block;
+    margin-top: 0;
+}
 /* ==========================================================================
    HOME PAGE GRAPHICS
    ========================================================================== */
-
- @keyframes fadeInUp {
+@keyframes fadeInUp {
     from {
         opacity: 0;
         transform: translateY(20px);
@@ -584,3 +588,161 @@ select,
         letter-spacing: .08em;
         color: #6c757d;
     }
+
+
+/* ==========================================================================
+    MAGAZZINI GRAFICA
+   ========================================================================== */
+
+
+.header-magazzino {
+    background-color: #fff !important;
+    border-radius: 12px !important;
+    border: 1px solid #eee !important;
+    padding: 1rem 1.25rem !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.magazziniDimensioni a{
+    font-size: 17px;
+    color:#c98400;
+}
+
+.causale {
+    border-radius: 20px;
+}
+
+.causale-badge {
+    padding: 5px 14px;
+    font-weight: 400;
+    
+}
+
+.lText-green {
+    border:1px solid #b6e3c2;
+    background-color: #d1e7dd;
+ 
+}
+
+.lText-red {
+    color: #58151c;
+    background-color: #f8d7da;
+    border-color: #58151c;
+}
+
+.lText-neutral {
+    color: #4A5568;
+    background-color: #E2E8F0;
+    border-color: #4A5568;
+}
+
+.badge-tipo {
+    background-color: #fdf1dc !important;
+    color: #8a5a06 !important;
+    border-radius: 20px !important;
+    padding: 4px 14px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+}
+
+.badge-attivo {
+    background-color: #e6f4ea;
+    color: #1e7e34;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid #b6e3c2;
+}
+
+.badge-non-attivo {
+    background-color: #fdecea;
+    color: #b02a1f;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid #f5c2c0;
+}
+
+.nav-tabs-magazzino .nav-link {
+    border: none;
+    color: #6c757d;
+    font-weight: 500;
+    padding: 0.75rem 1.25rem;
+}
+
+    .nav-tabs-magazzino .nav-link.active {
+        color: #c98400;
+        border-bottom: 2px solid #f0a500;
+        background: transparent;
+    }
+
+.btn-giallo {
+    background-color: #ffc107;
+    border-color: #f0a500;
+    color: #1a1a1a;
+    font-weight: 600;
+    border-radius: 20px;
+}
+
+    .btn-giallo:hover {
+        background-color: #ffc107;
+        border-color: #d99200;
+        color: #1a1a1a;
+    }
+
+.btn-outline-giallo {
+    border: 1px solid #f0a500;
+    color: #c98400;
+    border-radius: 20px;
+    font-weight: 600;
+    background: transparent;
+}
+
+.tabella-magazzino thead {
+    background-color: #1f2733;
+    color: #fff;
+}
+
+.tabella-magazzino th {
+    font-weight: 600;
+    border: none;
+}
+
+.quantita-zero {
+    color: #d9534f;
+    font-weight: 600;
+}
+
+.icon{
+    font-size:15px;
+    font-weight:bold;
+}
+
+.icon-green{
+    color:green;
+}
+
+.icon-red {
+    color: red;
+}
+
+.spedizione {
+    font-family:Poppins;
+    font-weight:bold;
+    color:#c98400;
+}
+
+.danger-zone {
+    border: 1px solid #f5c2c0;
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+}

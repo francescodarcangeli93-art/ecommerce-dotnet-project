@@ -2,11 +2,9 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 @section styles {
     <link rel="stylesheet" href="@Url.Content("~/Content/Site.css")" />
 }
-
 <main class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1 class="fw-bold text-black text-center w-100 titolo-animated">
@@ -14,75 +12,170 @@
         </h1>
     </div>
 
-    <span id="resultMessage"></span>
-
+    <!--  FILTRI -->
     <div class="mb-4 p-4 bg-white card-animated card-detail">
-        <h5 class="mb-4 fw-semibold text-dark">Ricerca Fornitori</h5>
+        <h5 class="mb-4 fw-semibold text-dark">Ricerca Magazzini</h5>
         <div>
-            <div class="card-body row g-3" id="filtri">
+            <div class="card-body row g-3" id="filtriContainer">
+
                 <div class="col-md-3">
-                    @*<label for="txtCompany">Azienda</label>*@
-                    <input type="text" id="txtCompany" name="CompanyName" placeholder="Azienda" class="form-control input-animated" />
+                   <select name="Type" id="searchType" class="form-select input-animated">
+                       <option value="">--Selezionare il Tipo--</option>
+                       <option value="SHIPMENT">SHIPMENT</option>
+                       <option value="STOCK">STOCK</option>
+                   </select>
                 </div>
 
                 <div class="col-md-3">
-                    @*<label for="txtReferente">Referente</label>*@
-                    <input type="text" id="txtReferente" name="ContactName" placeholder="Referente" class="form-control input-animated" />
+                    <input type="text" id="searchNome" name="Name" placeholder="Nome Magazzino" class="form-control input-animated" />
                 </div>
 
                 <div class="col-md-3">
-                    @*<label for="txtRuolo">Ruolo</label>*@
-                    <input type="text" id="txtRuolo" name="ContactTitle" placeholder="Ruolo" class="form-control input-animated" />
-                </div>
-                <div class="col-md-3">
-                    @*<label for="txtcitta">Città</label>*@
-                    <input type="text" id="txtCitta" name="City" placeholder="Città" class="form-control input-animated" />
-                </div>
-                <div class="col-md-3">
-                    @*<label for="txtPaese">Paese</label>*@
-                    <input type="text" id="txtPaese" name="Country" placeholder="Paese" class="form-control input-animated" />
+                    <input type="text" id="searchCitta" name="City" placeholder="Città" class="form-control input-animated" />
                 </div>
 
                 <div class="col-md-3">
-                    @*<label for="txtPaese">Paese</label>*@
-                    <input type="text" id="txtPaese" name="Country" placeholder="Città" class="form-control input-animated" />
+                    <input type="text" id="searchPostalCode" name="PostalCode" placeholder="CAP" class="form-control input-animated" />
                 </div>
 
-                <!--<div class="col-md-3">-->
-                @*<label for="txtTelefono">Telefono</label>*@
-                <!--<input type="text" id="txtTelefono" name="Phone" placeholder="Telefono" class="form-control input-animated" />
-    </div>-->
-                <!--<div class="col-md-3">-->
-                @*<label for="txtFax">Fax</label>*@
-                <!--<input type="text" id="txtFax" name="Fax" placeholder="Fax" class="form-control input-animated" />
-    </div>-->
-                <div class="col-md-6 d-flex align-items-center gap-2 justify-content-end">
+                <div class="col-md-3">
+                    <select name="IsActive" id="searchIsActive" class="form-select input-animated">
+                        <option value="">--Selezionare lo Stato--</option>
+                        <option value="true">Attivo</option>
+                        <option value="false">Non Attivo</option>
+                    </select>
+                </div>
+
+                <div class="col-md-12 d-flex align-items-center gap-2 justify-content-end">
                     <button type="button" id="btnCerca" class="btn fw-semibold px-4 btn-animated bt-cerca">Cerca</button>
                     <button type="button" id="btnPulisci" class="btn fw-semibold px-4 btn-animated bt-pulisci">Pulisci</button>
                 </div>
+
             </div>
         </div>
     </div>
-
 
 
     @*TASTO AGGIUNGI*@
     <div class="d-flex justify-content-between align-items-end mb-3">
         <h3 class="m-0">Lista Magazzini</h3>
 
-        <a id="btnAggiungi" class="btn fw-semibold px-4 btn-animated buttonAdd">
+        <a id="btnAggiungi" class="btn fw-semibold px-4 btn-animated buttonAdd" data-bs-toggle="modal" data-bs-target="#aggiungi">
             <i class="bi bi-truck"></i> Aggiungi
         </a>
-
     </div>
 
     <div id="tabellaContainer">
         @Html.Partial("_WarehousesTable", Model)
     </div>
-
-
-
 </main>
 
 
+<!--MODALE AGGIUNGI-->
+<div class="modal fade" id="aggiungi" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Aggiungi Magazzino</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
 
+                <div class="mb-4 p-4 bg-white card-animated card-detail">
+                    <div>
+                        <div class="card-body row g-3">
+
+                            <form id="warehouseForm">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="mdlTipo">Tipo Magazzino</label>
+                                        <select name="Type" id="mdlTipo" class="form-select" required>
+                                            <option value="">--Selezionare un tipo--</option>
+                                            <option value="SHIPMENT">Shipment</option>
+                                            <option value="STOCK">Stock</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="mdlNome">Nome</label>
+                                        <input type="text" id="mdlNome" name="Name" placeholder="Nome Referente" class="form-control input-animated" required />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="mdlIndirizzo">Indirizzo</label>
+                                        <input type="text" id="mdlIndirizzo" name="Address" placeholder="Indirizzo" class="form-control input-animated"
+                                               maxlength="100"
+                                               pattern="^[A-Za-zÀ-ÿ\s]+\s\d+$"
+                                               title="Inserisci un indirizzo valido (es. Via Roma 12)"
+                                               required />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="mdlCAP">CAP</label>
+                                        <input type="text" id="mdlCAP" name="PostalCode" placeholder="Cap" class="form-control input-animated"
+                                               pattern="[0-9]{5}"
+                                               maxlength="5"
+                                               required
+                                               title="Il CAP deve essere composto da esattamente 5 cifre numeriche." />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="mdlCitta">Città</label>
+                                        <input type="text" id="mdlCitta" placeholder="es: Roma" name="City" class="form-control input-animated" required />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label>Stato Magazzino</label><br />
+                                        <label class="me-2">
+                                            <input type="radio" name="IsActive" value="true" checked />
+                                            <span>Attivo</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="IsActive" value="false" />
+                                            <span>Non Attivo</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div id="resultMessage" class="mt-2 text-center"></div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Indietro</button>
+                <button type="button" id="btnSalva" class="btn btn-primary">Salva</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--MODALE ELIMINA-->
+<div class="modal fade" id="modalElimina" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Elimina</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Sicuro di voler eliminare il fornitore <strong id="nomeFornitore"></strong>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="confermaElimina" data-url="@Url.Action("Delete","GestWarehouses")" class="btn btn-danger">Elimina</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="@Url.Content("~/Scripts/js/GestioneWarehouse.js")"></script>
+}

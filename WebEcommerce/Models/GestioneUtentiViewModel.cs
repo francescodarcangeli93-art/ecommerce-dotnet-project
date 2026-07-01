@@ -90,8 +90,8 @@ namespace WebEcommerce.Models
     {
         public List<sp_SearchWarehouses_Result> WarehousesList { get; set; }
 
-        public sp_GetSupplierById_Result TheWarehouses { get; set; }
+        public sp_GetWarehouseById_Result TheWarehouse { get; set; }
 
-     
+       public List<sp_GetWarehouseMovementsById_Result> TheWarehouseMovementsList { get; set; }
     }
 }
