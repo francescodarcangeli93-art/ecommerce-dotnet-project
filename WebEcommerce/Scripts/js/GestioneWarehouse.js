@@ -4,17 +4,20 @@
     const $btnAdd = $('#btnAggiungi');
     const $tabellaContainer = $('#tabellaContainer');
 
+   
+
     function eseguiRicerca() {
 
         var filtri = {
             Type: $('select[name="Type"]').val(),
-            Name: $('input[name="Nome"]').val(),
+            Name: $('input[name="Name"]').val(),
             City: $('input[name="City"]').val(),
             PostalCode: $('input[name="PostalCode"]').val(),
             IsActive: $('#searchIsActive').val()
         };
 
         // sessione per salvare i filtri
+        sessionStorage.setItem('filtriMagazzini', JSON.stringify(filtri));
 
         $.ajax({
             url: '/GestWarehouses/SearchWarehousesPartial',
@@ -22,6 +25,10 @@
             data: filtri,
             success: function (response) {
                 $tabellaContainer.html(response).show();
+
+                const nuovoUrl = window.location.pathname + '?Type=' + filtri.Type + '&Nome=' + filtri.Name + '&City=' + filtri.City + '&PostalCode=' + filtri.PostalCode + '&IsActive=' + filtri.IsActive; 
+                history.pushState(null, '', nuovoUrl);
+                
             },
             error: function (xhr, status, error) {
                 console.error("Errore ricerca:", error);
@@ -30,9 +37,48 @@
         });
     }
 
+    //---------------------------------------------------------------------------------------------------------
     $('#btnCerca').on('click', function () {
         eseguiRicerca();
        
+    });
+
+    const filtriSalvati = sessionStorage.getItem('filtriMagazzini');
+
+
+    // se ci sono i filtri 
+    if (filtriSalvati) {
+
+        const filtri = JSON.parse(filtriSalvati)
+        let haFiltri = false;
+
+        $('#searchType').val(filtri.Type);
+        $('#searchNome').val(filtri.Name);
+        $('#searchCitta').val(filtri.City);
+        $('#searchPostalCode').val(filtri.PostalCode);
+        $('#searchIsActive').val(filtri.IsActive);
+       
+
+        haFiltri = true;
+
+        if (haFiltri) {
+            $btnCerca.click();
+        }
+        
+    }
+
+
+    // funzione per pulire i filtri
+    $('#btnPulisci').on('click', function (e) {
+
+        $('select[name="Type"]').val('');
+        $('input[name="Name"]').val('');
+        $('input[name="City"]').val('');
+        $('input[name="PostalCode"]').val('');
+        $('select[name="IsActive"]').val('');
+       /* paginaCorrente = 1;*/
+        $btnCerca.click();
+        sessionStorage.removeItem("filtriMagazzini");
     });
 
     $('#btnSalva').on('click', function () {
@@ -138,9 +184,5 @@
     });
 
 
-    // FILTRI 
-    $('#btnCerca').on('click', function () {
-
-
-    });
+   
 });

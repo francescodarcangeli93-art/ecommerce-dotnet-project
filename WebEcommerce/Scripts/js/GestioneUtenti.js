@@ -108,12 +108,13 @@ $(document).ready(function () {
         $('input[name="Email"]').val('');
         $('#isActive').val('');
         paginaCorrente = 1;
+        sessionStorage.removeItem("filtriUtenti");
         $btnCerca.click();
     });
 
     // Gestione click sui link di paginazione (Precedente / Successiva)
-    // I link nella view puntano a GestioneUtenti con ?page=N: qui intercettiamo
-    // il click, blocchiamo la navigazione reale, ed estraiamo il numero di pagina
+    // I link nella view puntano a GestioneUtenti con ?page=N: qui viene intercettato
+    // il click, viene bloccata la navigazione reale, e si estrae il numero di pagina
     // dall'href per rilanciare la ricerca via AJAX con i filtri correnti.
     $tabellaContainer.on('click', '.page-link', function (e) {
         e.preventDefault();
