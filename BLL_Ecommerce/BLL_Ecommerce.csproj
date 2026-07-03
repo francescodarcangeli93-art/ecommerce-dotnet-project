@@ -47,6 +47,7 @@
     <Compile Include="Interfaces\ILoginService.cs" />
     <Compile Include="Interfaces\IRoleService.cs" />
     <Compile Include="Interfaces\ICountryService.cs" />
+    <Compile Include="Interfaces\IPriceListService.cs" />
     <Compile Include="Interfaces\IWarehousesService.cs" />
     <Compile Include="Interfaces\ISupplierService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Services\LoginService.cs" />
     <Compile Include="Services\RoleServices.cs" />
     <Compile Include="Services\CountryService.cs" />
+    <Compile Include="Services\PriceListService.cs" />
     <Compile Include="Services\WarehouseService.cs" />
     <Compile Include="Services\SupplierService.cs" />
     <Compile Include="Services\UserServices.cs" />

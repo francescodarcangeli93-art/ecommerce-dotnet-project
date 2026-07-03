@@ -416,6 +416,9 @@ select,
         color: #6c757d;
     }
 
+    .spazio-comandi{
+        margin-left:10px;
+    }
 
     /* ==========================================================================
             GESTIONE UTENTE
@@ -472,7 +475,7 @@ select,
     }
 
     .simpleBevel {
-        border-radius: 25px !important;
+        border-radius: 100vh !important;
     }
 
     .titolo-animated {
@@ -569,6 +572,8 @@ select,
         transition: all 0.3s ease;
     }
 
+    
+
     .form-control:focus, .form-select:focus {
         border-color: #212529 !important;
         box-shadow: 0 0 0 3px rgba(33,37,41,0.1) !important;
@@ -588,6 +593,107 @@ select,
         letter-spacing: .08em;
         color: #6c757d;
     }
+
+/* ==========================================================================
+      MODALE ELIMINA
+   ========================================================================== */
+
+.myModal-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: rgba(0, 0, 0, 0.7);
+
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+
+
+
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.personal-card {
+    font-family: poppins;
+    background-color: rgb(253, 253, 253);
+    width: 400px;
+    padding: 1px 20px 15px;
+    border: solid 2px rgb(199, 198, 192);
+    border-radius: 30px;
+}
+
+
+svg {
+    width: 90px;
+    margin-top: 5px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+    svg > rect {
+        fill: none;
+    }
+
+path, circle {
+    fill: rgb(246, 56, 56);
+}
+
+svg .triangolo {
+    fill: none;
+    stroke: rgb(246, 56, 56);
+    stroke-width: 2px
+}
+
+
+.buttons {
+    text-align: center;
+}
+
+.personal-card h3 {
+    margin-top: 5px;
+}
+
+.personal-card h3 {
+    text-align: center;
+}
+
+.personal-card p {
+    text-align: center;
+}
+
+.buttons button {
+    height: 50px;
+    width: 120px;
+    border-radius: 50px;
+    border: none;
+    margin-bottom: 10px;
+   
+}
+
+.buttons .no-btn {
+    background-color: rgb(220, 219, 219);
+    margin-right: 8px;
+}
+
+.buttons .si-btn {
+    background-color: rgb(246, 56, 56);
+    margin-left:8px;
+    color: whitesmoke;
+}
 
 
 /* ==========================================================================
@@ -631,6 +737,12 @@ select,
     color: #58151c;
     background-color: #f8d7da;
     border-color: #58151c;
+}
+
+.lText-yellow {
+    color: #614003;
+    background-color: #ffecc3;
+    border-color: #ff0000;
 }
 
 .lText-neutral {

@@ -159,6 +159,47 @@ namespace WebEcommerce.Controllers
             }
         }
 
+        // GET: Supplier/Edit/5
+        public JsonResult Edit(int id)
+        {
+            int idUser = 0;
+            try
+            {
+                idUser = (int)Session["UserId"];
+                //  prendere i dati dal database del supplier tramite id
+                sp_GetWarehouseById_Result Warehouse = _warehousesService.GetWarehouseById(id);
+                // impacchettare i dati e spedirli  alla pagina
+
+                return Json(new { success = true, data = Warehouse }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        // POST: Supplier/Edit/5
+        [HttpPost]
+        public JsonResult Edit(sp_ManageWarehouse_Param param)
+        {
+            int idUser = 0;
+            try
+            {
+                idUser = (int)Session["UserId"];
+                // TODO: Add update logic here
+                param.Operation = "U";
+                _warehousesService.sp_ManageWarehouses(param);
+
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
 
     }
 }

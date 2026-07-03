@@ -33,8 +33,8 @@
                         <th data-column="4" class="text-center">Email <span></span></th>
                         <th data-column="5">Inizio Validità <span></span></th>
                         <th class="text-center">Fine Validità</th>
-                        <th class="text-center px-4">INDIRIZZI</th>
                         <th class="text-center">Attivo</th>
+                        <th class="text-center px-4">INDIRIZZI</th>
                         <th class="text-center px-4">COMANDI</th>
                     </tr>
                 </thead>
@@ -65,6 +65,22 @@
                                     <td>@utente.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td>
                                     <td class="text-center">-- --</td>
 
+                                    <!-- GESTIONE ATTIVO NON ATTIVO -->
+                                    <td class="text-center">
+                                        <form action="@Url.Action("CambiaStatoInTabella","Gestutenti")" method="POST" class="d-inline">
+                                            <input type="hidden" name="id" value="@utente.Id" />
+                                            <input type="hidden" name="customerId" value="@utente.CustomerId" />
+                                            <input type="hidden" name="isActive" value="@((!utente.IsActive).ToString().ToLower())" />
+
+                                            <button type="submit"
+                                                    @(utente.RoleName.ToLower() == "admin" ? "disabled" : "")
+                                                    class="btn btn-sm fw-bold text-uppercase d-inline-flex align-items-center justify-content-center border-2 attivo
+                                                    @(utente.IsActive ? "btn-outline-success text-success bg-success bg-opacity-10" : "btn-outline-danger text-danger bg-danger bg-opacity-10")">
+                                                    @(utente.IsActive ? "Attivo" : "Non Attivo")
+                                            </button>
+                                        </form>
+
+                                    </td>
 
                                     <!-- GESTIONE DEGLI INDIRIZZI -->
                                     <td class="text-center">
@@ -77,45 +93,25 @@
                                         }
                                         else
                                         {
-                                            <button 
-                                               class="btn btn-sm btn-outline-success py-1 d-inline-block simpleBevel" disabled>
+                                            <button class="btn btn-sm btn-outline-success py-1 d-inline-block simpleBevel" disabled>
                                                 <i class="bi bi-pin-map-fill"></i>
                                             </button>
                                         }
 
                                     </td>
 
-                                    <!-- GESTIONE ATTIVO NON ATTIVO -->
-                                    <td class="text-center">
-                                        <form action="@Url.Action("CambiaStatoInTabella","Gestutenti")" method="POST" class="d-inline">
-                                            <input type="hidden" name="id" value="@utente.Id" />
-                                            <input type="hidden" name="customerId" value="@utente.CustomerId" />
-                                            <input type="hidden" name="isActive" value="@((!utente.IsActive).ToString().ToLower())" />
-
-                                            <button type="submit"
-                                              
-                                                    @(utente.RoleName.ToLower() == "admin" ? "disabled" : "")
-                                                    class="btn btn-sm fw-bold text-uppercase d-inline-flex align-items-center justify-content-center border-2 attivo
-                                                    @(utente.IsActive ? "btn-outline-success text-success bg-success bg-opacity-10" : "btn-outline-danger text-danger bg-danger bg-opacity-10")">
-                                                @(utente.IsActive ? "Attivo" : "Non Attivo")
-                                            </button>
-                                        </form>
-
-                                    </td>
-
-
                                     <td class="text-end text-ce px-4">
-                                        <a href="@Url.Action("DatiUtente", "Gestutenti", new { Id = utente.Id, CustomerId = utente.CustomerId })" class="btn btn-sm btn-outline-info py-1 simpleBevel" title="Visualizza Dettagli">
+                                        <a href="@Url.Action("DatiUtente", "Gestutenti", new { Id = utente.Id, CustomerId = utente.CustomerId })" class="btn btn-sm btn-outline-info py-1  simpleBevel" title="Visualizza Dettagli">
                                             <i class="bi bi-search"></i>
                                         </a>
-                                        <a href="@Url.Action("ModificaUtente", "Gestutenti", new { id = utente.Id })" class="btn btn-sm btn-outline-warning py-1 simpleBevel" title="Modifica riga">
+                                        <a href="@Url.Action("ModificaUtente", "Gestutenti", new { id = utente.Id })" class="btn btn-sm btn-outline-warning py-1 spazio-comandi simpleBevel" title="Modifica riga">
                                             <i class="bi bi-pencil"></i>
                                         </a>
 
                                         <!-- ELIMINA UTENTE -->
                                         <button type="button"
-                                                class="btn btn-sm btn-outline-danger py-1 simpleBevel"
-                                                  @(utente.RoleName.ToLower() == "admin" ? "disabled" : "")
+                                                class="btn btn-sm btn-outline-danger py-1 spazio-comandi simpleBevel"
+                                                @(utente.RoleName.ToLower() == "admin" ? "disabled" : "")
                                                 title="Cancella utente"
                                                 onclick="confermaEliminazione('@utente.Id', '@utente.Username')">
                                             <i class="bi bi-trash"></i>
@@ -188,14 +184,14 @@
 
 
             <div class="modal-footer border-0">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" class="btn btn-secondary simpleBevel" data-bs-dismiss="modal">Annulla</button>
 
                 <!-- FORM  Elimina -->
 
                 <form id="formElimina" action="@Url.Action("EliminaUtente","Gestutenti")" method="POST">
 
                     <input type="hidden" name="Id" id="idUtenteDaEliminare" />
-                    <button type="submit" class="btn btn-danger">Sì, elimina</button>
+                    <button type="submit" class="btn btn-danger simpleBevel">Sì, elimina</button>
                 </form>
 
             </div>

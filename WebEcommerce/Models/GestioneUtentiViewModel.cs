@@ -94,4 +94,9 @@ namespace WebEcommerce.Models
 
        public List<sp_GetWarehouseMovementsById_Result> TheWarehouseMovementsList { get; set; }
     }
+
+    public class PriceListViewModel
+    {
+        public List<sp_SearchPriceList_Result> ThePriceList { get; set; }
+    }
 }

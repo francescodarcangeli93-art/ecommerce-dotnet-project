@@ -19,11 +19,11 @@
             <div class="card-body row g-3" id="filtriContainer">
 
                 <div class="col-md-3">
-                   <select name="Type" id="searchType" class="form-select input-animated">
-                       <option value="">--Selezionare il Tipo--</option>
-                       <option value="SHIPMENT">SHIPMENT</option>
-                       <option value="STOCK">STOCK</option>
-                   </select>
+                    <select name="Type" id="searchType" class="form-select input-animated">
+                        <option value="">--Selezionare il Tipo--</option>
+                        <option value="SHIPMENT">SHIPMENT</option>
+                        <option value="STOCK">STOCK</option>
+                    </select>
                 </div>
 
                 <div class="col-md-3">
@@ -86,13 +86,14 @@
                         <div class="card-body row g-3">
 
                             <form id="warehouseForm">
+
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="mdlTipo">Tipo Magazzino</label>
                                         <select name="Type" id="mdlTipo" class="form-select" required>
                                             <option value="">--Selezionare un tipo--</option>
                                             <option value="SHIPMENT">Shipment</option>
-                                            <option value="STOCK">Stock</option>
+                                            <option value="STOCK" selected>Stock</option>
                                         </select>
                                     </div>
 
@@ -129,11 +130,11 @@
                                     <div class="mb-3">
                                         <label>Stato Magazzino</label><br />
                                         <label class="me-2">
-                                            <input type="radio" name="IsActive" value="true" checked />
+                                            <input type="radio" id="mdlTrue" name="IsActive" value="true" checked />
                                             <span>Attivo</span>
                                         </label>
                                         <label>
-                                            <input type="radio" name="IsActive" value="false" />
+                                            <input type="radio" id="mdlFalse" name="IsActive" value="false" />
                                             <span>Non Attivo</span>
                                         </label>
                                     </div>
@@ -175,6 +176,88 @@
         </div>
     </div>
 </div>
+
+
+
+<!-- MODALE MODIFICA Magazzino-->
+<div class="modal fade" id="modalEdit" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="mb-4 p-4 bg-white card-animated card-detail">
+                <div>
+                    <div class="card-body row g-3">
+                        <input type="hidden" id="editId" />
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editTipo">Tipo Magazzino</label>
+                                <select name="Type" id="editTipo" class="form-select" required>
+                                    <option value="">--Selezionare un tipo--</option>
+                                    <option value="SHIPMENT">Shipment</option>
+                                    <option value="STOCK" selected>Stock</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editNome">Nome</label>
+                                <input type="text" id="editNome" name="Name" placeholder="Nome Referente" class="form-control input-animated" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editIndirizzo">Indirizzo</label>
+                                <input type="text" id="editIndirizzo" name="Address" placeholder="Indirizzo" class="form-control input-animated"
+                                       maxlength="100"
+                                       pattern="^[A-Za-zÀ-ÿ\s]+\s\d+$"
+                                       title="Inserisci un indirizzo valido (es. Via Roma 12)"
+                                       required />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editCAP">CAP</label>
+                                <input type="text" id="editCAP" name="PostalCode" placeholder="Cap" class="form-control input-animated"
+                                       pattern="[0-9]{5}"
+                                       maxlength="5"
+                                       required
+                                       title="Il CAP deve essere composto da esattamente 5 cifre numeriche." />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editCitta">Città</label>
+                                <input type="text" id="editCitta" placeholder="es: Roma" name="City" class="form-control input-animated" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Stato Magazzino</label><br />
+                                <label class="me-2">
+                                    <input type="radio" id="editTrue" name="editIsActive" value="true" checked />
+                                    <span>Attivo</span>
+                                </label>
+                                <label>
+                                    <input type="radio" id="editFalse" name="editIsActive" value="false" />
+                                    <span>Non Attivo</span>
+                                </label>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" id="btnEditModifica" class="btn btn-success">Modifica</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @section scripts {
     <script src="@Url.Content("~/Scripts/js/GestioneWarehouse.js")"></script>

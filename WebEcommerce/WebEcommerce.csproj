@@ -129,6 +129,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\GestPriceListController.cs" />
     <Compile Include="Controllers\GestWarehousesController.cs" />
     <Compile Include="Controllers\GestutentiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -766,6 +767,7 @@
     <Content Include="Views\GestWarehouses\_WarehousesTable.cshtml" />
     <Content Include="Views\GestWarehouses\Index.cshtml" />
     <Content Include="Views\GestWarehouses\Details.cshtml" />
+    <Content Include="Views\GestPriceList\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

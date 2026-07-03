@@ -40,17 +40,17 @@
                     <p class="text-uppercase fw-semibold sezione-titolo mb-3">Credenziali</p>
 
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Username</label>
+                        <label class="form-label fw-semibold">Username*</label>
                         <input type="text" id="username" name="Username" value="@Model.Username" class="form-control" required />
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Email</label>
+                        <label class="form-label fw-semibold">Email*</label>
                         <input type="text" name="Email" value="@Model.Email" class="form-control" required />
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label fw-semibold">Password</label>
+                        <label class="form-label fw-semibold">Password*</label>
 
                         <div class="password-wrapper">
 
@@ -67,8 +67,8 @@
                     <p class="text-uppercase fw-semibold sezione-titolo mb-3">Account</p>
 
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Ruolo</label>
-                        <select name="RoleId" id="roleId" class="form-select" onchange="mostraNascondiCustomer()">
+                        <label class="form-label fw-semibold">Ruolo*</label>
+                        <select name="RoleId" id="roleId" class="form-select" onchange="mostraNascondiCustomer()" required>
                             @foreach (var role in Model.ListRuoli)
                             {
                                 <option value="@role.Id" @(Model.RoleId != null && role.Id == Model.RoleId ? "selected" : "")>
@@ -108,13 +108,13 @@
                     <p class="text-uppercase fw-semibold sezione-titolo mb-3">Dati personali</p>
 
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Nome</label>
-                        <input type="text" id="nome" name="FirstName" value="@Model.FirstName" class="form-control" placeholder="Inserire nome" />
+                        <label class="form-label fw-semibold">Nome*</label>
+                        <input type="text" id="nome" name="FirstName" value="@Model.FirstName" class="form-control" placeholder="Inserire nome" required/>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Cognome</label>
-                        <input type="text" id="cognome" name="LastName" value="@Model.LastName" class="form-control" placeholder="Inserire cognome" />
+                        <label class="form-label fw-semibold">Cognome*</label>
+                        <input type="text" id="cognome" name="LastName" value="@Model.LastName" class="form-control" placeholder="Inserire cognome" required/>
                     </div>
 
                     <div class="mb-3">

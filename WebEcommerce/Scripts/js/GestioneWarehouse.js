@@ -4,7 +4,17 @@
     const $btnAdd = $('#btnAggiungi');
     const $tabellaContainer = $('#tabellaContainer');
 
-   
+    $btnAdd.on('click', function () {
+        // resettare i filtri 
+
+        $('#mdlTipo').val('STOCK');
+        $('#mdlNome').val('');
+        $('#mdlIndirizzo').val('');
+        $('#mdlCAP').val('');
+        $('#mdlCitta').val('');
+        $('#mdlTrue').prop('checked', true);
+
+    });
 
     function eseguiRicerca() {
 
@@ -38,10 +48,16 @@
     }
 
     //---------------------------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------------------------
+
     $('#btnCerca').on('click', function () {
         eseguiRicerca();
        
     });
+
+    //---------------------------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------------------------
+
 
     const filtriSalvati = sessionStorage.getItem('filtriMagazzini');
 
@@ -67,6 +83,9 @@
         
     }
 
+    //---------------------------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------------------------
+
 
     // funzione per pulire i filtri
     $('#btnPulisci').on('click', function (e) {
@@ -80,6 +99,10 @@
         $btnCerca.click();
         sessionStorage.removeItem("filtriMagazzini");
     });
+
+    //---------------------------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------------------------
+
 
     $('#btnSalva').on('click', function () {
 
@@ -183,6 +206,87 @@
 
     });
 
+    /* ==========================================================
+       3. MODIFICA  WAREHOUSE
+       ==========================================================*/
+
+    $('#tabellaContainer').on('click', '.btn-modifica', function () {
+
+        const model = {
+            id: $(this).data('id')
+        }
+
+        $.ajax({
+            url: '/GestWarehouses/Edit',
+            type: 'GET',
+            data: model,
+            dataType: 'json',
+
+            success: function (response) {
+                if (response.success) {
+                    $('#editId').val(response.data.Id);
+                    $('#editTipo').val(response.data.Type);
+                    $('#editNome').val(response.data.Name);
+                    $('#editIndirizzo').val(response.data.Address);
+                    $('#editCAP').val(response.data.PostalCode);
+                    $('#editCitta').val(response.data.City);
+                 
+                    $('input[name="editIsActive"][value="' + response.data.IsActive + '"]').prop('checked', true);
+                  
+
+                    $('#modalEdit').modal('show');
+
+                } else {
+                    $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
+                }
+            },
+
+            error: function (xhr, status, error) {
+                $('#resultMessage').html('<span style="color:red">Errore: ' + xhr.responseText + '</span>');
+            }
+
+        });
+
+    });
+
+    $('#btnEditModifica').on('click', function () {
+
+        const model = {
+            Id: $('#editId').val(),
+            Type: $('#editTipo').val(),
+            Name: $('#editNome').val(),
+            Address: $('#editIndirizzo').val(),
+            PostalCode: $('#editCAP').val(),
+            City: $('#editCitta').val(),
+            IsActive: $('input[name=editIsActive]:checked').val()
+            
+        }
+
+        
+
+        $.ajax({
+            url: '/GestWarehouses/Edit',
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(model),
+            dataType: 'json',
+
+            success: function (response) {
+                if (response.success) {
+                    $('#modalEdit').modal('hide');
+                    $('#btnCerca').click();
+
+                } else {
+                    $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
+                }
+            },
+
+            error: function (xhr, status, error) {
+                $('#resultMessage').html('<span style="color:red">Errore: ' + xhr.responseText + '</span>');
+            }
+
+        });
+    });
 
    
 });

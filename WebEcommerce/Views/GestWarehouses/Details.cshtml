@@ -126,42 +126,32 @@
                 <thead>
                     <tr>
                         <th>Data</th>
-                        <th>Causale</th>
+                        <th class="text-center">Causale</th>
                         <th>Prodotto</th>
-                        <th class="text-right">Quantità</th>
-                        <th>Origine/Destinazione</th>
+                        <th class="text-center">Quantità</th>
+                        <th class="text-center">Origine/Destinazione</th>
                     </tr>
                 </thead>
                 <tbody>
-                   <!-- Da Fare il loop delle rige -->
-                    <tr>
-                        <td>28/06/2026 14:32</td>
-                        <td><span class="causale causale-badge lText-green">Carico a magazzino</span></td>
-                        <td>Cuffie wireless X200</td>
-                        <td class="text-right  icon icon-green">+20</td>
-                        <td class="spedizione">Fornitore</td>
-                    </tr>
-                    <tr>
-                        <td>27/06/2026 09:10</td>
-                        <td><span class="causale causale-badge lText-neutral">Scarico da magazzino</span></td>
-                        <td>Tastiera meccanica RGB</td>
-                        <td class="text-right icon icon-red">-5</td>
-                        <td class="spedizione">Magazzino Spedizioni</td>
-                    </tr>
-                    <tr>
-                        <td>25/06/2026 11:00</td>
-                        <td><span class="causale causale-badge lText-red">Furto a magazzino</span></td>
-                        <td>Mouse verticale</td>
-                        <td class="text-right  icon icon-red">-3</td>
-                        <td class="spedizione"></td>
-                    </tr>
-                    <tr>
-                        <td>24/06/2026 16:20</td>
-                        <td><span class="causale causale-badge lText-green">Rettifica positiva</span></td>
-                        <td>Cuffie X200</td>
-                        <td class="text-right  icon icon-green">+10</td>
-                        <td class="spedizione"></td>
-                    </tr>
+                    <!-- Da Fare il loop delle rige -->
+                    @foreach (var magazzino in Model.TheWarehouseMovementsList)
+                    {
+                        <tr>
+                            <td>@magazzino.LastUpdate</td>
+                            <td class="text-center"><span class="causale causale-badge @magazzino.ColorClass">@magazzino.Code</span></td>
+                            <td>@magazzino.ProductName</td>
+                            @if (magazzino.MovementType == "+")
+                            {
+                                <td class="text-center  icon icon-green">+@magazzino.QuantitaMovimento</td>
+                            }
+                            else
+                            {
+                                <td class="text-center  icon icon-red">-@magazzino.QuantitaMovimento</td>
+                            }
+
+                            <td class="text-center spedizione">@(magazzino.SupplierId != null ? "fornitore" : "Magazzino Spedizioni")</td>
+                        </tr>
+                    }
 
                 </tbody>
             </table>

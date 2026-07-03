@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -435,7 +436,7 @@ namespace DTO_Ecommerce
         public string Description { get; set; }
        
     }
-    public class sp_SearchPaymentType
+    public class sp_SearchPaymentType_Param
     {
         public string Code { get; set; }
         public string Description { get; set; }
@@ -443,6 +444,20 @@ namespace DTO_Ecommerce
         public bool IsActive { get; set; }
 
     }
+
+    public class sp_SearchPriceList_Param
+    {
+        public string PriceListName { get; set; }
+        public string Description { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string CurrencyCode { get; set; }
+        public bool? IsDefault { get; set; }
+        public bool? IsActive { get; set; }
+
+    }
+  
+
     public class sp_SearchProduct_Param
     {
         public string ProductName { get; set; }

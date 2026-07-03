@@ -199,17 +199,45 @@ namespace DTO_Ecommerce
         public bool IsActive { get; set; }
 
     }
-    public class sp_GetPriceListById_Result
+
+    public class sp_GetPriceListByIdHeader_Result
     {
-        public int? Id { get; set; }
-        public string PriceListName { get; set; }
+        public int Id { get; set; } // se non c'è riga, Header resta null nel container: qui non serve int?
+        public string PriceListName { get; set; } = string.Empty;
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public string CurrencyCode { get; set; }
+        public DateTime? EndDate { get; set; }   // reso nullable: stessa colonna di HeaderEndDate sotto
+        public string CurrencyCode { get; set; } = string.Empty;
         public bool IsDefault { get; set; }
         public bool IsActive { get; set; }
+    }
 
+    public class sp_GetPriceListByIdDetail_Result
+    {
+        public int Id { get; set; } // Id del PriceListItem (PT.Id)
+        public string ProductName { get; set; } = string.Empty;
+        public int PriceListId { get; set; }
+        public int ProductId { get; set; }
+        public decimal Price { get; set; }
+        public int MinQuantity { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+
+        // --- Campi della Testata ripetuti nella JOIN (P) ---
+        public int HeaderId { get; set; }
+        public string PriceListName { get; set; } = string.Empty;
+        public string Description { get; set; }
+        public DateTime HeaderStartDate { get; set; }
+        public DateTime? HeaderEndDate { get; set; }  // coerente con Header.EndDate sopra
+        public string CurrencyCode { get; set; } = string.Empty;
+        public bool IsDefault { get; set; }
+        public bool IsActive { get; set; }
+    }
+
+    public class sp_GetPriceListById_Result
+    {
+        public sp_GetPriceListByIdHeader_Result Header { get; set; }
+        public List<sp_GetPriceListByIdDetail_Result> Details { get; set; }
     }
 
     public class sp_GetProductById_Result
@@ -365,6 +393,7 @@ namespace DTO_Ecommerce
     {
         public int WarehouseId { get; set; }
         public DateTime Date { get; set; }
+        public DateTime LastUpdate { get; set; }
         public string DescrizioneVisualizzata { get; set; } 
         public string Code { get; set; }                
         public int ProductId { get; set; }                     
@@ -372,7 +401,29 @@ namespace DTO_Ecommerce
         public int QuantitaStock { get; set; }             
         public int QuantitaMovimento { get; set; }  
         public string MovementType { get; set; }         
-        public int? SupplierId { get; set; }               
+        public int? SupplierId { get; set; }
+        
+        public string ColorClass
+        {
+            get
+            {
+                // Usiamo ToUpper() per evitare bug se sul DB è scritto "carico" minuscolo
+                switch (this.Code.ToUpper().Trim())
+                {
+                    case "CARICO":
+                        return "lText-green";
+
+                    case "RETTIFICA+":
+                        return "lText-green";
+                    case "FURTO":
+                        return "lText-yellow";
+                    case "INCENDIO":
+                        return "lText-red";
+                    default:
+                        return "lText-neutral"; // Colore neutro di sicurezza
+                }
+            }
+        }
     }
 
     // SEARCH 
@@ -414,6 +465,19 @@ namespace DTO_Ecommerce
         public string Code { get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; }
+    }
+
+    public class sp_SearchPriceList_Result
+    {
+        int? Id { get; set; }
+        public string PriceListName { get; set; }
+        public string Description { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string CurrencyCode { get; set; }
+        public bool? IsDefault { get; set; }
+        public bool? IsActive { get; set; }
+
     }
 
     public class sp_SearchProduct_Result
