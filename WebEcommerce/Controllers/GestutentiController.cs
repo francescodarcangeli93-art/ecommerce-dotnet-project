@@ -413,6 +413,11 @@ namespace WebEcommerce.Controllers
         [HttpPost]
         public ActionResult CambiaStatoInTabella(int id, bool? isActive, int? customerId)
         {
+            if((int)Session["UserId"] == id)
+            {
+                TempData["Errore"] = "Operazione non consentita: non è possibile modificare lo stato del proprio account utente.";
+                return RedirectToAction("GestioneUtenti");
+            }
 
             int idUser = 0;
 

@@ -1,6 +1,7 @@
 ﻿using BLL_Ecommerce.Interfaces;
 using DAL_Ecommerce;
 using DTO_Ecommerce;
+using System;
 using System.Collections.Generic;
 
 namespace BLL_Ecommerce.Services
@@ -14,6 +15,13 @@ namespace BLL_Ecommerce.Services
             return ThePriceList.SearchPriceList(param);
         }
 
+    public  void ManagePriceList(sp_ManagePriceList_Param param)
+    {
+            if (string.IsNullOrWhiteSpace(param.Operation))
+                throw new ArgumentException("Operation è obbligatorio (I, U o D).", nameof(param.Operation));
+
+            ThePriceList.ManagePriceList(param);
+    }
 
 
     }

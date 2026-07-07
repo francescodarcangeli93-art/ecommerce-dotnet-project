@@ -76,7 +76,7 @@
                                                     @(utente.RoleName.ToLower() == "admin" ? "disabled" : "")
                                                     class="btn btn-sm fw-bold text-uppercase d-inline-flex align-items-center justify-content-center border-2 attivo
                                                     @(utente.IsActive ? "btn-outline-success text-success bg-success bg-opacity-10" : "btn-outline-danger text-danger bg-danger bg-opacity-10")">
-                                                    @(utente.IsActive ? "Attivo" : "Non Attivo")
+                                                @(utente.IsActive ? "Attivo" : "Non Attivo")
                                             </button>
                                         </form>
 
@@ -100,22 +100,24 @@
 
                                     </td>
 
-                                    <td class="text-end text-ce px-4">
-                                        <a href="@Url.Action("DatiUtente", "Gestutenti", new { Id = utente.Id, CustomerId = utente.CustomerId })" class="btn btn-sm btn-outline-info py-1  simpleBevel" title="Visualizza Dettagli">
-                                            <i class="bi bi-search"></i>
-                                        </a>
-                                        <a href="@Url.Action("ModificaUtente", "Gestutenti", new { id = utente.Id })" class="btn btn-sm btn-outline-warning py-1 spazio-comandi simpleBevel" title="Modifica riga">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
+                                    <td class="text-center text-ce px-4 spazio-comandi">
+                                      
+                                            <a href="@Url.Action("DatiUtente", "Gestutenti", new { Id = utente.Id, CustomerId = utente.CustomerId })" class="btn btn-sm btn-outline-info py-1  simpleBevel" title="Visualizza Dettagli">
+                                                <i class="bi bi-search"></i>
+                                            </a>
+                                            <a href="@Url.Action("ModificaUtente", "Gestutenti", new { id = utente.Id })" class="btn btn-sm btn-outline-warning py-1 simpleBevel" title="Modifica riga">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
 
-                                        <!-- ELIMINA UTENTE -->
-                                        <button type="button"
-                                                class="btn btn-sm btn-outline-danger py-1 spazio-comandi simpleBevel"
-                                                @(utente.RoleName.ToLower() == "admin" ? "disabled" : "")
-                                                title="Cancella utente"
-                                                onclick="confermaEliminazione('@utente.Id', '@utente.Username')">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
+                                            <!-- ELIMINA UTENTE -->
+                                            <button type="button"
+                                                    class="btn btn-sm btn-outline-danger py-1 simpleBevel"
+                                                    @(utente.RoleName.ToLower() == "admin" ? "disabled" : "")
+                                                    title="Cancella utente"
+                                                    onclick="confermaEliminazione('@utente.Id', '@utente.Username')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                    
                                     </td>
                                 </tr>
                             }

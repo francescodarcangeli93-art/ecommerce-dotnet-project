@@ -16,12 +16,12 @@ setTimeout(function () {
     var alerErrore = document.getElementById('alertErrore');
 
     if (alertSuccesso) {
-        alertSuccesso.style.transition = 'opacity 3s';
+        alertSuccesso.style.transition = 'opacity 5s';
         alertSuccesso.style.opacity = '0';
     }
 
     if (alerErrore) {
-        alerErrore.style.transition = 'opacity 3s';
+        alerErrore.style.transition = 'opacity 5s';
         alerErrore.style.opacity = '0';
     }
 

@@ -1,0 +1,75 @@
+﻿@model WebEcommerce.Models.PriceListViewModel
+
+<div class="table-responsive bevel">
+
+    <input type="hidden" id="indirizzoDaEliminare" value="" />
+
+    <table class="table table-striped table-hover table-bordered align-middle mb-0">
+        <thead class="table-dark table-bordered">
+            <tr>
+                <th scope="col" class="text-start">Nome Listino</th>
+                <th scope="col" class="text-start">Descrizione</th>
+                <th scope="col" class="text-center">Data Inizio</th>
+                <th scope="col" class="text-center">Data Fine</th>
+                <th scope="col" class="text-center">Valuta</th>
+                <th scope="col" class="text-center">Default</th>
+                <th scope="col" class="text-center">STATO</th>
+
+                <th class="text-center px-4">COMANDI</th>
+            </tr>
+        </thead>
+        <tbody id="corpoTabella">
+
+        @if(Model != null && Model.ThePriceList != null && Model.ThePriceList.Count > 0)
+        { 
+             foreach(var price in Model.ThePriceList)
+            {
+                <tr data-id="@price.Id">
+                    <td class="text-start">@price.PriceListName</td>
+                    <td class="text-start">@price.Description</td>
+                    <td class="text-center">@price.StartDate</td>
+                    <td class="text-center">@price.EndDate</td>
+                    <td class="text-center">@price.CurrencyCode</td>
+                    <td class="text-center">@price.IsDefault</td>
+                   
+                  
+                    <!-- GESTIONE ATTIVO NON ATTIVO -->
+                    <td class="text-center">
+                        <button type="submit"
+                    
+                            class="btn btn-sm fw-bold text-uppercase d-inline-flex align-items-center justify-content-center border-2 attivo
+                            @(price.IsActive ? "btn-outline-success text-success bg-success bg-opacity-10" : "btn-outline-danger text-danger bg-danger bg-opacity-10")">
+                            @(price.IsActive ? "Attivo" : "Non Attivo")
+                        </button>         
+                    </td>
+
+                    <td class="text-center text-ce px-4 spazio-comandi">
+                        <a href="@Url.Action("Details","GestWarehouses", new {id = price.Id})" class="btn btn-sm btn-outline-info py-1 simpleBevel btn-dettagli" data-id="@price.Id" title="Visualizza Dettagli">
+                            <i class="bi bi-search"></i>
+                        </a>
+                        <a class="btn btn-sm btn-outline-warning py-1 simpleBevel btn-modifica" data-id="@price.Id" title="Modifica riga">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+
+                        <!-- ELIMINA UTENTE -->
+                        <button type="button"
+                                class="btn btn-sm btn-outline-danger py-1 simpleBevel btn-elimina"
+                               
+                                title="Cancella listino"
+                                data-id="@price.Id"
+                                data-name="@price.PriceListName">
+
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+
+                </tr>
+            }
+        }
+        else
+            {
+                <tr ><td colspan="8">Nessun listino trovato</td></tr>
+            }
+        </tbody>
+    </table>
+</div>

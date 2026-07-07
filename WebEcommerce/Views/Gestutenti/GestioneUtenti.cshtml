@@ -21,10 +21,11 @@
     @Html.Partial("_Filtri", Model)
     <!-- -----------------------------------------------------------------------------------------------------------------------  -->
     <!--     TABELLA        -->
-<div id="tabellaUtentiContainer">
-    @*<script>if (sessionStorage.getItem('filtriRicercaUtenti')) { document.getElementById('tabellaUtentiContainer').style.display = 'none'; }</script>*@
-    @Html.Partial("_Tabella", Model)
-</div>
+
+    <div id="tabellaUtentiContainer">
+        @*<script>if (sessionStorage.getItem('filtriRicercaUtenti')) { document.getElementById('tabellaUtentiContainer').style.display = 'none'; }</script>*@
+        @Html.Partial("_Tabella", Model)
+    </div>
 
 
 </main>

@@ -4,14 +4,14 @@
 
     <input type="hidden" id="indirizzoDaEliminare" value="" />
 
-    <table class="table table-striped table-hover table-bordered align-middle mb-0">
+    <table class="table table-striped table-hover table-bordered align-middle mb-0 tab-fix">
         <thead class="table-dark table-bordered">
             <tr>
-                <th scope="col" class="text-center">Tipo</th>
-                <th scope="col" class="text-center">Nome</th>
-                <th scope="col" class="text-center">Indirizzo</th>
+                <th scope="col" class="text-start">Tipo</th>
+                <th scope="col" class="text-start">Nome</th>
+                <th scope="col" class="text-start">Indirizzo</th>
                 <th scope="col" class="text-center">CAP</th>
-                <th scope="col" class="text-center">Città</th>
+                <th scope="col" class="text-start">Città</th>
                 <th scope="col" class="text-center">STATO</th>
                 <th class="text-center px-4">COMANDI</th>
             </tr>
@@ -20,11 +20,11 @@
           @foreach(var ware in Model.WarehousesList)
             {
                 <tr data-id="@ware.Id">
-                    <td class="text-center">@ware.Type</td>
-                    <td class="text-center">@ware.Name</td>
-                    <td class="text-center">@ware.Address</td>
+                    <td class="text-start">@ware.Type</td>
+                    <td class="text-start">@ware.Name</td>
+                    <td class="text-start">@ware.Address</td>
                     <td class="text-center">@ware.PostalCode</td>
-                    <td class="text-center">@ware.City</td>
+                    <td class="text-start">@ware.City</td>
                     <!-- GESTIONE ATTIVO NON ATTIVO -->
                     <td class="text-center">
                         <button type="submit"
@@ -35,17 +35,17 @@
                         </button>         
                     </td>
 
-                    <td class="text-center text-ce px-4">
+                    <td class="text-center text-ce px-4 spazio-comandi">
                         <a href="@Url.Action("Details","GestWarehouses", new {id = ware.Id})" class="btn btn-sm btn-outline-info py-1 simpleBevel btn-dettagli" data-id="@ware.Id" title="Visualizza Dettagli">
                             <i class="bi bi-search"></i>
                         </a>
-                        <a class="btn btn-sm btn-outline-warning py-1 simpleBevel btn-modifica spazio-comandi" data-id="@ware.Id" title="Modifica riga">
+                        <a class="btn btn-sm btn-outline-warning py-1 simpleBevel btn-modifica" data-id="@ware.Id" title="Modifica riga">
                             <i class="bi bi-pencil"></i>
                         </a>
 
                         <!-- ELIMINA UTENTE -->
                         <button type="button"
-                                class="btn btn-sm btn-outline-danger py-1 simpleBevel spazio-comandi btn-elimina"
+                                class="btn btn-sm btn-outline-danger py-1 simpleBevel btn-elimina"
                                
                                 title="Cancella fornitore"
                                 data-id="@ware.Id"

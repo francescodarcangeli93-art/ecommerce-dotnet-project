@@ -40,6 +40,7 @@ namespace DAL_Ecommerce
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         dtPrice.Load(reader);
+                 
                     }
 
                     if (dtPrice.Rows.Count > 0)
@@ -50,7 +51,7 @@ namespace DAL_Ecommerce
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
 
             return retVal;
@@ -82,8 +83,7 @@ namespace DAL_Ecommerce
 
                     
                   
-                    if(dsList.Tables[0].Rows.Count > 0 || dsList.Tables[1].Rows.Count > 0)
-                    {
+                    
                         DataTable dtOrder_Header = null;
                         DataTable dtOrder_Detail = null;
 
@@ -94,7 +94,7 @@ namespace DAL_Ecommerce
                         }
                         else if (spParam.Mode == "D")
                         {
-                            dtOrder_Detail = dsList.Tables[1];
+                            dtOrder_Detail = dsList.Tables[0];
                         }
                         else
                         {
@@ -102,13 +102,19 @@ namespace DAL_Ecommerce
                             dtOrder_Detail = dsList.Tables[1];
                         }
 
-
-                        // se H il risultato va nel campo  public sp_GetPriceListByIdHeader_Result Header { get; set; }
-
-                        // se D il risultato va nel campo public List<sp_GetPriceListByIdDetail_Result> Details { get; set; }
+                    //  se dtOrder_Header non è vuoto  Oppure dtOrder_Detail non è vuoto  dtOrder_Header è maggiore di 0
+                    //  oppure dtOrder_Detail > 0 fai le istruzioni successive 
 
 
-                    }
+                    // se H O B il risultato va nel campo  public sp_GetPriceListByIdHeader_Result Header { get; set; }
+                    //sp_GetPriceListByIdHeader_Result = dtOrder_Header
+
+                    // se D O B il risultato va nel campo public List<sp_GetPriceListByIdDetail_Result> Details { get; set; }
+
+                    //  List<sp_GetPriceListByIdDetail_Result> Details = dtOrder_Detail -> lista
+
+
+
                 }
             }
             catch (Exception ex)
@@ -119,7 +125,44 @@ namespace DAL_Ecommerce
 
             return retVal;
         }
-        
+
+        public void ManagePriceList(sp_ManagePriceList_Param param)
+        {
+            string spName = "dbo.sp_ManagePriceList";
+
+
+
+            using (SqlConnection conn = DbConnectionFactory.CreateConnection())
+            using (SqlCommand cmd = new SqlCommand(spName, conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                // Mappatura dei parametri con gestione dei valori NULL
+                cmd.Parameters.Add("@Operation", SqlDbType.Char, 1).Value = param.Operation;
+                cmd.Parameters.Add("@Id", SqlDbType.Int).Value = (object)param.Id ?? DBNull.Value;
+                cmd.Parameters.Add("@PriceListName", SqlDbType.NVarChar, 50).Value = (object)param.PriceListName ?? DBNull.Value;
+                cmd.Parameters.Add("@Description", SqlDbType.NVarChar, 250).Value = (object)param.Description ?? DBNull.Value;
+                cmd.Parameters.Add("@StartDate", SqlDbType.DateTime).Value = (object)param.StartDate ?? DBNull.Value;
+                cmd.Parameters.Add("@EndDate", SqlDbType.DateTime).Value = (object)param.EndDate ?? DBNull.Value;
+                cmd.Parameters.Add("@CurrencyCode", SqlDbType.NVarChar, 3).Value = (object)param.CurrencyCode ?? DBNull.Value;
+                cmd.Parameters.Add("@IsDefault", SqlDbType.Bit).Value = (object)param.IsDefault ?? DBNull.Value;
+
+                cmd.Parameters.Add("@IsActive", SqlDbType.Bit).Value = (object)param.IsActive ?? DBNull.Value;
+
+                try
+                {
+                    conn.Open();
+
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SqlException ex)
+                {
+
+                    throw new Exception(ex.Message, ex);
+                }
+            }
+
+        }
 
     }
 }

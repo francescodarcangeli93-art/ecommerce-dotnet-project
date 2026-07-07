@@ -16,21 +16,21 @@ namespace WebEcommerce.Controllers
 
     [CheckSession]
     [CheckAdmin]
-    public class GestListinoController : Controller
+    public class GestPriceListController : Controller
     {
 
  
         private readonly ILogService _logService;
         private readonly IPriceListService _priceListService;
  
-        public GestListinoController()
+        public GestPriceListController()
         {
             _logService = new LogService();
             _priceListService = new PriceListService();
          
         }
 
-        // GET: Supplier
+        
         public  ActionResult Index()
         {
            
@@ -40,6 +40,7 @@ namespace WebEcommerce.Controllers
             {
                 idUser = (int)Session["UserId"];
 
+                
                
                 sp_SearchPriceList_Param param = new sp_SearchPriceList_Param();
 
@@ -58,8 +59,8 @@ namespace WebEcommerce.Controllers
             }
         }
 
-        // metodo per gernare una tabella nella partialview
-        [HttpPost]
+        // metodo per generare una tabella nella partialview
+        [HttpGet]
         public PartialViewResult SearchPriceListPartial(sp_SearchPriceList_Param param)
         {
 
@@ -74,149 +75,61 @@ namespace WebEcommerce.Controllers
 
                 };
 
-                return PartialView("_SupplierTable", Model);
+                return PartialView("_PriceListTable", Model);
             }
             catch (Exception ex)
             {
                 _logService.WriteLogProcessError(idUser, ex.Message);
-                return PartialView("_SupplierTable", new List<sp_SearchSupplier_Result>());
+                return PartialView("_PriceListTable", new List<sp_SearchPriceList_Result>());
             }
         }
 
+        [HttpPost]
+        public JsonResult Save(sp_ManagePriceList_Param param)
+        {
+            int idUser = 0;
 
-        //// GET: Supplier/Details
-        //[HttpGet]
-        //public JsonResult Details(int id)
-        //{
+            try
+            {
+                idUser = (int)Session["UserId"];
+                // TODO: Add insert logic here
+                param.Operation = "I";
 
-        //    int idUser = 0;
+                _priceListService.ManagePriceList(param);
 
-        //    if (Session["UserId"] == null)
-        //    {
-        //        return Json(new { success = false, sessionExpired = true }, JsonRequestBehavior.AllowGet);
-        //    }
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
 
-        //    try
-        //    {
-        //        idUser = (int)Session["UserId"];
+        [HttpPost]
+        public JsonResult Delete(int id)
+        {
+            int idUser = 0;
+            try
+            {
+                idUser = (int)Session["UserId"];
 
-        //        sp_GetSupplierById_Result Supplier =  _supplierService.GetSupplierById(id);
+                sp_ManagePriceList_Param param = new sp_ManagePriceList_Param
+                {
+                    Operation = "D",
+                    Id = id
+                };
 
-        //        if (Supplier == null)
-        //        {
-        //            return Json(new { success = false, message = "Il fornitore corrispondete non è stato trovato"}, JsonRequestBehavior.AllowGet);
+                _priceListService.ManagePriceList(param);
 
-        //        }
-        //        return Json(new { success = true, data = Supplier}, JsonRequestBehavior.AllowGet);
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        _logService.WriteLogProcessError(idUser, ex.Message);
-        //        return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
-        //    }
-        //}
-
-
-        //// POST: Supplier/Create
-        //[HttpPost]
-        //public JsonResult Save(sp_ManageSupplier_Param param)
-        //{
-        //    int idUser = 0;
-
-        //    if (Session["UserId"] == null)
-        //    {
-        //        return Json(new { success = false, sessionExpired = true });
-        //    }
-
-        //    try
-        //    {
-        //        idUser = (int)Session["UserId"];
-        //        // TODO: Add insert logic here
-        //        param.Operation = "I";
-
-        //         _supplierService.sp_ManageSupplier(param);
-
-        //        return Json(new { success = true });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logService.WriteLogProcessError(idUser, ex.Message);
-        //        return Json(new { success = false, message = ex.Message});
-        //    }
-        //}
-
-
-        //// GET: Supplier/Edit/5
-        //public JsonResult Edit(int id)
-        //{
-        //    int idUser = 0;
-        //    try
-        //    {
-        //        idUser = (int)Session["UserId"];
-        //        //  prendere i dati dal database del supplier tramite id
-        //    sp_GetSupplierById_Result Supplier =  _supplierService.GetSupplierById(id);
-        //        // impacchettare i dati e spedirli  alla pagina
-
-        //        return Json(new { success = true, data = Supplier}, JsonRequestBehavior.AllowGet);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logService.WriteLogProcessError(idUser, ex.Message);
-        //        return Json(new { success = false, message = ex.Message });
-        //    }
-        //}
-
-        //// POST: Supplier/Edit/5
-        //[HttpPost]
-        //public JsonResult Edit(sp_ManageSupplier_Param param)
-        //{
-        //    int idUser = 0;
-        //    try
-        //    {
-        //        idUser = (int)Session["UserId"];
-        //        // TODO: Add update logic here
-        //        param.Operation = "U";
-        //         _supplierService.sp_ManageSupplier(param);
-
-
-        //        return Json(new { success = true });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logService.WriteLogProcessError(idUser, ex.Message);
-        //        return Json(new { success = false, message = ex.Message});
-        //    }
-        //}
-
-
-
-        //// POST: Supplier/Delete/5
-        //[HttpPost]
-        //public JsonResult Delete(int id)
-        //{
-        //    int idUser = 0;
-        //    try
-        //    {
-        //        idUser = (int)Session["UserId"];
-
-        //        sp_ManageSupplier_Param param = new sp_ManageSupplier_Param
-        //        {
-        //            Operation = "D",
-        //            Id = id
-        //        };
-
-        //         _supplierService.sp_ManageSupplier(param);
-
-        //        return Json( new { success = true});
-        //    }
-        //    catch (Exception ex) 
-        //    {
-        //        _logService.WriteLogProcessError(idUser, ex.Message);
-        //        return Json(new { success = false, message = ex.Message });
-        //    }
-        //}
-
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
 
 
     }

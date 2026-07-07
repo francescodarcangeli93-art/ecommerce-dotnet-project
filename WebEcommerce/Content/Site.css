@@ -214,6 +214,26 @@ select,
     display:block;
     margin-top: 0;
 }
+
+/* ==========================================================================
+   SELECT OPTION
+   ========================================================================== */
+select {
+    color: #000;
+}
+
+.is-placeholder {
+    color: #676767;
+    
+}
+
+.temp-place {
+    
+    transform: translateY(-70px);
+    color: #a5a5a5;
+    font-size: 13px;
+    margin-left: 10px;
+}
 /* ==========================================================================
    HOME PAGE GRAPHICS
    ========================================================================== */
@@ -416,16 +436,18 @@ select,
         color: #6c757d;
     }
 
-    .spazio-comandi{
-        margin-left:10px;
-    }
-
-    /* ==========================================================================
+        .spazio-comandi > a, .spazio-comandi > button {
+            margin-left: 10px;
+        }
+        .spazio-comandi > a:first-child {
+            margin-left: 0px;
+        }
+        /* ==========================================================================
             GESTIONE UTENTE
        ========================================================================== */
-    .test{
-        background-color:red;
-    }
+        .test {
+            background-color: red;
+        }
 
     .buttonAdd{
         background-color: #ffc107 !important;
@@ -497,10 +519,12 @@ select,
         border-radius: 25px !important;
         white-space: nowrap !important;
     }
-
+   
 
 /* ==========================================================================
     PASSWORD GRAPHICS
+
+    
    ========================================================================== */
 .password-wrapper {
     display: flex;
@@ -604,17 +628,12 @@ select,
     left: 0 !important;
     right: 0 !important;
     bottom: 0 !important;
-
     width: 100vw !important;
     height: 100vh !important;
     background-color: rgba(0, 0, 0, 0.7);
-
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-
-
-
     z-index: 9999;
     opacity: 0;
     pointer-events: none;
@@ -629,33 +648,31 @@ select,
 .personal-card {
     font-family: poppins;
     background-color: rgb(253, 253, 253);
-    width: 400px;
+    width: 370px;
     padding: 1px 20px 15px;
     border: solid 2px rgb(199, 198, 192);
     border-radius: 30px;
 }
 
 
-svg {
-    width: 90px;
-    margin-top: 5px;
-    display: block;
+.cont-icon {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.icona-attenzione {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
     margin-left: auto;
     margin-right: auto;
-}
-
-    svg > rect {
-        fill: none;
-    }
-
-path, circle {
-    fill: rgb(246, 56, 56);
-}
-
-svg .triangolo {
-    fill: none;
-    stroke: rgb(246, 56, 56);
-    stroke-width: 2px
+    -webkit-mask-image: url('/Content/Image/Icons/custom/IconTEst.svg');
+    mask-image: url('/Content/Image/Icons/custom/IconTEst.svg');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    background-color: red;
 }
 
 
@@ -664,53 +681,73 @@ svg .triangolo {
 }
 
 .personal-card h3 {
-    margin-top: 5px;
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
 }
 
-.personal-card h3 {
-    text-align: center;
-}
+
 
 .personal-card p {
     text-align: center;
+    font-size: 18px;
+    margin-bottom: 25px;
+    font-weight: 500;
 }
 
 .buttons button {
     height: 50px;
-    width: 120px;
+    width: 130px;
     border-radius: 50px;
     border: none;
     margin-bottom: 10px;
+    cursor: pointer;
+    padding: 5px 5px;
+    cursor: pointer;
    
 }
 
-.buttons .no-btn {
-    background-color: rgb(220, 219, 219);
-    margin-right: 8px;
+    .buttons button {
+        font-weight: 600;
+    }
+
+.no-btn {
+    background-color: #DCDBDB;
+    margin-right: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.buttons .si-btn {
-    background-color: rgb(246, 56, 56);
-    margin-left:8px;
+.si-btn {
+    background-color: #EF4444;
     color: whitesmoke;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+.no-btn:hover {
+    background-color: #D1D5DB;
+    transform: translateY(-2px);
+}
 
-/* ==========================================================================
+.si-btn:hover {
+    background-color: #BB2D3B;
+    transform: translateY(-2px);
+}
+
+    /* ==========================================================================
     MAGAZZINI GRAFICA
    ========================================================================== */
-
-
-.header-magazzino {
-    background-color: #fff !important;
-    border-radius: 12px !important;
-    border: 1px solid #eee !important;
-    padding: 1rem 1.25rem !important;
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    margin-bottom: 1.5rem !important;
-}
+    .header-magazzino {
+        background-color: #fff !important;
+        border-radius: 12px !important;
+        border: 1px solid #eee !important;
+        padding: 1rem 1.25rem !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        margin-bottom: 1.5rem !important;
+    }
 
 .magazziniDimensioni a{
     font-size: 17px;
@@ -721,10 +758,14 @@ svg .triangolo {
     border-radius: 20px;
 }
 
+
+.tab-fix {
+    table-layout: fixed;
+}
+
 .causale-badge {
     padding: 5px 14px;
     font-weight: 400;
-    
 }
 
 .lText-green {

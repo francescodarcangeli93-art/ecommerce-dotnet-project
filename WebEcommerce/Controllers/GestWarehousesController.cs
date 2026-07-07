@@ -28,10 +28,10 @@ namespace WebEcommerce.Controllers
         }
 
 
-       
 
-        // GET: Supplier
-        public  ActionResult Index()
+
+        // GET: Wharehouse
+        public ActionResult Index()
         {
         
             int idUser = 0;
@@ -110,7 +110,7 @@ namespace WebEcommerce.Controllers
         }
 
 
-        // POST: Supplier/Create
+        // POST: Wharehouse/Create
         [HttpPost]
         public JsonResult Save(sp_ManageWarehouse_Param param)
         {
@@ -133,7 +133,7 @@ namespace WebEcommerce.Controllers
             }
         }
 
-        // POST: Supplier/Delete/5
+        // POST: Wharehouse/Delete/5
         [HttpPost]
         public JsonResult Delete(int id)
         {
@@ -159,7 +159,7 @@ namespace WebEcommerce.Controllers
             }
         }
 
-        // GET: Supplier/Edit/5
+        // GET: Wharehouse/Edit/5
         public JsonResult Edit(int id)
         {
             int idUser = 0;
@@ -179,7 +179,7 @@ namespace WebEcommerce.Controllers
             }
         }
 
-        // POST: Supplier/Edit/5
+        // POST: Wharehouse/Edit/5
         [HttpPost]
         public JsonResult Edit(sp_ManageWarehouse_Param param)
         {

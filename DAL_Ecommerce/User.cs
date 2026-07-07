@@ -41,7 +41,7 @@ namespace DAL_Ecommerce
 
 
                     conn.Open();
-                    System.Diagnostics.Debug.WriteLine($"[2] Dopo conn.Open(): {sw.ElapsedMilliseconds}ms");
+                  
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {

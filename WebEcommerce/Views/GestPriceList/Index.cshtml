@@ -1,4 +1,4 @@
-﻿@model WebEcommerce.Models.SupplierViewModel
+﻿@model WebEcommerce.Models.PriceListViewModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -7,288 +7,193 @@
     <link rel="stylesheet" href="@Url.Content("~/Content/Site.css")" />
 }
 
+
 <main class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1 class="fw-bold text-black text-center w-100 titolo-animated">
-            Gestione Fornitori
+            Gestione Listini
         </h1>
     </div>
 
-    <span id="resultMessage"></span>
-
+    <!--  FILTRI -->
     <div class="mb-4 p-4 bg-white card-animated card-detail">
-        <h5 class="mb-4 fw-semibold text-dark">Ricerca Fornitori</h5>
+        <h5 class="mb-4 fw-semibold text-dark">Ricerca Listino</h5>
         <div>
-            <div class="card-body row g-3" id="filtri">
+            <div class="card-body row g-3" id="filtriContainer">
+
                 <div class="col-md-3">
-                    @*<label for="txtCompany">Azienda</label>*@
-                    <input type="text" id="txtCompany" name="CompanyName" placeholder="Azienda" class="form-control input-animated" />
+                    <input type="text" id="searchPriceListName" name="PriceListName" placeholder="Nome Listino" class="form-control input-animated" />
                 </div>
 
                 <div class="col-md-3">
-                    @*<label for="txtReferente">Referente</label>*@
-                    <input type="text" id="txtReferente" name="ContactName" placeholder="Referente" class="form-control input-animated" />
+                    <input type="text" id="searchDescription" name="Description" placeholder="Descrizione" class="form-control input-animated" />
                 </div>
 
                 <div class="col-md-3">
-                    @*<label for="txtRuolo">Ruolo</label>*@
-                    <input type="text" id="txtRuolo" name="ContactTitle" placeholder="Ruolo" class="form-control input-animated" />
-                </div>
-                <div class="col-md-3">
-                    @*<label for="txtcitta">Città</label>*@
-                    <input type="text" id="txtCitta" name="City" placeholder="Città" class="form-control input-animated" />
-                </div>
-                <div class="col-md-3">
-                    @*<label for="txtPaese">Paese</label>*@
-                    <input type="text" id="txtPaese" name="Country" placeholder="Paese" class="form-control input-animated" />
+                    <input type="date" id="searchStartDate" name="StartDate" placeholder="Data Inizio" class="form-control input-animated" />
+                    <label for="searchStartDate" class="temp-place">Data Inizio</label>
                 </div>
 
-                <!--<div class="col-md-3">-->
-                    @*<label for="txtTelefono">Telefono</label>*@
-                    <!--<input type="text" id="txtTelefono" name="Phone" placeholder="Telefono" class="form-control input-animated" />
-                </div>-->
-                <!--<div class="col-md-3">-->
-                    @*<label for="txtFax">Fax</label>*@
-                    <!--<input type="text" id="txtFax" name="Fax" placeholder="Fax" class="form-control input-animated" />
-                </div>-->
-            <div class="col-md-9 d-flex align-items-center gap-2 justify-content-end">
+                <div class="col-md-3">
+                    <input type="date" id="searchEndDate" name="EndDate" placeholder="Data Fine" class="form-control input-animated" />
+                    <label for="searchEndDate" class="temp-place">Data Fine</label>
+                </div>
 
-                <button type="button" id="btnPulisci" class="btn fw-semibold px-4 btn-animated bt-pulisci">Pulisci</button>
-                <button type="button" id="btnCerca" class="btn fw-semibold px-4 btn-animated bt-cerca">Cerca</button>
+                <div class="col-md-3">
+                    <select name="CurrencyCode" id="searchCurrencyCode" class="form-select input-animated is-placeholder">
+                        <option value="">--Selezionare la Valuta--</option>
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                        <option value="GBP">GBP</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <select name="IsDefault" id="searchIsDefault" class="form-select input-animated is-placeholder">
+                        <option value="">--Selezionare Default--</option>
+                        <option value="true">Default</option>
+                        <option value="false">Non Default</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <select name="IsActive" id="searchIsActive" class="form-select input-animated is-placeholder">
+                        <option value="">--Selezionare lo Stato--</option>
+                        <option value="true">Attivo</option>
+                        <option value="false">Non Attivo</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3 d-flex align-items-center gap-2 justify-content-end">
+                    <button type="button" id="btnPulisci" class="btn fw-semibold px-4 btn-animated bt-pulisci"><i class="bi-eraser"></i>  Pulisci</button>
+                    <button type="button" id="btnCerca" data-search-url="@Url.Action("SearchPriceListPartial", "GestPriceList")" class="btn fw-semibold px-4 btn-animated bt-cerca"> <i class="bi bi-search me-1"></i> Cerca</button>
+                </div>
+
             </div>
+
+        </div>
+
+
+    </div>
+
+    @*TASTO AGGIUNGI*@
+    <div class="d-flex justify-content-between align-items-end mb-3">
+        <h3 class="m-0">Listino Prezzi</h3>
+
+        <a id="btnAggiungi" class="btn fw-semibold px-4 btn-animated buttonAdd" data-bs-toggle="modal" data-bs-target="#aggiungi">
+            <i class="bi bi-tag-fill"></i>  Aggiungi
+        </a>
+    </div>
+
+    <!-- Tabella Listino Prezzi -->
+    <div id="tabellaContainer">
+        @Html.Partial("_PriceListTable", Model)
+    </div>
+
+
+    <!--MODALE ELIMINA-->
+    <div class="modal fade" id="modalElimina" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Elimina</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Sicuro di voler eliminare il fornitore <strong id="nomeFornitore"></strong>?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="confermaElimina" data-url="@Url.Action("Delete","GestPriceList")" class="btn btn-danger">Elimina</button>
+                </div>
             </div>
         </div>
     </div>
 
+    <!--MODALE AGGIUNGI-->
+    <div class="modal fade" id="aggiungi" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Aggiungi Magazzino</h5>
 
+                </div>
+                <div class="modal-body">
 
-    @*TASTO AGGIUNGI*@
-    <div class="d-flex justify-content-between align-items-end mb-3">
-        <h3 class="m-0">Lista Fornitori</h3>
+                    <div class="mb-4 p-4 bg-white card-animated card-detail">
+                        <div>
+                            <form id="priceListForm">
 
-        <a id="btnAggiungi" class="btn fw-semibold px-4 btn-animated buttonAdd">
-            <i class="bi bi-truck"></i> Aggiungi
-        </a>
+                                <div class="card-body row g-3">
 
+                                    <div class="col-md-6">
+                                        <input type="text" id="addPriceListName" name="PriceListName" placeholder="Nome Listino" class="form-control input-animated" />
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <input type="text" id="addDescription" name="Description" placeholder="Descrizione" class="form-control input-animated" />
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <input type="date" id="addStartDate" name="StartDate" placeholder="Data Inizio" class="form-control input-animated" />
+                                        <label for="addStartDate" class="temp-place">Data Inizio</label>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <input type="date" id="addEndDate" name="EndDate" placeholder="Data Fine" class="form-control input-animated" />
+                                        <label for="addEndDate" class="temp-place">Data Fine</label>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <select name="CurrencyCode" id="addCurrencyCode" class="form-select input-animated is-placeholder">
+                                            <option value="">--Selezionare la Valuta--</option>
+                                            <option value="EUR">EUR</option>
+                                            <option value="USD">USD</option>
+                                            <option value="GBP">GBP</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <select name="IsDefault" id="addIsDefault" class="form-select input-animated is-placeholder">
+                                            <option value="">--Selezionare Default--</option>
+                                            <option value="true">Default</option>
+                                            <option value="false">Non Default</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <select name="IsActive" id="addIsActive" class="form-select input-animated is-placeholder">
+                                            <option value="">--Selezionare lo Stato--</option>
+                                            <option value="true">Attivo</option>
+                                            <option value="false">Non Attivo</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                    <div id="resultMessage" class="mt-2 text-center"></div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary simpleBevel" data-bs-dismiss="modal">Indietro</button>
+                    <button type="button" id="btnSalva" class="btn btn-primary simpleBevel" data-save-url="@Url.Action("Save", "GestPriceList")">Salva</button>
+                </div>
+
+            </div>
+        </div>
     </div>
 
-    <div id="tabellaContainer">
-        @Html.Partial("_SupplierTable", Model)
-    </div>
 
 
 
 </main>
 
-<!-- MODALE ELIMINA -->
-
-<div class="modal fade" id="modalElimina" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Elimina</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Sicuro di voler eliminare il fornitore <strong id="nomeFornitore"></strong>?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" id="confermaElimina" data-url="@Url.Action("Delete","GestSupplier")" class="btn btn-danger">Elimina</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- MODALE VISUALIZZA DETTAGLI -->
-<div class="modal fade" id="modalDettagli" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Dettagli Fornitore</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-
-                <div class="card-body">
-                    <label for="txtCompany">Azienda</label>
-                    <input type="text" id="showCompany" class="form-control input-animated" readonly />
-
-                    <label for="txtReferente">Referente</label>
-                    <input type="text" id="showReferente" name="ContactName" placeholder="Referente" class="form-control input-animated" readonly />
-
-                    <label for="txtRuolo">Ruolo</label>
-                    <input type="text" id="showRuolo" name="ContactTitle" placeholder="Ruolo" class="form-control input-animated" readonly />
-
-                    <label for="txtcitta">Città</label>
-                    <input type="text" id="showCitta" name="City" placeholder="Città" class="form-control input-animated" readonly />
-
-                    <label for="txtPaese">Paese</label>
-                    <input type="text" id="showPaese" name="Country" placeholder="Paese" class="form-control input-animated" readonly />
-
-                    <label for="txtTelefono">Telefono</label>
-                    <input type="text" id="showTelefono" name="Phone" placeholder="Telefono" class="form-control input-animated" readonly />
-
-                    <label for="txtFax">Fax</label>
-                    <input type="text" id="showFax" name="Fax" placeholder="None" class="form-control input-animated" readonly />
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- MODALE AGGIUNGI Fornitore-->
-<div class="modal fade" id="modalAggiungi" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Aggiungi Fornitore</h5>
-                
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body">
-                <div class="mb-4 p-4 bg-white card-animated card-detail">
-                   
-                    <div>
-                        <div class="card-body row g-3" id="filtri">
-                            <div class="col-md-6">
-
-                                <div class="mb-3">
-                                    <label for="Company">Azienda</label>
-                                    <input type="text" id="Company" name="CompanyName" placeholder="nome Azienda" class="form-control input-animated" required />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="Referente">Referente</label>
-                                    <input type="text" id="Referente" name="ContactName" placeholder="nome Referente" class="form-control input-animated" />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="Ruolo">Ruolo</label>
-                                    <input type="text" id="Ruolo" name="ContactTitle" placeholder="Ruolo del referente" class="form-control input-animated" />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="Citta">Città</label>
-                                    <input type="text" id="Citta" placeholder="es: Roma" name="City" class="form-control input-animated" />
-                                </div>
-
-                            </div>
-
-                            <div class="col-md-6">
-
-                                @*<div class="mb-3">
-                                    <label for="Paese">Paese</label>
-                                    <input type="text" id="Paese" name="Country" placeholder="es:Italia" class="form-control input-animated" />
-                                </div>*@
-
-                                <div class="mb-3">
-                                    <label for="Paese" class="form-label">Paese</label>
-                                    <select name="Country" id="Paese" class="form-select input-animated">
-                                        <option value="">--Seleziona Nazione--</option>
-                                        @foreach (var nazione in Model.Country)
-                                        {
-                                            <option value="@nazione.Name">@nazione.Name</option>
-
-                                        }
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="Telefono">Telefono</label>
-                                    <input type="text" id="Telefono" name="Phone" class="form-control input-animated" />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="Fax">Fax</label>
-                                    <input type="text" id="Fax" name="Fax" class="form-control input-animated" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" id="btnSalva" class="btn btn-success">Salva</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- MODALE MODIFICA Fornitore-->
-<div class="modal fade" id="modalEdit" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body">
-                <div class="mb-4 p-4 bg-white card-animated card-detail">
-                    <h5 class="mb-4 fw-semibold text-dark">Aggiungi Fornitore</h5>
-                    <div>
-                        <div class="card-body row g-3" id="filtri">
-                            <div class="col-md-6">
-
-                                <input type="hidden" id="editId" />
-
-                                <div class="mb-3">
-                                    <label for="editCompany">Azienda</label>
-                                    <input type="text" id="editCompany" name="CompanyName" placeholder="nome Azienda" class="form-control input-animated" required />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="editReferente">Referente</label>
-                                    <input type="text" id="editReferente" name="ContactName" placeholder="nome Referente" class="form-control input-animated" />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="editRuolo">Ruolo</label>
-                                    <input type="text" id="editRuolo" name="ContactTitle" placeholder="Ruolo del referente" class="form-control input-animated" />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="editCitta">Città</label>
-                                    <input type="text" id="editCitta" placeholder="es: Roma" name="City" class="form-control input-animated" />
-                                </div>
-
-                            </div>
-
-                            <div class="col-md-6">
-
-                                <div class="mb-3">
-                                    <label for="txtPaese">Paese</label>
-                                    <input type="text" id="editPaese" name="Country" placeholder="es:Italia" class="form-control input-animated" />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="txtTelefono">Telefono</label>
-                                    <input type="text" id="editTelefono" name="Phone" class="form-control input-animated" />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="txtFax">Fax</label>
-                                    <input type="text" id="editFax" name="Fax" class="form-control input-animated" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-                <button type="button" id="btnModifica" class="btn btn-success">Modifica</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 @section scripts {
-    <script src="@Url.Content("~/Scripts/js/GestioneSupplier.js")"></script>
+    <script src="@Url.Content("~/Scripts/js/GestionePriceList.js")"></script>
 }
