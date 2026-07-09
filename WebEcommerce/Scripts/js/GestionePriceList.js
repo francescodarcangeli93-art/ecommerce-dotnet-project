@@ -6,6 +6,7 @@ $(document).ready(function () {
     const $btnAdd = $('#btnAggiungi');
     const $tabellaContainer = $('#tabellaContainer');
 
+ 
 
     const allSelect = document.querySelectorAll('.is-placeholder');
 
@@ -139,6 +140,27 @@ $(document).ready(function () {
         });
     });
 
+
+    /* ==========================================================
+     2. MODALE ELIMINA
+     ==========================================================*/
+
+    $('.btn-elimina').on('click', function () {
+
+        const id = $(this).data('id');
+        const name = $(this).data('name');
+
+        $('#listinoDaEliminare').val(id);
+        $('#delPriceList').text(name);
+
+        $('#modalElimina').addClass('active2')
+    });
+
+    $('.no-btn').on('click', function () {
+
+        $('#modalElimina').removeClass('active2');
+    });
+
     /* ==========================================================
        3. ELIMINA LISTINO
        ==========================================================*/
@@ -149,17 +171,18 @@ $(document).ready(function () {
         const name = $(this).data('name');
 
         $('#indirizzoDaEliminare').val(id);
-
-        $('#modalElimina').modal('show');
+     
+        
     });
 
-    $('#confermaElimina').on('click', function () {
+    $('#delList-btn').on('click', function () {
 
-        const $btnElimina = $('#confermaElimina');
-        const $deleteUrl = $btnElimina.attr('data-url');
+        const $btnElimina = $('#delList-btn');
+        const $deleteUrl = $btnElimina.attr('data-delete-url');
+        
 
         const model = {
-            id: $('#indirizzoDaEliminare').val()
+            id: $('#listinoDaEliminare').val()
         }
 
         $.ajax({
@@ -173,7 +196,7 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.success) {
 
-                    $('#modalElimina').modal('hide');
+                    $('#modalElimina').removeClass('active2');
 
                     // rimuovo la riga della tabella corrispondente all'indirizzo eliminato
                     $('tr[data-id="' + model.id + '"]').remove();
@@ -186,6 +209,95 @@ $(document).ready(function () {
         });
 
     });
+
+
+    /* ==========================================================
+       3. MODIFICA  PRICELIST
+       ==========================================================*/
+
+    $('#tabellaContainer').on('click', '.btn-modifica', function () {
+
+        const model = {
+            id: $(this).data('id')
+        }
+
+        $.ajax({
+            url: '/GestPriceList/Edit',
+            type: 'GET',
+            data: model,
+            dataType: 'json',
+
+            success: function (response) {
+
+           
+
+                if (response.success) {
+                    const header = response.data.Header; 
+
+                    $('#editId').val(header.Id);
+                    $('#editPriceListName').val(header.PriceListName);
+                    $('#editDescription').val(header.Description);
+                    $('#editStartDate').val(header.StartDateString || '');
+                    $('#editEndDate').val(header.EndDateString || '');
+                    $('#editCurrencyCode').val(header.CurrencyCode);
+
+                    $('input[name="editIsDefault"][value="' + header.IsDefault + '"]').prop('checked', true);
+                    $('input[name="editIsActive"][value="' + header.IsActive + '"]').prop('checked', true);
+
+                    $('#modalEdit').modal('show');
+
+                } else {
+                    $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
+                }
+            },
+
+            error: function (xhr, status, error) {
+                $('#resultMessage').html('<span style="color:red">Errore: ' + xhr.responseText + '</span>');
+            }
+
+        });
+
+    });
+
+    $('#btnEditModifica').on('click', function () {
+
+        const model = {
+            Id: $('#editId').val(),
+            PriceListName: $('#editPriceListName').val(),
+            Description: $('#editDescription').val(),
+            StartDate: $('#editStartDate').val(),
+            EndDate: $('#editEndDate').val(),
+            CurrencyCode: $('#editCurrencyCode').val(),
+            IsDefault: $('input[name=editIsDefault]:checked').val(),
+            IsActive: $('input[name=editIsActive]:checked').val()
+
+        }
+
+        $.ajax({
+            url: '/GestPriceList/Edit',
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(model),
+            dataType: 'json',
+
+            success: function (response) {
+                if (response.success) {
+                    $('#modalEdit').modal('hide');
+                    $('#btnCerca').click();
+
+                } else {
+                    $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
+                }
+            },
+
+            error: function (xhr, status, error) {
+                $('#resultMessage').html('<span style="color:red">Errore: ' + xhr.responseText + '</span>');
+            }
+
+        });
+    });
+
+ 
 
 });
 

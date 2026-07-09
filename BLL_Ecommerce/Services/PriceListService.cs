@@ -23,6 +23,20 @@ namespace BLL_Ecommerce.Services
             ThePriceList.ManagePriceList(param);
     }
 
+        public sp_GetPriceListById_Result GetPriceListById(sp_GetPriceListById_Param Param)
+        {
 
+       
+
+            return ThePriceList.GetPriceListById(Param);
+        }
+
+        public int? ManagePriceListItem(sp_ManagePriceListItem_Param spParam)
+        {
+            if (spParam == null) throw new ArgumentNullException(nameof(spParam));
+
+
+            return ThePriceList.ManagePriceListItem(spParam);
+        }
     }
 }

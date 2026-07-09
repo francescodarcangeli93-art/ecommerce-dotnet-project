@@ -25,7 +25,7 @@ namespace WebEcommerce.Models
 
         public sp_GetUserById_Result UserDetail;
 
-   
+        
 
         // singoli valori 
         public int? Id { get; set; }
@@ -98,5 +98,9 @@ namespace WebEcommerce.Models
     public class PriceListViewModel
     {
         public List<sp_SearchPriceList_Result> ThePriceList { get; set; }
+
+        public sp_GetPriceListByIdHeader_Result Header { get; set; }
+        public List<sp_GetPriceListByIdDetail_Result> Details { get; set; }
+
     }
 }

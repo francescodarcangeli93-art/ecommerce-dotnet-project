@@ -40,7 +40,7 @@
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="tab-impostazioni-btn" data-bs-toggle="tab" data-bs-target="#tab-impostazioni" type="button" role="tab">
-                <i class="bi bi-gear"></i> Impostazioni Anagrafiche
+                <i class="bi bi-gear"></i> Dettagli Anagrafici
             </button>
         </li>
     </ul>
@@ -58,6 +58,8 @@
                     <i class="bi bi-plus-lg"></i> Carica Nuovo Prodotto
                 </button>
             </div>
+
+
 
             <table class="table tabella-magazzino" id="tabellaGiacenze">
                 <thead>
@@ -102,12 +104,14 @@
 
             <div class="row g-2 mb-3">
                 <div class="col-md-3">
-                    <label class="form-label" style="font-size: 12px; color: #6c757d;">Dal</label>
+
                     <input type="date" class="form-control" id="filtroDataDa" placeholder="Datada" />
+                    <label class="temp-place  form-label" style="font-size: 12px; color: #6c757d;">Dal</label>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label" style="font-size: 12px; color: #6c757d;">Al</label>
+
                     <input type="date" class="form-control" id="filtroDataA" placeholder="DataA" />
+                    <label class="temp-place form-label" style="font-size: 12px; color: #6c757d;">Al</label>
                 </div>
 
                 <div class="col-md-3">
@@ -158,14 +162,14 @@
         </div>
 
         <!-- TAB 3: IMPOSTAZIONI ANAGRAFICHE -->
-        <div class="tab-pane fade" id="tab-impostazioni" role="tabpanel">
+        <div class="tab-pane fade" id="tab-impostazioni" role="tabpanel" >
 
             <form id="formImpostazioni">
                 <div class="card p-3 mb-3">
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="inputNome" value="@Model.TheWarehouse.Name" />
+                            <input type="text" class="form-control" id="inputNome" value="@Model.TheWarehouse.Name" disabled/>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Tipo</label>
@@ -176,29 +180,27 @@
                         </div>
                         <div class="col-md-12">
                             <label class="form-label">Indirizzo</label>
-                            <input type="text" class="form-control" id="inputIndirizzo" value="@Model.TheWarehouse.Address" />
+                            <input type="text" class="form-control" id="inputIndirizzo" value="@Model.TheWarehouse.Address" disabled/>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Città</label>
-                            <input type="text" class="form-control" id="inputCitta" value="@Model.TheWarehouse.City" />
+                            <input type="text" class="form-control" id="inputCitta" value="@Model.TheWarehouse.City" disabled/>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">CAP</label>
-                            <input type="text" class="form-control" id="inputCap" value="@Model.TheWarehouse.PostalCode" maxlength="5" />
+                            <input type="text" class="form-control" id="inputCap" value="@Model.TheWarehouse.PostalCode" disabled/>
                         </div>
                         <div class="col-md-12 form-check mt-2">
-                            <input type="checkbox" class="form-check-input" id="inputIsActive" checked="@Model.TheWarehouse.IsActive" />
+                            <input type="checkbox" class="form-check-input" id="inputIsActive" checked="@Model.TheWarehouse.IsActive" disabled/>
                             <label class="form-check-label" for="inputIsActive">Magazzino attivo</label>
                         </div>
                     </div>
 
-                    <div class="text-muted mt-2" style="font-size: 12px;">
+                    @*<div class="text-muted mt-2" style="font-size: 12px;">
                         <i class="bi bi-lock"></i> Il tipo non è modificabile se il magazzino contiene prodotti o movimenti registrati.
-                    </div>
+                    </div>*@
 
-                    <div class="text-end mt-3">
-                        <button type="submit" class="btn btn-giallo">Salva Modifiche</button>
-                    </div>
+                  
                 </div>
             </form>
 
@@ -217,6 +219,7 @@
 </div>
 
 <!-- MODAL: Carica Nuovo Prodotto -->
+
 <div class="modal fade" id="modalCaricaProdotto" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -321,57 +324,8 @@
 
 
 
-@*@section scripts {
-        <script src="@Url.Content("~/Scripts/js/GestioneWarehouse.js")"></script>
-    }*@
-
-
-@section Scripts {
-    <script>
-
-        // 1. Questa variabile DEVE stare fuori dall'ascoltatore di eventi
-        var timerRicerca;
-
-        document.getElementById('ricercaProdotto').addEventListener('input', function (event) {
-
-            // 2. Ogni volta che premi un tasto, cancelli il timer del tasto precedente
-            clearTimeout(timerRicerca);
-
-            // Salviamo subito il valore scritto dall'utente
-            var filtro = event.target.value.toLowerCase();
-
-            // 3. Diciamo al computer di aspettare 300 millisecondi prima di fare qualsiasi calcolo
-            timerRicerca = setTimeout(function () {
-
-                var righe = document.querySelectorAll('#tabellaGiacenze tbody tr');
-                var isMatch = false;
-
-                // Il tuo ciclo FOR originale, intatto:
-                for (var i = 0; i < righe.length; i++) {
-                    var riga = righe[i];
-
-                    if (isMatch) {
-                        riga.style.display = 'none';
-                        continue;
-                    }
-
-                    if (riga.cells[0].innerText.toLowerCase() === filtro) {
-                        riga.style.display = '';
-                        isMatch = true;
-                    }
-                    else if (filtro.length > 3 && riga.cells[1].innerText.toLowerCase().includes(filtro)) {
-                        riga.style.display = '';
-                    }
-                    else if (filtro === '') {
-                        riga.style.display = '';
-                    }
-                    else {
-                        riga.style.display = 'none';
-                    }
-                }
-
-            }, 300); // <-- 300 millisecondi di ritardo
-
-        });
-    </script>
+@section scripts {
+        <script src="@Url.Content("~/Scripts/js/DettaglioWarehouse.js")"></script>
     }
+
+

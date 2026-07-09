@@ -39,14 +39,15 @@
 
     <!-- Riga da rimuovere -->
     <input type="hidden" id="indirizzoDaEliminare" value="" />
+    
 
     <table class="table table-striped table-hover table-bordered">
         <thead class="table-dark">
             <tr>
-                <th class="text-center">Indirizzo</th>
-                <th class="text-center">CAP</th>
-                <th class="text-center">Città</th>
-                <th class="text-center">Spedizione</th>
+                <th class="text-start">Indirizzo</th>
+                <th class="text-start">CAP</th>
+                <th class="text-start">Città</th>
+                <th class="text-center">Predefinito</th>
                 <th class="text-center">Fatturazione</th>
                 <th class="text-center">COMANDI</th>
             </tr>
@@ -57,20 +58,17 @@
             {
                 <tr data-id="@indirizzo.Id" data-isdefault="@indirizzo.IsDefault.ToString().ToLower().Trim()">
 
-                    <td class="text-center">@indirizzo.Address</td>
-                    <td class="text-center">@indirizzo.PostalCode</td>
-                    <td class="text-center">@indirizzo.City</td>
+                    <td class="text-start">@indirizzo.Address</td>
+                    <td class="text-start">@indirizzo.PostalCode</td>
+                    <td class="text-start">@indirizzo.City</td>
 
                     <td class="text-center">
                         @if (indirizzo.IsDefault)
                         {
-                            <i class="bi bi-house-fill text-success"></i>
-                            <span class="text-success fw-semibold ms-1">Predefinito</span>
+                            <i class="bi bi-house-fill text-success ic-scale"></i>
+                         
                         }
-                        else
-                        {
-                            <span class="text-muted">Alternativo</span>
-                        }
+                       
 
                     </td>
 
@@ -78,14 +76,11 @@
 
                         @if (indirizzo.IsBilling)
                         {
-
-                            <i class="bi bi-file-earmark-text-fill text-primary"></i>
-                            <span class="text-primary fw-semibold ms-1">Predefinito</span>
+                            
+                                <i class="bi bi-file-earmark-text-fill text-primary ic-scale"></i>
+                            
                         }
-                        else
-                        {
-                            <span class="text-muted">Alternativo</span>
-                        }
+                       
 
                     </td>
                     <td class="text-center">
@@ -121,6 +116,7 @@
                                     class="btn btn-sm btn-outline-danger py-1 btnElimina"
                                     style="border-radius: 25px;"
                                     title="Cancella utente"
+                                    data-name="@indirizzo.Address"
                                     data-id="@indirizzo.Id">
                                 <!-- id che  viene passato alla funzione javascript -->
                                 <i class="bi bi-trash"></i>
@@ -291,7 +287,7 @@
 
 
     <!-- MODALE ELIMINA -->
-    <div class="modal fade" id="modalElimina">
+    <div class="modal fade">
 
         <div class="modal-dialog modal-content">
 
@@ -320,22 +316,24 @@
 </div>
 
 <!-- Modale Elimina 2 -->
-<div class="myModal-overlay" id="modal-delete">
+<div class="myModal-overlay" id="modalElimina">
     <div class="personal-card">
         <div class="body">
 
+            <!--risultato messaggio errore o successo-->
+            <div id="resultMessageDel"></div>
 
             <div class="cont-icon">
                 <span class="icona-attenzione"></span>
             </div>
 
 
-            <h3>Cancella Indirizzo</h3>
-            <p>stai cancellando un "Indirizzo"</p>
+            <h3>Conferma eliminazione</h3>
+            <p>Sei sicuro di voler eliminare l'indirizzo "<strong id="indirizzoDaMostrare"></strong>"?</p>
         </div>
         <div class="buttons">
-            <button class="no-btn">No,Tienilo.</button>
-            <button class="si-btn">Si,Cancella!</button>
+            <button class="no-btn">No, Tienilo</button>
+            <button class="si-btn">Si, Cancella</button>
         </div>
     </div>
 </div>

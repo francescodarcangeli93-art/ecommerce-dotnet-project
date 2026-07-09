@@ -131,6 +131,145 @@ namespace WebEcommerce.Controllers
             }
         }
 
+        // GET: Wharehouse/Edit/5
+        public JsonResult Edit(int id)
+        {
+            int idUser = 0;
+
+            sp_GetPriceListById_Param param = new sp_GetPriceListById_Param
+            {
+                PriceListId = id,
+                Mode = "H"
+            };
+
+            try
+            {
+                idUser = (int)Session["UserId"];
+                //  prendere i dati dal database del supplier tramite id
+                sp_GetPriceListById_Result PriceList = _priceListService.GetPriceListById(param);
+                // impacchettare i dati e spedirli  alla pagina
+
+                return Json(new { success = true, data = PriceList}, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        // POST: Wharehouse/Edit/5
+        [HttpPost]
+        public JsonResult Edit(sp_ManagePriceList_Param param)
+        {
+            int idUser = 0;
+            try
+            {
+                idUser = (int)Session["UserId"];
+                // TODO: Add update logic here
+                param.Operation = "U";
+                _priceListService.ManagePriceList(param);
+
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public ActionResult GetDetailsModal(int id)
+        {
+            int idUser = 0;
+
+            sp_GetPriceListById_Param param = new sp_GetPriceListById_Param
+            {
+                PriceListId = id,
+                Mode = "B"
+            };
+
+            try
+            {
+                if (Session["UserId"] != null)
+                {
+                    idUser = (int)Session["UserId"];
+                }
+
+                sp_GetPriceListById_Result thePriceList = _priceListService.GetPriceListById(param);
+
+                PriceListViewModel model = new PriceListViewModel
+                {
+                    Header = thePriceList.Header,
+                    Details = thePriceList.Details,
+                };
+
+                // 1. Restituisce la PartialView anziché la View completa
+                return PartialView("_Details", model);
+               
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+
+               
+                return new HttpStatusCodeResult(500, "Si è verificato un errore durante il caricamento del dettaglio listino.");
+            }
+        }
+
+
+
+        [HttpPost]
+        public JsonResult AddItem(sp_ManagePriceListItem_Param param)
+        {
+            int idUser = 0;
+
+            try
+            {
+                idUser = (int)Session["UserId"];
+                // TODO: Add insert logic here
+                param.Operation = "I";
+
+                _priceListService.ManagePriceListItem(param);
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+
+        [HttpPost]
+        public JsonResult DeleteItem(int id)
+        {
+            int idUser = 0;
+            try
+            {
+                idUser = (int)Session["UserId"];
+
+                sp_ManagePriceListItem_Param param = new sp_ManagePriceListItem_Param
+                {
+                    Operation = "D",
+                    Id = id
+                };
+
+                _priceListService.ManagePriceListItem(param);
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+       
 
     }
 }

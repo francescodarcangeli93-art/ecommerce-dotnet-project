@@ -1,0 +1,184 @@
+﻿@model WebEcommerce.Models.PriceListViewModel
+
+<div class="modal fade" id="modalDettaglioListino" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="modalDettaglioTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title" id="modalDettaglioTitle">
+                    <i class="bi bi-tag-fill me-2"></i> Dettaglio Listino: <strong>@Model.Header.PriceListName</strong>
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-header bg-secondary text-white fw-bold">
+                        Informazioni Listino
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-2">
+                                <strong>Nome:</strong> @Model.Header.PriceListName
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <strong>Descrizione:</strong> @Model.Header.Description
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <strong>Valuta:</strong> @Model.Header.CurrencyCode
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <strong>Data Inizio:</strong> @Model.Header.StartDate.ToString("dd/MM/yyyy")
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <strong>Data Fine:</strong> @(Model.Header.EndDate?.ToString("dd/MM/yyyy") ?? "-")
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <strong>Predefinito:</strong>
+                                @if (Model.Header.IsDefault)
+                                {
+                                    <span class="badge bg-success">Sì</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">No</span>
+                                }
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <strong>Stato:</strong>
+                                @if (Model.Header.IsActive)
+                                {
+                                    <span class="badge bg-success">Attivo</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Non attivo</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========= BOTTONE AGGIUNGI ======== -->
+
+                <div class="d-flex justify-content-between align-items-end mb-3">
+                    <h4 class="m-0">Prodotti in Listino</h4>
+
+                    <button type="button" id="btnAggiungiProdotto" class="btn fw-semibold px-4 btn-animated buttonAdd">
+                        <i class="bi bi-tag-fill me-1"></i> Aggiungi Prodotto
+                    </button>
+                </div>
+
+                <div class="table-responsive bevel">
+                    <input type="hidden" id="ProdottoDaEliminare" value="" />
+
+                    <table class="table table-striped table-hover table-bordered align-middle mb-0">
+                        <thead class="table-dark table-bordered">
+                            <tr>
+                                <th class="text-center">Prodotto</th>
+                                <th class="text-center">Prezzo</th>
+                                <th class="text-center">Qtà Minima</th>
+                                <th class="text-center">Data Inizio</th>
+                                <th class="text-center">Data Fine</th>
+                                <th class="text-center">Comandi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpoTabella">
+                            @if (Model.Details != null && Model.Details.Count > 0)
+                            {
+                                foreach (var item in Model.Details)
+                                {
+                                    <tr data-id="@item.Id">
+                                        <td>@item.ProductName</td>
+                                        <td class="text-center">@item.Price.ToString("C")</td>
+                                        <td class="text-center">@item.MinQuantity</td>
+                                        <td class="text-center">@item.StartDate.ToString("dd/MM/yyyy")</td>
+                                        <td class="text-center">@(item.EndDate?.ToString("dd/MM/yyyy") ?? "")</td>
+
+                                        <td class="text-center text-ce px-4 spazio-comandi">
+                                            <a class="btn btn-sm btn-outline-warning py-1 simpleBevel btn-modifica" data-id="@item.Id" title="Modifica riga">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+
+                                            <button type="button"
+                                                    class="btn btn-sm btn-outline-danger py-1 simpleBevel btn-elimina"
+                                                    title="Cancella prodotto"
+                                                    data-id="@item.Id"
+                                                    data-name="@item.ProductName">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr><td colspan="6" class="text-center">Nessun prodotto trovato in questo listino</td></tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary simpleBevel" data-bs-dismiss="modal">Chiudi</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="aggiungi" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Aggiungi un nuovo <strong>Prodotto al tuo listino</strong></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-4 p-4 bg-white card-animated card-detail">
+                    <form id="priceListForm">
+                        <div class="card-body row g-3">
+                            <input type="hidden" name="Id" value="@Model.Header.Id" />
+
+                            <div class="mb-3">
+                                <label for="item_ProductId" class="form-label">Prodotto</label>
+                                <select class="form-select" id="item_ProductId" name="ProductId" required>
+                                    <option value="">-- Seleziona un prodotto --</option>
+                                    <option value="1">Vite</option>
+                                    <option value="3">Guanti</option>
+                                    <option value="5">Cavo elettrico</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="item_UnitPrice" class="form-label">Prezzo di Listino (€)</label>
+                                <input type="number" step="0.01" class="form-control" id="item_UnitPrice" name="UnitPrice" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="addStartDate">Data Inizio</label>
+                                <input type="date" id="addStartDate" name="StartDate" class="form-control input-animated" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="addEndDate">Data Fine</label>
+                                <input type="date" id="addEndDate" name="EndDate" class="form-control input-animated" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="resultMessage" class="mt-2 text-center"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary simpleBevel" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" id="btnSalva" class="btn btn-primary simpleBevel" data-save-url="@Url.Action("AddItem", "GestPriceList")">Salva</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/js/GestionePriceList.js")"></script>

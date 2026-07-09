@@ -203,35 +203,38 @@ namespace DTO_Ecommerce
     public class sp_GetPriceListByIdHeader_Result
     {
         public int Id { get; set; } // se non c'è riga, Header resta null nel container: qui non serve int?
-        public string PriceListName { get; set; } = string.Empty;
+        public string PriceListName { get; set; }
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }   // reso nullable: stessa colonna di HeaderEndDate sotto
-        public string CurrencyCode { get; set; } = string.Empty;
+        public string CurrencyCode { get; set; }
         public bool IsDefault { get; set; }
         public bool IsActive { get; set; }
+
+        // queste proprietà servono per il json
+        public string StartDateString => StartDate.ToString("yyyy-MM-dd");
+        public string EndDateString => EndDate.HasValue ? EndDate.Value.ToString("yyyy-MM-dd") : null;
     }
 
     public class sp_GetPriceListByIdDetail_Result
     {
-        public int Id { get; set; } // Id del PriceListItem (PT.Id)
-        public string ProductName { get; set; } = string.Empty;
-        public int PriceListId { get; set; }
+        //public int Id { get; set; } // Id del PriceListItem (PT.Id)
+        //public string ProductName { get; set; } = string.Empty;
+        //public int PriceListId { get; set; }
+        //public int ProductId { get; set; }
+        //public decimal Price { get; set; }
+        //public int MinQuantity { get; set; }
+        //public DateTime StartDate { get; set; }
+        //public DateTime? EndDate { get; set; }
+
+        //// --- Campi della Testata ripetuti nella JOIN (P) ---
+        public int Id { get; set; }
+        public string ProductName { get; set; }
         public int ProductId { get; set; }
         public decimal Price { get; set; }
         public int MinQuantity { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-
-        // --- Campi della Testata ripetuti nella JOIN (P) ---
-        public int HeaderId { get; set; }
-        public string PriceListName { get; set; } = string.Empty;
-        public string Description { get; set; }
-        public DateTime HeaderStartDate { get; set; }
-        public DateTime? HeaderEndDate { get; set; }  // coerente con Header.EndDate sopra
-        public string CurrencyCode { get; set; } = string.Empty;
-        public bool IsDefault { get; set; }
-        public bool IsActive { get; set; }
     }
 
     public class sp_GetPriceListById_Result

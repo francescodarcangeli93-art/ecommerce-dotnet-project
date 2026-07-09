@@ -34,7 +34,7 @@
         </div>
     }
 
-    <form id="formAggiungi" action="/Gestutenti/AggiungiUtente" method="Post">
+    <form id="formAggiungi"action="@Url.Action("AggiungiUtente", "Gestutenti")" method="Post">
 
         <div class="row g-4  align-items-stretch">
 
@@ -128,9 +128,9 @@
                style="border: 1.5px solid #212529; border-radius: 25px; color: #212529; line-height: 24px;">
                 ← Indietro
             </a>
-            <button type="button" class="btn btn-animated fw-bold px-4"
+            <button type="submit" class="btn btn-animated fw-bold px-4"
                     style="background-color: #ffc107; color: #212529; border-radius: 25px; border: none; padding: 10px 24px;"
-                    onclick="confermaModifica()">
+                    >
                 ✓ Salva
             </button>
         </div>

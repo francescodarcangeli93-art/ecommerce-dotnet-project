@@ -63,8 +63,8 @@ namespace DAL_Ecommerce
 
              sp_GetPriceListById_Result retVal = new sp_GetPriceListById_Result();
 
-            List<sp_GetPriceListByIdDetail_Result> header = new List<sp_GetPriceListByIdDetail_Result>();
-
+            sp_GetPriceListByIdHeader_Result Header = new sp_GetPriceListByIdHeader_Result();
+            List<sp_GetPriceListByIdDetail_Result> Details = new List<sp_GetPriceListByIdDetail_Result>();
             DataSet dsList = new DataSet();
 
             try
@@ -81,10 +81,13 @@ namespace DAL_Ecommerce
                     // Apertura connessione sincrona
                     conn.Open();
 
-                    
-                  
-                    
-                        DataTable dtOrder_Header = null;
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        da.Fill(dsList); // È qui che il DataSet inizia a prendere i dati dal database!
+                    }
+
+
+                       DataTable dtOrder_Header = null;
                         DataTable dtOrder_Detail = null;
 
 
@@ -102,18 +105,37 @@ namespace DAL_Ecommerce
                             dtOrder_Detail = dsList.Tables[1];
                         }
 
-                    //  se dtOrder_Header non è vuoto  Oppure dtOrder_Detail non è vuoto  dtOrder_Header è maggiore di 0
-                    //  oppure dtOrder_Detail > 0 fai le istruzioni successive 
+                    
+                    if((dtOrder_Header != null && dtOrder_Header.Rows.Count > 0) || (dtOrder_Detail != null && dtOrder_Detail.Rows.Count > 0))
+                    {
+
+                        // se H O B il risultato va nel campo  public sp_GetPriceListByIdHeader_Result Header { get; set; }
+                        if(spParam.Mode == "H" || spParam.Mode == "B")
+                        {
+                            Header = dtOrder_Header.Rows[0].ToObject<sp_GetPriceListByIdHeader_Result>();
+
+                            if(Header != null)
+                            {
+                                retVal.Header = Header;
+                            }
+                        }
 
 
-                    // se H O B il risultato va nel campo  public sp_GetPriceListByIdHeader_Result Header { get; set; }
-                    //sp_GetPriceListByIdHeader_Result = dtOrder_Header
+                        // se D O B il risultato va nel campo public List<sp_GetPriceListByIdDetail_Result> Details { get; set; }
+                        if (spParam.Mode == "D" || spParam.Mode == "B")
+                        {
+                            
+                            Details = dtOrder_Detail.DataTableToList<sp_GetPriceListByIdDetail_Result>();
 
-                    // se D O B il risultato va nel campo public List<sp_GetPriceListByIdDetail_Result> Details { get; set; }
 
-                    //  List<sp_GetPriceListByIdDetail_Result> Details = dtOrder_Detail -> lista
+                            if (Details != null )
+                            {
+                                retVal.Details = Details;
+                            }
+                        }
 
-
+                       
+                    }
 
                 }
             }
@@ -164,5 +186,52 @@ namespace DAL_Ecommerce
 
         }
 
+
+
+        public int? ManagePriceListItem(sp_ManagePriceListItem_Param spParam)
+        {
+            string spName = "dbo.sp_ManagePriceListItem";
+            int? newId = null;
+
+            using (SqlConnection conn = DbConnectionFactory.CreateConnection())
+            using (SqlCommand cmd = new SqlCommand(spName, conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new SqlParameter("@Operation", spParam.Operation));
+                cmd.Parameters.Add(new SqlParameter("@Id", (object)spParam.Id ?? DBNull.Value));
+                cmd.Parameters.Add(new SqlParameter("@PriceListId", (object)spParam.PriceListId ?? DBNull.Value));
+                cmd.Parameters.Add(new SqlParameter("@ProductId", (object)spParam.ProductId ?? DBNull.Value));
+                cmd.Parameters.Add(new SqlParameter("@Price", (object)spParam.Price ?? DBNull.Value));
+                cmd.Parameters.Add(new SqlParameter("@StartDate", (object)spParam.StartDate ?? DBNull.Value));
+                cmd.Parameters.Add(new SqlParameter("@EndDate", (object)spParam.EndDate ?? DBNull.Value));
+
+                try
+                {
+                    conn.Open();
+
+                    if (spParam.Operation == "I")
+                    {
+                        // Insert restituisce un result set (NewId), serve ExecuteScalar
+                        object result = cmd.ExecuteScalar();
+                        if (result != null && result != DBNull.Value)
+                        {
+                            newId = Convert.ToInt32(result);
+                        }
+                    }
+                    else
+                    {
+                        // Update e Delete non restituiscono nulla
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    throw new Exception(ex.Message, ex);
+                }
+            }
+
+            return newId;
+        }
     }
 }

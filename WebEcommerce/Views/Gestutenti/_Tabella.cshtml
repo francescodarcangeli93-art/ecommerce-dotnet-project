@@ -10,17 +10,19 @@
     <div id="alertErrore" class="alert  alert-danger">@TempData["Errore"]</div>
 }
 
-<div class="card noborder" >
+<div class="card noborder">
     <div class="card-body p-0">
 
         @*TASTO AGGIUNGI*@
         <div class="d-flex justify-content-between align-items-end mb-3">
             <h3 class="m-0">Lista Utenti</h3>
-            <a href="@Url.Action("AggiungiUtente", "Gestutenti")" class="btn fw-semibold px-4 btn-animated buttonAdd"
-              >
+            <a href="@Url.Action("AggiungiUtente", "Gestutenti")" class="btn fw-semibold px-4 btn-animated buttonAdd">
                 <i class="bi bi-person-plus-fill me-2"></i> Aggiungi
             </a>
         </div>
+
+        <input type="hidden" id="utenteDaEliminare" value="" />
+        <input type="hidden" id="utenteDaMostrare" value="" />
 
         <div class="table-responsive bevel">
             <table id="tblUser" class="table table-striped table-hover table-bordered align-middle mb-0">
@@ -50,8 +52,8 @@
                                 <tr class="@(ViewData["Id"] != null && utente.Id == (int)ViewData["Id"] ? "table-warning" : "")">
 
 
-                                    <td class="text-center">
-                                        <i class="@utente.IconUserRole" style="color: #212529; font-size: 1.2rem;" title="@utente.RoleName"></i>
+                                    <td class="text-center icons-color">
+                                        <i class="@utente.IconUserRole"  title="@utente.RoleName"></i>
 
                                     </td>
 
@@ -59,11 +61,11 @@
                                         <span class="fw-semibold">@utente.Username</span>
                                     </td>
 
-                                    <td>@utente.emptyName</td>
-                                    <td>@utente.emptyLastName</td>
+                                    <td>@utente.FirstName</td>
+                                    <td>@utente.LastName</td>
                                     <td class="text-center">@utente.Email</td>
                                     <td>@utente.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td>
-                                    <td class="text-center">-- --</td>
+                                    <td class="text-center"></td>
 
                                     <!-- GESTIONE ATTIVO NON ATTIVO -->
                                     <td class="text-center">
@@ -87,7 +89,7 @@
                                         @if (utente.CustomerId != null && utente.RoleName.ToString().ToLower() != "admin")
                                         {
                                             <a href="@Url.Action("Index", "GestIndirizzi", new { id = utente.Id })"
-                                               class="btn btn-sm btn-outline-success py-1 d-inline-block simpleBevel" title="Indirizzi">
+                                               class="btn btn-sm btn-outline-success py-1 d-inline-block simpleBevel" title="Indirizzi=@Model.">
                                                 <i class="bi bi-pin-map-fill"></i>
                                             </a>
                                         }
@@ -100,24 +102,31 @@
 
                                     </td>
 
-                                    <td class="text-center text-ce px-4 spazio-comandi">
-                                      
-                                            <a href="@Url.Action("DatiUtente", "Gestutenti", new { Id = utente.Id, CustomerId = utente.CustomerId })" class="btn btn-sm btn-outline-info py-1  simpleBevel" title="Visualizza Dettagli">
-                                                <i class="bi bi-search"></i>
-                                            </a>
-                                            <a href="@Url.Action("ModificaUtente", "Gestutenti", new { id = utente.Id })" class="btn btn-sm btn-outline-warning py-1 simpleBevel" title="Modifica riga">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
+                                    <td class= "text-start text-ce px-4 spazio-comandi">
 
+                                        <a href="@Url.Action("DatiUtente", "Gestutenti", new { Id = utente.Id, CustomerId = utente.CustomerId })" class="btn btn-sm btn-outline-info py-1  simpleBevel" title="Visualizza Dettagli">
+                                            <i class="bi bi-search"></i>
+                                        </a>
+                                        <a href="@Url.Action("ModificaUtente", "Gestutenti", new { id = utente.Id })" class="btn btn-sm btn-outline-warning py-1 simpleBevel" title="Modifica riga">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+
+                                        @if (utente.RoleName.ToLower() != "admin")
+                                        {
                                             <!-- ELIMINA UTENTE -->
                                             <button type="button"
-                                                    class="btn btn-sm btn-outline-danger py-1 simpleBevel"
-                                                    @(utente.RoleName.ToLower() == "admin" ? "disabled" : "")
+                                                    class="btn btn-sm btn-outline-danger py-1 simpleBevel btnElimina"
                                                     title="Cancella utente"
-                                                    onclick="confermaEliminazione('@utente.Id', '@utente.Username')">
+                                                    data-name="@utente.Username"
+                                                    data-id="@utente.Id"
+                                                    @*onclick="confermaEliminazione('@utente.Id', '@utente.Username')"*@>
                                                 <i class="bi bi-trash"></i>
                                             </button>
-                                    
+                                        }else
+                                        {
+                                           <span></span>
+                                        }
+
                                     </td>
                                 </tr>
                             }
@@ -166,7 +175,7 @@
 
 @*MODALE*@
 
-<div class="modal fade" id="modalElimina" tabindex="-1" aria-labelledby="modalEliminaLabel" aria-hidden="true"
+<div class="modal fade" id="" tabindex="-1" aria-labelledby="modalEliminaLabel" aria-hidden="true"
      data-bs-backdrop="static" data-bs-keyboard="false"
      data-backdrop="static" data-keyboard="false">
 
@@ -180,7 +189,7 @@
 
 
             <div class="modal-body">
-                Sei sicuro di voler eliminare l'utente <strong id="nomeUtenteDaEliminare"></strong>?
+                Sei sicuro di voler eliminare l'utente <strong id=""></strong>?
                 Questa operazione non può essere annullata.
             </div>
 
@@ -188,7 +197,7 @@
             <div class="modal-footer border-0">
                 <button type="button" class="btn btn-secondary simpleBevel" data-bs-dismiss="modal">Annulla</button>
 
-                <!-- FORM  Elimina -->
+                <!-- FORM  ELIMINA -->
 
                 <form id="formElimina" action="@Url.Action("EliminaUtente","Gestutenti")" method="POST">
 
@@ -197,6 +206,32 @@
                 </form>
 
             </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modale Elimina 2 -->
+<div class="myModal-overlay" id="modalElimina">
+    <div class="personal-card">
+        <div class="body">
+
+            <!--risultato messaggio errore o successo-->
+            <div id="resultMessageDel"></div>
+
+            <div class="cont-icon">
+                <span class="icona-attenzione"></span>
+            </div>
+
+
+            <h3>Conferma eliminazione</h3>
+            <p>Sei sicuro di voler eliminare l'utente "<strong id="utenteDaCancellare"></strong>"?</p>
+        </div>
+
+
+        <div class="buttons">
+            <button class="no-btn">No, Tienilo</button>
+            <button class="si-btn">Si, Cancella</button>
         </div>
     </div>
 </div>

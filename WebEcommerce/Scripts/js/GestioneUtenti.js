@@ -165,4 +165,26 @@ $(document).ready(function () {
         tbody.empty().append(rows);
     });
 
+
+    // MODALE ELIMINA UTENTE
+    $('.btnElimina').on('click', function () {
+        
+        const id = $(this).data('id');
+    
+        $('#utenteDaEliminare').val(id);
+
+        let name = $(this).data('name');
+        $('#utenteDaCancellare').text(name);
+        
+        $('#modalElimina').addClass('active2');
+
+        /* const test = document.getElementById('interf').classList.add('no-pointer-events');*/
+
+    });
+
+    $('.no-btn').on('click', function () {
+
+        $('#modalElimina').removeClass('active2');
+    });
+
 });

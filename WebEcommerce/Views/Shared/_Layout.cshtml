@@ -18,7 +18,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark custom-navbar">
+    <nav class="navbar navbar-expand-sm navbar-dark nav-color custom-navbar">
         <div class="container-fluid d-flex align-items-center custom-navbar-container">
 
             <a class="navbar-brand d-flex align-items-center m-0 p-0" href="/Home">
@@ -56,24 +56,55 @@
                                 </li>
                             </ul>
                         </li>
-                    </ul> 
+                    </ul>
                 }
             </div>
 
-
+            @*href="/Home/Logout"*@
 
             @if (Session["User"] != null)
-            {
+            {  
                 <div class="text-white d-flex align-items-center gap-3">
-                   <i  class="bi bi-person-fill user" ></i> <span> @Session["User"] (@Session["Role"])</span>
+                    <i class="bi bi-person-fill user"></i> <span> @Session["User"] (@Session["Role"])</span>
 
-                    <a href="/Home/Logout"  class="logout">Logout</a>
-                
+                    @*<p class="logout"><i id="logout" class="bi bi-box-arrow-up-left"></i> Logout</p>*@
+                    <button id="logout" class="log-out-btn">
+                         <i class="icon-logout-simple"></i>
+                        Logout
+                    </button>
+
                 </div>
             }
 
         </div>
     </nav>
+
+
+    <!-- Modale Elimina 2 -->
+    <div class="myModal-overlay" id="logOut">
+        <div class="personal-card">
+            <div class="body">
+
+                <!--risultato messaggio errore o successo-->
+
+
+                <div class="cont-icon">
+                    <span class="icona-logout"></span>
+                </div>
+
+
+                <h3>Conferma Logout</h3>
+                <p>Sei sicuro di voler uscire dal tuo account?</p>
+            </div>
+            <div class="buttons">
+                <button class="no-btn">Annulla</button>
+                <button id="si-btn" class="slog-btn" data-url="@Url.Action("Logout", "Home")">Esci</button>
+            </div>
+        </div>
+    </div>
+
+
+
 
     <div class="container body-content">
         @RenderBody()
@@ -85,8 +116,12 @@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
-  @*  @Scripts.Render("~/bundles/bootstrap")*@
+    @*  @Scripts.Render("~/bundles/bootstrap")*@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script src="@Url.Content("~/Scripts/js/Layout.js")"></script>
+    
+
     @RenderSection("scripts", required: false)
 
 </body>

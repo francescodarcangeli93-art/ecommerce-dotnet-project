@@ -2,13 +2,14 @@
 
 <div class="table-responsive bevel">
 
-    <input type="hidden" id="indirizzoDaEliminare" value="" />
+    <input type="hidden" id="listinoDaEliminare" value="" />
 
+   
     <table class="table table-striped table-hover table-bordered align-middle mb-0">
         <thead class="table-dark table-bordered">
             <tr>
-                <th scope="col" class="text-start">Nome Listino</th>
-                <th scope="col" class="text-start">Descrizione</th>
+                <th scope="col" class="text-center">Nome Listino</th>
+                <th scope="col" class="text-center">Descrizione</th>
                 <th scope="col" class="text-center">Data Inizio</th>
                 <th scope="col" class="text-center">Data Fine</th>
                 <th scope="col" class="text-center">Valuta</th>
@@ -27,8 +28,8 @@
                 <tr data-id="@price.Id">
                     <td class="text-start">@price.PriceListName</td>
                     <td class="text-start">@price.Description</td>
-                    <td class="text-center">@price.StartDate</td>
-                    <td class="text-center">@price.EndDate</td>
+                    <td class="text-center">@(price.StartDate?.ToString("dd/MM/yyyy") ?? "")</td>
+                    <td class="text-center">@(price.EndDate?.ToString("dd/MM/yyyy") ?? "")</td>
                     <td class="text-center">@price.CurrencyCode</td>
                     <td class="text-center">@price.IsDefault</td>
                    
@@ -44,9 +45,9 @@
                     </td>
 
                     <td class="text-center text-ce px-4 spazio-comandi">
-                        <a href="@Url.Action("Details","GestWarehouses", new {id = price.Id})" class="btn btn-sm btn-outline-info py-1 simpleBevel btn-dettagli" data-id="@price.Id" title="Visualizza Dettagli">
+                        <button  data-id="@price.Id" data-name="@price.PriceListName" class="btn btn-sm btn-outline-info py-1 simpleBevel btn-dettagli"  title="Visualizza Dettagli">
                             <i class="bi bi-search"></i>
-                        </a>
+                        </button>
                         <a class="btn btn-sm btn-outline-warning py-1 simpleBevel btn-modifica" data-id="@price.Id" title="Modifica riga">
                             <i class="bi bi-pencil"></i>
                         </a>

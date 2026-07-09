@@ -33,6 +33,13 @@ namespace WebEcommerce.Controllers
         [HttpPost]
         public ActionResult Login(string user, string password)
         {
+
+            if(string.IsNullOrEmpty(user) || string.IsNullOrEmpty(password))
+            {
+               
+                return View("Index");
+            }
+
             // A. Creiamo l'oggetto con i parametri per la Stored Procedure
             sp_LoginUser_Param param = new sp_LoginUser_Param();
             param.Username = user;

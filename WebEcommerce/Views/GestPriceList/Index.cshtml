@@ -91,31 +91,37 @@
     </div>
 
 
-    <!--MODALE ELIMINA-->
-    <div class="modal fade" id="modalElimina" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Elimina</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Modale Elimina 2 -->
+    <div class="myModal-overlay" id="modalElimina">
+        <div class="personal-card">
+            <div class="body">
+
+                <!--risultato messaggio errore o successo-->
+                <div id="resultMessageDel"></div>
+
+                <div class="cont-icon">
+                    <span class="icona-attenzione"></span>
                 </div>
-                <div class="modal-body">
-                    Sicuro di voler eliminare il fornitore <strong id="nomeFornitore"></strong>?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" id="confermaElimina" data-url="@Url.Action("Delete","GestPriceList")" class="btn btn-danger">Elimina</button>
-                </div>
+
+
+                <h3>Conferma eliminazione</h3>
+                <p>Sei sicuro di voler eliminare l'indirizzo "<strong id="delPriceList"></strong>"?</p>
+            </div>
+            <div class="buttons">
+                <button class="no-btn">No, Tienilo</button>
+                <button id="delList-btn" class="si-btn" data-delete-url="@Url.Action("Delete", "GestPriceList")">Si, Cancella</button>
             </div>
         </div>
     </div>
+
+
 
     <!--MODALE AGGIUNGI-->
     <div class="modal fade" id="aggiungi" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Aggiungi Magazzino</h5>
+                    <h5 class="modal-title" id="staticBackdropLabel">Aggiungi un nuovo <strong>Listino Prezzi</strong></h5>
 
                 </div>
                 <div class="modal-body">
@@ -127,7 +133,7 @@
                                 <div class="card-body row g-3">
 
                                     <div class="col-md-6">
-                                        <input type="text" id="addPriceListName" name="PriceListName" placeholder="Nome Listino" class="form-control input-animated" />
+                                        <input type="text" id="addPriceListName" name="PriceListName" placeholder="Nome Listino*" class="form-control input-animated" required />
                                     </div>
 
                                     <div class="col-md-6">
@@ -135,17 +141,19 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <input type="date" id="addStartDate" name="StartDate" placeholder="Data Inizio" class="form-control input-animated" />
-                                        <label for="addStartDate" class="temp-place">Data Inizio</label>
+                                        <label for="addStartDate">Data Inizio</label>
+                                        <input type="date" id="addStartDate" name="StartDate" placeholder="Data Inizio*" class="form-control input-animated" required />
+
                                     </div>
 
                                     <div class="col-md-6">
+                                        <label for="addEndDate">Data Fine</label>
                                         <input type="date" id="addEndDate" name="EndDate" placeholder="Data Fine" class="form-control input-animated" />
-                                        <label for="addEndDate" class="temp-place">Data Fine</label>
+
                                     </div>
 
                                     <div class="col-md-6">
-                                        <select name="CurrencyCode" id="addCurrencyCode" class="form-select input-animated is-placeholder">
+                                        <select name="CurrencyCode" id="addCurrencyCode" class="form-select input-animated is-placeholder" required>
                                             <option value="">--Selezionare la Valuta--</option>
                                             <option value="EUR">EUR</option>
                                             <option value="USD">USD</option>
@@ -154,7 +162,7 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <select name="IsDefault" id="addIsDefault" class="form-select input-animated is-placeholder">
+                                        <select name="IsDefault" id="addIsDefault" class="form-select input-animated is-placeholder" required>
                                             <option value="">--Selezionare Default--</option>
                                             <option value="true">Default</option>
                                             <option value="false">Non Default</option>
@@ -162,7 +170,7 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <select name="IsActive" id="addIsActive" class="form-select input-animated is-placeholder">
+                                        <select name="IsActive" id="addIsActive" class="form-select input-animated is-placeholder" required>
                                             <option value="">--Selezionare lo Stato--</option>
                                             <option value="true">Attivo</option>
                                             <option value="false">Non Attivo</option>
@@ -180,7 +188,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary simpleBevel" data-bs-dismiss="modal">Indietro</button>
+                    <button type="button" class="btn btn-secondary simpleBevel" data-bs-dismiss="modal" data-dismiss="modal">Indietro</button>
                     <button type="button" id="btnSalva" class="btn btn-primary simpleBevel" data-save-url="@Url.Action("Save", "GestPriceList")">Salva</button>
                 </div>
 
@@ -188,12 +196,96 @@
         </div>
     </div>
 
+    <!--MODALE Modifica-->
+    <div class="modal fade" id="modalEdit" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modifica Listino</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
 
+                <div class="mb-4 p-4 bg-white card-animated card-detail">
+                    <div>
+                        <div class="card-body row g-3">
+                            <input type="hidden" id="editId" />
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="editPriceListName">Nome Listino</label>
+                                    <input type="text" id="editPriceListName" name="PriceListName" placeholder="Nome Listino" class="form-control input-animated" required />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="editDescription">Descrizione</label>
+                                    <input type="text" id="editDescription" name="Description" placeholder="Descrizione" class="form-control input-animated" required />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="editStartDate">Data Inizio</label>
+                                    <input type="date" id="editStartDate" name="StartDate" class="form-control input-animated" required />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="editEndDate">Data Fine</label>
+                                    <input type="date" id="editEndDate" name="EndDate" class="form-control input-animated" required />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="editCurrencyCode">Valuta</label>
+                                    <select name="CurrencyCode" id="editCurrencyCode" class="form-select input-animated" required>
+                                        <option value="">--Selezionare la Valuta--</option>
+                                        <option value="EUR">EUR</option>
+                                        <option value="USD">USD</option>
+                                        <option value="GBP">GBP</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label>Default</label><br />
+                                    <label class="me-2">
+                                        <input type="radio" id="editIsDefaultTrue" name="editIsDefault" value="true" />
+                                        <span>Default</span>
+                                    </label>
+                                    <label>
+                                        <input type="radio" id="editIsDefaultFalse" name="editIsDefault" value="false" checked />
+                                        <span>Non Default</span>
+                                    </label>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label>Stato</label><br />
+                                    <label class="me-2">
+                                        <input type="radio" id="editTrue" name="editIsActive" value="true" checked />
+                                        <span>Attivo</span>
+                                    </label>
+                                    <label>
+                                        <input type="radio" id="editFalse" name="editIsActive" value="false" />
+                                        <span>Non Attivo</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                    <button type="button" id="btnEditModifica" class="btn btn-success">Modifica</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 </main>
 
+<div id="modalContainer"></div>
 
 @section scripts {
     <script src="@Url.Content("~/Scripts/js/GestionePriceList.js")"></script>
+    <script src="@Url.Content("~/Scripts/js/GestionePriceListItem.js")"></script>
 }

@@ -9,25 +9,29 @@
 
     $('.btnElimina').on('click', function () {
 
-        var id = $(this).data('id');
+        const id = $(this).data('id');
         $('#indirizzoDaEliminare').val(id);
-        $('#modalElimina').modal('show');
 
-        const test = document.getElementById('interf').classList.add('no-pointer-events');
+        var name = $(this).data('name');
+        $('#indirizzoDaMostrare').text(name);
+
+        $('#modalElimina').addClass('active2');
+
+       /* const test = document.getElementById('interf').classList.add('no-pointer-events');*/
      
     });
 
-    // 
-    document.getElementById('btnAnnulla').addEventListener('click', function () {
-        const test = document.getElementById('interf').classList.remove('no-pointer-events');
-      
+    $('.no-btn').on('click', function () {
 
+
+        $('#modalElimina').removeClass('active2');
     });
+
 
     
     // click conferma elimina viene lanciato questo metodo
    
-    $('#btnConfermaElimina').on('click', function () {
+    $('.si-btn').on('click', function () {
 
         const interface = document.getElementById('interf');
        
@@ -53,17 +57,15 @@
                     // 2. Attendiamo 1.5 secondi (1500 ms) prima di far sparire tutto
                     setTimeout(function () {
                         // 3. Chiudiamo la modal
-                        $('#modalElimina').modal('hide');
+                        $('#modalElimina').removeClass('active2');
 
                         
 
                         // 4. Rimuoviamo la riga della tabella (con un effetto di sfumatura soft!)
-                        $('tr[data-id="' + $('#indirizzoDaEliminare').val() + '"]').fadeOut(400, function () {
-                            $(this).remove();
-                        });
+                        $('tr[data-id="' + $('#indirizzoDaEliminare').val() + '"]').remove();
 
                         // Ripristiniamo lo stile dell'interfaccia 
-                        // (Nota: se prima l'hai chiamato 'interf', usa document.getElementById('interf'))
+                      
                         if (typeof interface !== 'undefined') {
                             interface.classList.remove('no-pointer-events');
                         } else if (document.getElementById('interf')) {
@@ -73,7 +75,7 @@
                         // Puliamo il messaggio per la prossima volta che si aprirà la modal
                         $('#resultMessageDel').html('');
 
-                    }, 1500);
+                    }, 500);
                 } else {
                     $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
                 }
@@ -151,7 +153,7 @@
 
                         // 3. Ora che l'utente ha letto il messaggio, ricarichiamo la pagina
                         location.reload();
-                    }, 1000);
+                    }, 500);
                 } else {
                     $('#resultMessageAdd').html('<span style="color:red">' + response.message + '</span>');
                 }
@@ -237,13 +239,15 @@
   
 });
 
-//  METODO CHE COLORA LA RIGA CHE HA ISDEFAULT A TRUE
-document.addEventListener('DOMContentLoaded', function () {
 
-    const righe = document.querySelectorAll('tr[data-isdefault="true"]');
 
-    righe.forEach(riga => {
-        riga.classList.add('table-success');
-    });
+////  METODO CHE COLORA LA RIGA CHE HA ISDEFAULT A TRUE
+//document.addEventListener('DOMContentLoaded', function () {
 
-});
+//    const righe = document.querySelectorAll('tr[data-isdefault="true"]');
+
+//    righe.forEach(riga => {
+//        riga.classList.add('table-success');
+//    });
+
+//});

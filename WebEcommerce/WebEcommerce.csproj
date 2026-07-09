@@ -163,6 +163,8 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\Image\Icon.png" />
     <Content Include="Content\Image\Icons\custom\IconTEst.svg" />
+    <Content Include="Content\Image\Icons\custom\LogOut.svg" />
+    <Content Include="Content\Image\Icons\custom\SimpleLogOut.svg" />
     <Content Include="Content\Image\Icons\flags\1x1\ad.svg" />
     <Content Include="Content\Image\Icons\flags\1x1\ae.svg" />
     <Content Include="Content\Image\Icons\flags\1x1\af.svg" />
@@ -730,9 +732,12 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\js\GestionePriceListItem.js" />
     <Content Include="Scripts\js\GestionePriceList.js" />
+    <Content Include="Scripts\js\DettaglioWarehouse.js" />
     <Content Include="Scripts\js\GestioneWarehouse.js" />
     <Content Include="Scripts\js\GestioneSupplier.js" />
+    <Content Include="Scripts\js\Layout.js" />
     <Content Include="Scripts\js\IndirizziCustomer.js" />
     <Content Include="Scripts\js\AggiungiUtente.js" />
     <Content Include="Scripts\js\GestioneUtenti.js" />
@@ -771,6 +776,7 @@
     <Content Include="Views\GestWarehouses\Details.cshtml" />
     <Content Include="Views\GestPriceList\Index.cshtml" />
     <Content Include="Views\GestPriceList\_PriceListTable.cshtml" />
+    <Content Include="Views\GestPriceList\_Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

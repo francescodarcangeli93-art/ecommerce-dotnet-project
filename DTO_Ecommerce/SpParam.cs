@@ -296,10 +296,8 @@ namespace DTO_Ecommerce
         public int? PriceListId { get; set; }
         public int? ProductId { get; set; }
         public decimal Price { get; set; }
-        public int? MinQuantity { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public bool IsActive { get; set; }
 
     }
     public class sp_ManageProduct_Param

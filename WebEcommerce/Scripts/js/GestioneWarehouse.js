@@ -198,7 +198,7 @@
                     $('tr[data-id="' + model.id + '"]').remove();
 
                 } else {
-                    $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
+                    $('#resultMessageElimina').html('<span style="color:red">' + response.message + '</span>');
                 }
             },
 
@@ -288,5 +288,6 @@
         });
     });
 
-   
+    
+
 });
