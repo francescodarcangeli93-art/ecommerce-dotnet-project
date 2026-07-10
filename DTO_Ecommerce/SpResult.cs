@@ -481,6 +481,11 @@ namespace DTO_Ecommerce
         public bool IsDefault { get; set; }
         public bool IsActive { get; set; }
 
+        public string DefaultIconClass => IsDefault ? "bi bi-star-fill text-warning" : "";
+
+        //  Property calcolata per la badge di stato
+        public string ActiveBadgeClass => this.IsActive ? "bg-success" : "bg-secondary";
+        public string ActiveStatusText => this.IsActive ? "Attivo" : "Inattivo";
     }
 
     public class sp_SearchProduct_Result

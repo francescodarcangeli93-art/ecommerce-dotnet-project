@@ -103,4 +103,11 @@ namespace WebEcommerce.Models
         public List<sp_GetPriceListByIdDetail_Result> Details { get; set; }
 
     }
+
+    public class ProductCategoryViewModel
+    {
+        public List<sp_SearchProductCategory_Result> TheProductCategory { get; set; }
+
+       
+    }
 }

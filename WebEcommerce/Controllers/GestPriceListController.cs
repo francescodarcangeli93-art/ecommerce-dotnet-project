@@ -166,7 +166,7 @@ namespace WebEcommerce.Controllers
             try
             {
                 idUser = (int)Session["UserId"];
-                // TODO: Add update logic here
+              
                 param.Operation = "U";
                 _priceListService.ManagePriceList(param);
 
@@ -219,7 +219,29 @@ namespace WebEcommerce.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult GetItemsTablePartial(int id)
+        {
+            int idUser = 0;
+            try
+            {
+                var param = new sp_GetPriceListById_Param { PriceListId = id, Mode = "B" };
+                var thePriceList = _priceListService.GetPriceListById(param);
 
+                var model = new PriceListViewModel
+                {
+                    Header = thePriceList.Header,
+                    Details = thePriceList.Details
+                };
+
+                return PartialView("_ItemsTable", model);
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return new HttpStatusCodeResult(500);
+            }
+        }
 
         [HttpPost]
         public JsonResult AddItem(sp_ManagePriceListItem_Param param)

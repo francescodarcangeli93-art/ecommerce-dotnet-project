@@ -145,8 +145,8 @@ $(document).ready(function () {
      2. MODALE ELIMINA
      ==========================================================*/
 
-    $('.btn-elimina').on('click', function () {
-
+    $('#tabellaContainer').on('click', '.btn-elimina', function () {
+   
         const id = $(this).data('id');
         const name = $(this).data('name');
 
@@ -212,14 +212,19 @@ $(document).ready(function () {
 
 
     /* ==========================================================
-       3. MODIFICA  PRICELIST
+       4. MODIFICA  PRICELIST
        ==========================================================*/
 
     $('#tabellaContainer').on('click', '.btn-modifica', function () {
 
+        // dpulire il i messaggi di errore
+        $("#resultMessageListino").html('');
+
         const model = {
             id: $(this).data('id')
         }
+
+
 
         $.ajax({
             url: '/GestPriceList/Edit',
@@ -228,8 +233,6 @@ $(document).ready(function () {
             dataType: 'json',
 
             success: function (response) {
-
-           
 
                 if (response.success) {
                     const header = response.data.Header; 
@@ -247,12 +250,12 @@ $(document).ready(function () {
                     $('#modalEdit').modal('show');
 
                 } else {
-                    $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
+                    $('#resultMessageListino').html('<span style="color:red">' + response.message + '</span>');
                 }
             },
 
             error: function (xhr, status, error) {
-                $('#resultMessage').html('<span style="color:red">Errore: ' + xhr.responseText + '</span>');
+                $('#resultMessageListino').html('<span style="color:red">Errore: ' + xhr.responseText + '</span>');
             }
 
         });
@@ -286,12 +289,12 @@ $(document).ready(function () {
                     $('#btnCerca').click();
 
                 } else {
-                    $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
+                    $('#resultMessageListino').html('<span >' + response.message + '</span>');
                 }
             },
 
             error: function (xhr, status, error) {
-                $('#resultMessage').html('<span style="color:red">Errore: ' + xhr.responseText + '</span>');
+                $('#resultMessageListino').html('<span style="color:red">Errore: ' + xhr.responseText + '</span>');
             }
 
         });

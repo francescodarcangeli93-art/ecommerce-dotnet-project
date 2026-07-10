@@ -31,7 +31,8 @@
                     <td class="text-center">@(price.StartDate?.ToString("dd/MM/yyyy") ?? "")</td>
                     <td class="text-center">@(price.EndDate?.ToString("dd/MM/yyyy") ?? "")</td>
                     <td class="text-center">@price.CurrencyCode</td>
-                    <td class="text-center">@price.IsDefault</td>
+
+                    <td class="text-center"><i class="@(price.DefaultIconClass) default-attivo" title="@(price.IsDefault == true ? "attivo" : "")"></i></td>
                    
                   
                     <!-- GESTIONE ATTIVO NON ATTIVO -->

@@ -296,8 +296,8 @@ namespace DTO_Ecommerce
         public int? PriceListId { get; set; }
         public int? ProductId { get; set; }
         public decimal Price { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
     }
     public class sp_ManageProduct_Param
@@ -466,10 +466,11 @@ namespace DTO_Ecommerce
     }
     public class sp_SearchProductCategory_Param
     {
-        public int? Id { get; set; }
+    
         public string Name { get; set; }
-        public bool IsActive { get; set; }
+        public bool? IsActive { get; set; }
         public int? DisplayOrder { get; set; }
+        public string Description { get; set; }
     }
     public class sp_SearchProductFile_Param
     {

@@ -1,0 +1,30 @@
+﻿@model WebEcommerce.Models.PriceListViewModel
+
+<tbody id="corpoTabella">
+    @if (Model.Details != null && Model.Details.Count > 0)
+    {
+        foreach (var item in Model.Details)
+        {
+            <tr data-id="@item.Id">
+                <td>@item.ProductName</td>
+                <td class="text-center">@item.Price.ToString("C")</td>
+                <td class="text-center">@item.MinQuantity</td>
+                <td class="text-center">@item.StartDate.ToString("dd/MM/yyyy")</td>
+                <td class="text-center">@(item.EndDate?.ToString("dd/MM/yyyy") ?? "")</td>
+                <td class="text-center text-ce px-4 spazio-comandi">
+                    <a class="btn btn-sm btn-outline-warning py-1 simpleBevel btn-modifica" data-id="@item.Id" title="Modifica riga">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <button type="button" class="btn btn-sm btn-outline-danger py-1 simpleBevel btn-elimina"
+                            title="Cancella prodotto" data-id="@item.Id" data-name="@item.ProductName">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr><td colspan="6" class="text-center">Nessun prodotto trovato in questo listino</td></tr>
+    }
+</tbody>

@@ -212,19 +212,47 @@ select,
     }
 
 
-    /*NAVBAR*/
+        /*NAVBAR*/
     .custom-navbar {
         height: 80px;
+        font-weight: 600;
+        background-color: #000000
     }
 
-    .custom-navbar-container {
-        padding-left: 8% !important;
-        padding-right: 8% !important;
+    .custom-navbar-tool {
+        background-color: #000000
     }
 
+.custom-navbar-container {
+    padding-left: 8% !important;
+    padding-right: 8% !important;
+}
 
-.dropdown:hover .dropdown-menu{
-    display:block;
+
+.title-nav {
+    border-bottom: solid;
+    border-bottom-color:transparent;
+    margin-top: 5px;
+    
+}
+
+.title-nav:hover{
+    border-bottom: solid #ffc107;
+}
+
+    .title-nav:focus {
+        border-bottom: solid #ffc107;
+    }
+
+.dropdown-menu-dark {
+    --bs-dropdown-link-hover-bg: #ffc107;
+    --bs-dropdown-link-active-bg: #ffc107;
+    --bs-dropdown-link-color: #ddd;
+    --bs-dropdown-link-hover-color: #000000;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
     margin-top: 0;
 }
 
@@ -572,9 +600,7 @@ select {
    margin:0px;
 }
 
-.nav-color {
-    background-color: #000000;
-}
+
 
 .password-input {
     border: none;
@@ -662,7 +688,7 @@ select {
     height: 40px;
     border: solid #ffc107;
     border-width: 1.9px;
-    font-weight: 300;
+    font-weight: 500;
     cursor: pointer;
    
 }
@@ -670,6 +696,7 @@ select {
     .log-out-btn:hover {
         background-color: #ffc107;
         color: #2A2B27;
+        font-weight: 600;
     }
     /* ==========================================================================
       MODALE ELIMINA
@@ -850,19 +877,25 @@ select {
         transform: translateY(-2px);
     }
 
-    /* ==========================================================================
+.error-message {
+    margin-top: 2px;
+    color: red;
+    margin: 10px 10px;
+}
+
+/* ==========================================================================
     MAGAZZINI GRAFICA
    ========================================================================== */
-    .header-magazzino {
-        background-color: #fff !important;
-        border-radius: 12px !important;
-        border: 1px solid #eee !important;
-        padding: 1rem 1.25rem !important;
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        margin-bottom: 1.5rem !important;
-    }
+.header-magazzino {
+    background-color: #fff !important;
+    border-radius: 12px !important;
+    border: 1px solid #eee !important;
+    padding: 1rem 1.25rem !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 1.5rem !important;
+}
 
 .magazziniDimensioni a{
     font-size: 17px;
@@ -1015,6 +1048,15 @@ select {
     margin-top: 1.5rem;
 }
 
+/* ==========================================================================
+    PRICE LIST GRAFICA
+   ========================================================================== */
+
+.default-attivo {
+    font-size: 23px;
+}
+
+
 #aggiungi {
     z-index: 1070 !important;
 }
@@ -1022,3 +1064,14 @@ select {
 .modal-backdrop ~ .modal-backdrop {
     z-index: 1060 !important;
 }
+
+/* Eleva la modale del prodotto sopra la modale dei dettagli */
+#ModalAggiungiProdotto {
+    z-index: 1070 !important;
+}
+
+/* Porta il secondo sfondo grigio sopra la prima modale, ma sotto la seconda */
+.modal-backdrop + .modal-backdrop {
+    z-index: 1060 !important;
+}
+

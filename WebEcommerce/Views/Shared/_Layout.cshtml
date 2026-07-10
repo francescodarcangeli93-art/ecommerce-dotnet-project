@@ -18,7 +18,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-sm navbar-dark nav-color custom-navbar">
+    <nav class="navbar navbar-expand-sm navbar-dark custom-navbar">
         <div class="container-fluid d-flex align-items-center custom-navbar-container">
 
             <a class="navbar-brand d-flex align-items-center m-0 p-0" href="/Home">
@@ -30,28 +30,26 @@
                 {
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-white fw-medium" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-white fw-medium title-nav" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Gestione
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-dark bg-dark border-0 shadow" aria-labelledby="navbarDropdown">
+
+                            <ul class="dropdown-menu dropdown-menu-dark custom-navbar-tool border-0 shadow" aria-labelledby="navbarDropdown">
                                 <li>
-                                    <a class="dropdown-item text-white py-2" href="@Url.Action("GestioneUtenti", "Gestutenti")">
+                                    <a class="dropdown-item  py-2" href="@Url.Action("GestioneUtenti", "Gestutenti")">
                                         <i class="bi bi-people-fill me-2 text-secondary"></i> Gest-Utenti
                                     </a>
-                                    <a class="dropdown-item text-white py-2" href="@Url.Action("Index", "GestSupplier")">
-                                        <i class="bi bi-truck me-2 me-2 text-secondary"></i> Fornitori
+                                    <a class="dropdown-item  py-2" href="@Url.Action("Index", "GestSupplier")">
+                                        <i class="bi bi-truck me-2 text-secondary"></i> Fornitori
                                     </a>
-
-                                    <a class="dropdown-item text-white py-2" href="@Url.Action("Index", "GestWarehouses")">
-                                        <i class="bi-house-door-fill  me-2 text-secondary"></i> Magazzini
+                                    <a class="dropdown-item  py-2" href="@Url.Action("Index", "GestWarehouses")">
+                                        <i class="bi-house-door-fill me-2 text-secondary"></i> Magazzini
                                     </a>
-
-                                    <a class="dropdown-item text-white py-2" href="@Url.Action("Index", "GestPriceList")">
+                                    <a class="dropdown-item  py-2" href="@Url.Action("Index", "GestPriceList")">
                                         <i class="bi-tag-fill me-2 text-secondary"></i> Listino-Prezzi
                                     </a>
-
-                                    <a class="dropdown-item text-white py-2">
-                                        <i class="bi-box-fill  me-2 text-secondary"></i> Prodotti
+                                    <a class="dropdown-item  py-2"  href="@Url.Action("Index", "GestProductCategory")">
+                                        <i class="bi-box-fill me-2 text-secondary"></i>Categorie Prodotti
                                     </a>
                                 </li>
                             </ul>
