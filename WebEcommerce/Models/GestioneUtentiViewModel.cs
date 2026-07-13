@@ -109,11 +109,15 @@ namespace WebEcommerce.Models
         public List<sp_SearchProductCategory_Result> TheProductCategory { get; set; }
         public sp_GetProductCategoryById_Result ThetCategory { get; set; }
 
-        
+        public List<sp_GetListProduct_Result> ListProduct { get; set; }
+
+
         /*========================================================================================
                 ******* CONTEINER FOR PRODUCTS *******
-         =========================================================================================*/ 
+         =========================================================================================*/
         public List<sp_SearchProduct_Result> TheProducts { get; set; }
+
+        public List<sp_GetListProductCategory_Result> ListProductCategories { get; set; }
 
     }
 }

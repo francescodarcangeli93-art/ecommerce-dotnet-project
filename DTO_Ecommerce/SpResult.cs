@@ -120,6 +120,20 @@ namespace DTO_Ecommerce
         
     }
 
+    public class sp_GetListProduct_Result
+    {
+        public int Id { get; set; }
+
+        public string ProductName { get; set; }
+    }
+
+    public class sp_GetListProductCategory_Result
+    {
+        public int Id { get; set; }
+
+        public string CategoryName { get; set; }
+    }
+
     public class sp_GetListUserRole_Result
     {
         public int? Id { get; set; }
@@ -512,6 +526,7 @@ namespace DTO_Ecommerce
         public bool IsDiscontinued { get; set; }
 
         public string CompanyName { get; set; }
+        public string CategoryName { get; set; }
 
     }
 

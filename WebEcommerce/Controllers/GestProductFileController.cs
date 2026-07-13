@@ -88,6 +88,34 @@ namespace WebEcommerce.Controllers
             }
         }
 
+        //[HttpGet]
+        //public ActionResult Details(int id)
+        //{
+        //    int idUser = 0;
+
+
+        //    try
+        //    {
+        //        idUser = (int)Session["UserId"];
+
+
+
+        //        WarehousesViewModel Model = new WarehousesViewModel
+        //        {
+        //            TheWarehouse = _warehousesService.GetWarehouseById(id),
+        //            TheWarehouseMovementsList = _warehousesService.sp_GetWarehouseMovementsById(id)
+        //        };
+        //        return View(Model);
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logService.WriteLogProcessError(idUser, ex.Message);
+        //        return View("Error");
+        //    }
+
+        //}
+
 
     }
 }

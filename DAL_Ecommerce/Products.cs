@@ -23,10 +23,11 @@ namespace DAL_Ecommerce
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("@ProductName", (object)spParam.ProductName ?? DBNull.Value));
-                    cmd.Parameters.Add(new SqlParameter("@SupplierId", (object)spParam.SupplierId ?? DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@SupplierName", (object)spParam.SupplierName ?? DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@BasedUnitPrice", (object)spParam.BasedUnitPrice ?? DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@Package", (object)spParam.Package ?? DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@IsDiscontinued", (object)spParam.IsDiscontinued ?? DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@CategoryId", (object)spParam.CategoryId ?? DBNull.Value));
                 
 
                     // Apertura connessione sincrona

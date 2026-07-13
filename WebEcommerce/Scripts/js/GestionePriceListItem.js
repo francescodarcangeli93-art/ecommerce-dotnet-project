@@ -65,11 +65,13 @@
         if ($(this).is(':checked')) {
             // Abilita l'input
             $('#set-UnitPrice').prop('hidden', false);
-
+            // setto l'input visibile
+            $('#item_UnitPrice').attr('type','number');
             $('#item_UnitPrice').focus(); // Sposta il cursore direttamente nel campo
         } else {
             // Disabilita l'input e pulisce il valore
             $('#set-UnitPrice').prop('hidden', true);
+            $('#item_UnitPrice').attr('type', 'hidden');
             $('#set-UnitPrice').val('');
         }
     });

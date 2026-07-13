@@ -303,7 +303,7 @@ namespace DTO_Ecommerce
         public int? Id { get; set; }
         public int? PriceListId { get; set; }
         public int? ProductId { get; set; }
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
 
@@ -468,10 +468,12 @@ namespace DTO_Ecommerce
     public class sp_SearchProduct_Param
     {
         public string ProductName { get; set; }
-        public int? SupplierId { get; set; }
+        public int? SupplierName { get; set; }
         public decimal? BasedUnitPrice { get; set; }
         public string Package { get; set; }
         public bool? IsDiscontinued { get; set; }
+
+        public int? CategoryId { get; set; }
     }
     public class sp_SearchProductCategory_Param
     {
