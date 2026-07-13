@@ -275,6 +275,26 @@ select {
     font-size: 13px;
     margin-left: 10px;
 }
+
+.title-conteiner {
+   
+    text-align:center;
+}
+
+    .title-conteiner h1 {
+        display: inline-block;
+        padding: 0px;
+        margin-bottom: 20px;
+        font-weight: bold;
+        font-size: 2rem;
+        transform:translateY(-6px);
+        transition: 0.3s ease, transform 0.2s ease;
+    }
+
+    .title-conteiner h1:hover {
+        color: #ffc107;
+        transform: translateY(-9px);
+    }
 /* ==========================================================================
    HOME PAGE GRAPHICS
    ========================================================================== */
@@ -1102,7 +1122,12 @@ select {
     PRODOTTI GRAFICA
    ========================================================================== */
 
-    .products-icons {
+    .products-icons a{
         color: #ffc107;
         font-size: 1.3em;
     }
+
+        .products-icons a:hover {
+            color: black;
+            font-size: 1.3em;
+        }

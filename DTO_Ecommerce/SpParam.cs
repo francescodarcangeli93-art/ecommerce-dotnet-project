@@ -469,9 +469,9 @@ namespace DTO_Ecommerce
     {
         public string ProductName { get; set; }
         public int? SupplierId { get; set; }
-        public decimal BasedUnitPrice { get; set; }
+        public decimal? BasedUnitPrice { get; set; }
         public string Package { get; set; }
-        public bool IsDiscontinued { get; set; }
+        public bool? IsDiscontinued { get; set; }
     }
     public class sp_SearchProductCategory_Param
     {

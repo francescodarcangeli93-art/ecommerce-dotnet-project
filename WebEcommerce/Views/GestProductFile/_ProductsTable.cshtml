@@ -1,0 +1,61 @@
+﻿@model WebEcommerce.Models.ProductCategoryViewModel
+
+<div class="table-responsive bevel">
+
+    <input type="hidden" id="indirizzoDaEliminare" value="" />
+
+    <table class="table table-striped table-hover table-bordered align-middle mb-0 tab-fix">
+        <thead class="table-dark table-bordered">
+            <tr>
+                <th scope="col" class="text-center">Nome Prodotto</th>
+                <th scope="col" class="text-center">Fornitore</th>
+                <th scope="col" class="text-center">Prezzo Base</th>
+                <th scope="col" class="text-center">Confezione</th>
+                <th scope="col" class="text-center">STATO</th>
+                <th class="text-center px-4">COMANDI</th>
+            </tr>
+        </thead>
+        <tbody id="corpoTabella">
+          @foreach(var product in Model.TheProducts)
+            {
+                <tr data-id="@product.Id">
+                    <td class="text-start">@product.ProductName</td>
+                    <td class="text-start">@product.CompanyName</td>
+                    <td class="text-center">@product.BasedUnitPrice €</td>
+                    <td class="text-center">@product.Package</td>
+              
+                    <!-- GESTIONE ATTIVO NON ATTIVO -->
+                    <td class="text-center">
+                        <button type="submit"
+                    
+                            class="btn btn-sm fw-bold text-uppercase d-inline-flex align-items-center justify-content-center border-2 attivo
+                            @(product.IsDiscontinued ? "btn-outline-success text-success bg-success bg-opacity-10" : "btn-outline-danger text-danger bg-danger bg-opacity-10")">
+                            @(product.IsDiscontinued ? "Attivo" : "Non Attivo")
+                        </button>         
+                    </td>
+
+                    <td class="text-center text-ce px-4 spazio-comandi">
+                        <a class="btn btn-sm btn-outline-info py-1 simpleBevel btn-dettagli" data-id="@product.Id" title="Visualizza Dettagli">
+                            <i class="bi bi-search"></i>
+                        </a>
+                        <a class="btn btn-sm btn-outline-warning py-1 simpleBevel btn-modifica" data-id="@product.Id" title="Modifica riga">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+
+                        <!-- ELIMINA UTENTE -->
+                        <button type="button"
+                                class="btn btn-sm btn-outline-danger py-1 simpleBevel btn-elimina"
+                               
+                                title="Cancella magazzino"
+                                data-id="@product.Id"
+                                data-name="@product.ProductName">
+
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

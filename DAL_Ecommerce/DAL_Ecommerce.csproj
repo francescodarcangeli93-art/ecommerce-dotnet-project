@@ -53,6 +53,7 @@
     <Compile Include="Ship.cs" />
     <Compile Include="PriceList.cs" />
     <Compile Include="ProductCategory.cs" />
+    <Compile Include="Products.cs" />
     <Compile Include="Warehouses.cs" />
     <Compile Include="Supplier.cs" />
     <Compile Include="Country.cs" />

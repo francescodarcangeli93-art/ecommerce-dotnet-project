@@ -49,7 +49,7 @@ namespace DAL_Ecommerce
             }
             catch (Exception ex)
             {
-                throw; // Mantiene intatto lo Stack Trace dell'errore originale
+                throw ex; // Mantiene intatto lo Stack Trace dell'errore originale
             }
 
             return retVal;

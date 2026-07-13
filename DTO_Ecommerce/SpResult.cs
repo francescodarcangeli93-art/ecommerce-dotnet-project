@@ -511,6 +511,7 @@ namespace DTO_Ecommerce
         public string Package { get; set; }
         public bool IsDiscontinued { get; set; }
 
+        public string CompanyName { get; set; }
 
     }
 

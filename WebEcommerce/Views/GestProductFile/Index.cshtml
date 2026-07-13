@@ -1,0 +1,25 @@
+﻿@model WebEcommerce.Models.ProductCategoryViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<main class="container mt-4">
+
+
+    <div class="title-conteiner">
+        <h1>
+            Gestione Prodotti
+        </h1>
+    </div>
+
+    <!-- FILTRI  -->
+
+
+    <!--========== TABELLA ================-->
+
+    <div id="tabellaContainer">
+        @Html.Partial("_ProductsTable", Model)
+    </div>
+
+</main>
