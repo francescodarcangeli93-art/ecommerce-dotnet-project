@@ -89,7 +89,7 @@
                                         @if (utente.CustomerId != null && utente.RoleName.ToString().ToLower() != "admin")
                                         {
                                             <a href="@Url.Action("Index", "GestIndirizzi", new { id = utente.Id })"
-                                               class="btn btn-sm btn-outline-success py-1 d-inline-block simpleBevel" title="Indirizzi=@Model.">
+                                               class="btn btn-sm btn-outline-success py-1 d-inline-block simpleBevel" title="Indirizzi = @utente.Indirizzi">
                                                 <i class="bi bi-pin-map-fill"></i>
                                             </a>
                                         }
@@ -230,7 +230,7 @@
 
 
         <div class="buttons">
-            <button class="no-btn">No, Tienilo</button>
+            <button class="no-btn">No, Annulla</button>
             <button class="si-btn">Si, Cancella</button>
         </div>
     </div>

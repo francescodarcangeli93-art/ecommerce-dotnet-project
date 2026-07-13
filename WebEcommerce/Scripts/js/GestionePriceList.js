@@ -6,7 +6,7 @@ $(document).ready(function () {
     const $btnAdd = $('#btnAggiungi');
     const $tabellaContainer = $('#tabellaContainer');
 
- 
+
 
     const allSelect = document.querySelectorAll('.is-placeholder');
 
@@ -14,7 +14,7 @@ $(document).ready(function () {
 
         select.addEventListener('change', function () {
 
-           
+
             this.classList.toggle('is-placeholder', this.value === '');
         });
     });
@@ -22,7 +22,7 @@ $(document).ready(function () {
     function eseguiRicerca() {
 
         const searchUrl = $('#btnCerca').data('search-url');
- 
+
         var filtri = {
 
             PriceListName: $('input[name="PriceListName"]').val(),
@@ -44,8 +44,8 @@ $(document).ready(function () {
             data: filtri,
             success: function (response) {
 
-                    $tabellaContainer.html(response).show();
-              
+                $tabellaContainer.html(response).show();
+
                 const nuovoUrl = window.location.pathname + '?PriceListName=' + filtri.PriceListName + '&Description=' + filtri.Description
                     + '&StartDate=' + filtri.StartDate + '&EndDate=' + filtri.EndDate + '&CurrencyCode=' + filtri.CurrencyCode
                     + '&IsDefault=' + filtri.IsDefault + '&IsActive=' + filtri.IsActive;
@@ -106,7 +106,7 @@ $(document).ready(function () {
             CurrencyCode: $('#addCurrencyCode').val(),
             IsDefault: $('#addIsDefault').val(),
             IsActive: $('#addIsActive').val()
-           
+
         }
 
         $.ajax({
@@ -146,7 +146,7 @@ $(document).ready(function () {
      ==========================================================*/
 
     $('#tabellaContainer').on('click', '.btn-elimina', function () {
-   
+
         const id = $(this).data('id');
         const name = $(this).data('name');
 
@@ -165,21 +165,21 @@ $(document).ready(function () {
        3. ELIMINA LISTINO
        ==========================================================*/
 
-    $('#tabellaContainer').on('click', '.btn-elimina', function () {
+    //$('#tabellaContainer').on('click', '.btn-elimina', function () {
 
-        const id = $(this).data('id');
-        const name = $(this).data('name');
+    //    const id = $(this).data('id');
+    //    const name = $(this).data('name');
 
-        $('#indirizzoDaEliminare').val(id);
-     
-        
-    });
+    //    $('#indirizzoDaEliminare').val(id);
+
+
+    //});
 
     $('#delList-btn').on('click', function () {
 
         const $btnElimina = $('#delList-btn');
         const $deleteUrl = $btnElimina.attr('data-delete-url');
-        
+
 
         const model = {
             id: $('#listinoDaEliminare').val()
@@ -235,7 +235,7 @@ $(document).ready(function () {
             success: function (response) {
 
                 if (response.success) {
-                    const header = response.data.Header; 
+                    const header = response.data.Header;
 
                     $('#editId').val(header.Id);
                     $('#editPriceListName').val(header.PriceListName);
@@ -300,8 +300,6 @@ $(document).ready(function () {
         });
     });
 
- 
+
 
 });
-
-

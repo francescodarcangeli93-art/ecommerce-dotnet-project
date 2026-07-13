@@ -32,12 +32,12 @@
                 </div>
 
                 <div class="col-md-3">
-                    <input type="text" id="searchNome" name="Name" placeholder="Descizione" class="form-control input-animated" />
+                    <input type="text" id="searchDescription" name="Description" placeholder="Cerca per Descrizione" class="form-control input-animated" />
                 </div>
 
                 <div class="col-md-3 d-flex align-items-center gap-2 justify-content-end">
                     <button type="button" id="btnPulisci" class="btn fw-semibold px-4 btn-animated bt-pulisci"><i class="bi-eraser"></i>  Pulisci</button>
-                    <button type="button" id="btnCerca" class="btn fw-semibold px-4 btn-animated bt-cerca"><i class="bi bi-search me-1"></i> Cerca</button>
+                    <button type="button" id="btnCerca" class="btn fw-semibold px-4 btn-animated bt-cerca" data-search-url="@Url.Action("SearchProductCategoryPartial", "GestProductCategory")"><i class="bi bi-search me-1"></i> Cerca</button>
                 </div>
 
             </div>
@@ -64,8 +64,139 @@
 </main>
 
 
+<!--MODALE AGGIUNGI-->
+<div class="modal fade" id="aggiungi" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Aggiungi un Nuovo listino prezzi</h5>
 
+            </div>
+            <div class="modal-body">
+
+                <div class="mb-4 p-4 bg-white card-animated card-detail">
+                    <div>
+                        <div class="card-body row g-3">
+
+                            <form id="form-add">
+
+                                <div class="col-md-6">
+
+
+                                    <div class="mb-3">
+                                        <label for="addNome">Nome*</label>
+                                        <input type="text" id="addNome" name="Name" placeholder="Nome Listino" class="form-control input-animated" required />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="addDescrizione">Descrizione</label>
+                                        <input type="text" id="addDescrizione" name="Description" placeholder="Descrizione" class="form-control input-animated" required />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <input type="checkbox" id="addIsActive" name="IsActive" checked required />
+                                        <label for="addIsActive">Attivo</label>
+                                    </div>
+
+                                </div>
+
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div id="resultMessage" class="mt-2 text-center"></div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Indietro</button>
+                <button type="button" id="btnSalva" class="btn btn-primary" data-save-url="@Url.Action("Save", "GestProductCategory")">Salva</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modale Elimina 2 -->
+<div class="myModal-overlay" id="modalElimina">
+    <div class="personal-card">
+        <div class="body">
+
+            <!--risultato messaggio errore o successo-->
+            <div id="resultMessageDel"></div>
+
+            <div class="cont-icon">
+                <span class="icona-attenzione"></span>
+            </div>
+
+
+            <h3>Conferma eliminazione</h3>
+            <p>Sei sicuro di voler eliminare questo l'istino "<strong id="CategoriaDaCancellare"></strong>"?</p>
+
+        </div>
+
+        <div class="buttons">
+            <button class="no-btn">No, Annulla</button>
+            <button class="si-btn" id="del-category" data-delete-url="@Url.Action("Delete", "GestProductCategory")">Si, Elimina</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ======== MODALE MODIFICA =========== -->
+<div class="myModal-overlay" id="modalEdit">
+    <div class="personal-card personal-card-radius">
+        <div class="body">
+
+            <!--risultato messaggio errore o successo-->
+            <div id="resultMessageEdit"></div>
+            
+            <h3>Modifica Categoria: <span id="CategoriaDaModificare"></span> </h3>
+
+            <div class="mb-4 p-4 bg-white card-animated card-detail">
+                <div>
+                    <div class="card-body row g-3">
+
+                        <form id="form-edit">
+
+                            <div class="col-md-12">
+
+                                <input type="hidden" id="editId" />
+                                <div class="mb-3">
+                                    <label for="addNome">Nome*</label>
+                                    <input type="text" id="editNome" name="Name" placeholder="Nome Listino" class="form-control input-animated" required />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="editDescrizione">Descrizione</label>
+                                    <input type="text" id="editDescrizione" name="Description" placeholder="Descrizione" class="form-control input-animated" required />
+                                </div>
+
+                                <div class="mb-3">
+                                    <select name="IsActive" id="editIsActive" class="form-select input-animated" required>
+                                        <option value="true">Attivo</option>
+                                        <option value="false">Non Attivo</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="buttons">
+            <button class="no-btn">No, Annulla</button>
+            <button class="si-edit-btn" id="edit-category" data-edit-url="@Url.Action("Edit", "GestProductCategory")">Si, Modifica</button>
+        </div>
+    </div>
+</div>
 
 @section scripts {
-    <script src="@Url.Content("~/Scripts/js/GestioneWarehouse.js")"></script>
+    <script src="@Url.Content("~/Scripts/js/CategoryProduct.js")"></script>
 }

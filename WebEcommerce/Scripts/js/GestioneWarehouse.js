@@ -65,7 +65,7 @@
     // se ci sono i filtri 
     if (filtriSalvati) {
 
-        const filtri = JSON.parse(filtriSalvati)
+        const filtri = JSON.parse(filtriSalvati);
         let haFiltri = false;
 
         $('#searchType').val(filtri.Type);

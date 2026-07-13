@@ -739,11 +739,14 @@ select {
         border-radius: 30px;
     }
 
+    .personal-card-radius {
+        border-radius: 10px;
+    }
 
-.cont-icon {
-    margin-top: 30px;
-    text-align: center;
-}
+        .cont-icon {
+            margin-top: 30px;
+            text-align: center;
+        }
 
 .icona-attenzione {
     display: inline-block;
@@ -855,6 +858,17 @@ select {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+.si-edit-btn {
+    background-color: #0d6efd;
+    color: whitesmoke;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+    .si-edit-btn:hover {
+        background-color: #0b5ed7;
+        transform: translateY(-2px);
+    }
+
 .no-btn:hover {
     background-color: #D1D5DB;
     transform: translateY(-2px);
@@ -877,12 +891,21 @@ select {
         transform: translateY(-2px);
     }
 
-.error-message {
-    margin-top: 2px;
-    color: red;
-    margin: 10px 10px;
-}
+    .error-message {
+        margin-top: 2px;
+        color: #dc2626;
+        margin: 10px 10px;
+    }
 
+    .error-message-2 {
+        min-height: 20px;
+        color: #dc3545;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+
+   
 /* ==========================================================================
     MAGAZZINI GRAFICA
    ========================================================================== */
@@ -1075,3 +1098,11 @@ select {
     z-index: 1060 !important;
 }
 
+/* ==========================================================================
+    PRODOTTI GRAFICA
+   ========================================================================== */
+
+    .products-icons {
+        color: #ffc107;
+        font-size: 1.3em;
+    }

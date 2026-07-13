@@ -57,9 +57,9 @@
 
 
 
-    /* ==========================================================
-    2. AJAX PER SALVARE IL PRODOTTO
-    ==========================================================*/
+    /* ==============================================================================================
+    2. ABILITAZIONE DEL PULSTANE PER AGGIUNGERE IL PREZZO PERSONALIZZATO (NON DI DEFAULT)
+    ================================================================================================*/
     $(document).on('click', '#chkEnablePrice', function () {
 
         if ($(this).is(':checked')) {
@@ -75,7 +75,7 @@
     });
 
     /* ==========================================================
-    3. AJAX PER SALVARE IL PRODOTTO
+    3. AJAX PER SALVARE IL LIST ITEM
     ==========================================================*/
 
 
@@ -136,25 +136,18 @@
 
 
     // Apri il modal custom di conferma eliminazione prodotto
-    $(document).on('click', '.btn-elimina', function () {
+
+    $(document).on('click', '.btn-eliminaItem', function () {
         const id = $(this).data('id');
         const name = $(this).data('name');
 
-        $('#idProdottoDaEliminare').val(id);
+        $('#ItemDaEliminare').val(id);
         $('#nomeProdottoDaEliminare').text(name);
 
         $('#modalEliminaItem').addClass('active2');
     });
 
-    $(document).on('click', '.btn-elimina', function () {
-
-        const id = $(this).data('id');
-        const name = $(this).data('name');
-
-        $('#ItemDaEliminare').val(id);
-
-
-    });
+    
 
     // Annulla
     $(document).on('click', '.no-btn-item', function () {
@@ -162,11 +155,11 @@
     });
 
     // Conferma eliminazione
-    $(document).on('click', '.si-btn-item', function () {
-       
+    $(document).on('click', '#delItem-btn', function () {
+        
       
         const $deleteUrl = $(this).data('delete-url');
-   
+        console.log($deleteUrl);
         const model = {
             id: $('#ItemDaEliminare').val()
         }
@@ -194,4 +187,141 @@
         });
     });
 
+    /* ==========================================================
+        4. APERTURA MODALE MODIFICA PRICE LIST ITEM
+     ==========================================================*/
+
+    $(document).on('click', '.btn-modificaItem', function () {
+
+        
+
+
+        const $loadUrl = $(this).data('load-url');
+       
+        const model = {
+            id: $(this).data('id')
+        }
+
+        $.ajax({
+            url: $loadUrl,
+            type: 'GET',  
+            data: model,
+            dataType: 'json',
+
+            success: function (response) {
+                if (response.success) {
+
+                    $('#editItemId').val(response.data.Id);
+                    $('#editPriceListId').val(response.data.PriceListId);
+                    $('#editProductId').val(response.data.ProductId);
+                    $('#editUnitPriceItem').val(response.data.Price);
+                    $('#editStartDateItem').val(response.data.StartDateString || '');
+                    $('#editEndDateItem').val(response.data.EndDateString || '');
+
+                    // prendere la data e aggiungere un giorno
+
+                    const date = aggiungiGiorno(response.data.StartDateString);
+                 
+                    
+                    $('#editEndDateItem').attr('min', date);
+               
+                    modalEditOpen();
+
+                    //$('input[name="editIsActive"][value="' + response.data.IsActive + '"]').prop('checked', true);
+
+                } else {
+                    $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
+                }
+            },
+
+            error: function (xhr, status, error) {
+                $('#resultMessage').html('<span style="color:red">Errore: ' + xhr.responseText + '</span>');
+            }
+
+        });
+
+    });
+
+    /* ==========================================================
+   5. SALVATAGGIO MODIFICA PRICE LIST ITEM
+========================================================== */
+
+    $(document).on('click', '#edit-category', function () {
+
+      
+        const $loadUrl = $(this).data('load-url');
+
+        const model = {
+            Id: $('#editItemId').val(),
+            PriceListId: $('#editPriceListId').val(),
+            ProductId: $('#editProductId').val(),
+            Price: $('#editUnitPriceItem').val(),
+            StartDate: $('#editStartDateItem').val() || null,
+            EndDate: $('#editEndDateItem').val() || null
+        };
+
+        $.ajax({
+            url: $loadUrl,
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(model),
+            dataType: 'json',
+
+            success: function (response) {
+                if (response.success) {
+                   
+                   
+                    const idListino = $('#PriceListId').val();
+                    ricaricaModalDettaglio(idListino); // ricarica la tabella prodotti aggiornata
+
+                } else {
+                    $('#resultMessageEditItem').html('<span style="color:red">' + response.message + '</span>');
+                }
+            },
+
+            error: function (xhr, status, error) {
+              
+                $('#resultMessageEditItem').html('<span style="color:red">Errore: ' + xhr.responseText + '</span>');
+            }
+        });
+    });
+
+    $(document).on('change', '#editStartDateItem', function () {
+
+        const startDate = $('#editStartDateItem').val();
+        const newDate = aggiungiGiorno(startDate);
+        $('#editEndDateItem').attr('min', newDate);
+    });
+
+    $(document).on('click', '.no-edit-btn' , function () {
+   
+        $('#modalEditItem').removeClass('active2');
+    });
+
+    /* ==========================================================
+        6. FUNZIONE PER CONVERTIRE LA DATA
+    ========================================================== */
+
+    function aggiungiGiorno(dataString) {
+        const [anno, mese, giorno] = dataString.split('-').map(Number);
+        const data = new Date(anno, mese - 1, giorno); 
+
+        data.setDate(data.getDate() + 1);
+
+        // ricostruzione della formattazione 
+        const y = data.getFullYear();
+        const m = String(data.getMonth() + 1).padStart(2, '0');
+        const d = String(data.getDate()).padStart(2, '0');
+
+        return `${y}-${m}-${d}`; 
+    }
+
+
+    function modalEditOpen() {
+
+        $('#ItemListDaModificare').text($(this).data('name'));
+
+        $('#modalEditItem').addClass('active2');
+        
+    }
 });

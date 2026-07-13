@@ -736,6 +736,7 @@
     <Content Include="Scripts\js\GestionePriceListItem.js" />
     <Content Include="Scripts\js\GestionePriceList.js" />
     <Content Include="Scripts\js\DettaglioWarehouse.js" />
+    <Content Include="Scripts\js\CategoryProduct.js" />
     <Content Include="Scripts\js\GestioneWarehouse.js" />
     <Content Include="Scripts\js\GestioneSupplier.js" />
     <Content Include="Scripts\js\Layout.js" />

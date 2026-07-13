@@ -233,5 +233,42 @@ namespace DAL_Ecommerce
 
             return newId;
         }
+
+        public sp_GetPriceListItemById_Result GetPriceListItemById(int? id)
+        {
+            string spName = "dbo.sp_GetPriceListItemById";
+
+            sp_GetPriceListItemById_Result retVal = new sp_GetPriceListItemById_Result();
+            DataTable dtPriceListItem = new DataTable();
+
+            try
+            {
+                using (SqlConnection conn = DbConnectionFactory.CreateConnection())
+                using (SqlCommand cmd = new SqlCommand(spName, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@Id", (object)id ?? DBNull.Value));
+
+                    conn.Open();
+
+                    using (var da = new SqlDataAdapter(cmd))
+                    {
+                        da.Fill(dtPriceListItem);
+                    }
+
+                    if (dtPriceListItem.Rows.Count > 0)
+                    {
+                        retVal = dtPriceListItem.Rows[0].ToObject<sp_GetPriceListItemById_Result>();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return retVal;
+        }
+
     }
 }

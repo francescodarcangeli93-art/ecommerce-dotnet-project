@@ -13,5 +13,7 @@ namespace BLL_Ecommerce.Interfaces
 
          void ManageProductCategory(sp_ManageProductCategory_Param param);
 
+        sp_GetProductCategoryById_Result GetProductCategoryById(int? id);
+
     }
 }

@@ -17,6 +17,8 @@ namespace BLL_Ecommerce.Interfaces
 
         int? ManagePriceListItem(sp_ManagePriceListItem_Param spParam);
 
+         sp_GetPriceListItemById_Result GetPriceListItemById(int? id);
+
 
     }
 

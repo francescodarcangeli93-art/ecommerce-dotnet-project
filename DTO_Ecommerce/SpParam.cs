@@ -133,6 +133,14 @@ namespace DTO_Ecommerce
         public string @Mode { get; set; }
 
     }
+
+    public class sp_GetPriceListItemById_Param
+    {
+        public int? Id { get; set; }
+       
+
+    }
+
     public class sp_GetProductById_Param
     {
         public int? Id { get; set; }
@@ -319,7 +327,7 @@ namespace DTO_Ecommerce
         public string Description { get; set; }
         public int? DisplayOrder { get; set; }
         public bool IsActive { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
 
     }
     public class sp_ManageProductFile_Param
@@ -454,6 +462,7 @@ namespace DTO_Ecommerce
         public bool? IsActive { get; set; }
 
     }
+
   
 
     public class sp_SearchProduct_Param

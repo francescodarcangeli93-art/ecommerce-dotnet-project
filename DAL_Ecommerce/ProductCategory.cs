@@ -53,6 +53,49 @@ namespace DAL_Ecommerce
             return retVal;
         }
 
+
+
+        public sp_GetProductCategoryById_Result GetProductCategoryById(int? id)
+        {
+            string spName = "dbo.sp_GetProductCategoryById";
+
+            sp_GetProductCategoryById_Result ProductCategory = new sp_GetProductCategoryById_Result();
+
+            try
+            {
+                using (SqlConnection conn = DbConnectionFactory.CreateConnection())
+                using (SqlCommand cmd = new SqlCommand(spName, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@Id", id));
+
+                    conn.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            ProductCategory = new sp_GetProductCategoryById_Result
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Name = reader["Name"].ToString(),
+                                Description = reader["Description"] == DBNull.Value ? null : reader["Description"].ToString(),
+                                DisplayOrder = Convert.ToInt32(reader["DisplayOrder"]),
+                                IsActive = Convert.ToBoolean(reader["IsActive"]),
+                                CreatedDate = Convert.ToDateTime(reader["CreatedDate"])
+                            };
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return ProductCategory;
+        }
+
         public void ManageProductCategory(sp_ManageProductCategory_Param param)
         {
             string spName = "dbo.sp_ManageProductCategory";

@@ -24,7 +24,10 @@ namespace BLL_Ecommerce.Services
             ProductCategory.ManageProductCategory(param);
     }
 
-    
+    public  sp_GetProductCategoryById_Result GetProductCategoryById(int? id)
+    {
+         return   ProductCategory.GetProductCategoryById(id);
+    }
 
     }
 }

@@ -60,9 +60,9 @@ namespace DAL_Ecommerce
                                 Password = reader["Password"].ToString(),
                                 FirstName = reader["FirstName"].ToString(),
                                 LastName = reader["LastName"].ToString(),
-                                CustomerId = reader["CustomerId"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["CustomerId"])
-
-                                // IconUserRole NON viene toccata qui, si calcolerà da sola quando serve!
+                                CustomerId = reader["CustomerId"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["CustomerId"]),
+                                Indirizzi = reader["Indirizzi"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["Indirizzi"])
+                              
                             };
                             retVal.Add(user);
                         }

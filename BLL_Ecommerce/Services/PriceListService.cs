@@ -38,5 +38,12 @@ namespace BLL_Ecommerce.Services
 
             return ThePriceList.ManagePriceListItem(spParam);
         }
+
+        public sp_GetPriceListItemById_Result GetPriceListItemById(int? id)
+        {
+            if (id == null) throw new ArgumentNullException();
+
+          return  ThePriceList.GetPriceListItemById(id);
+        }
     }
 }

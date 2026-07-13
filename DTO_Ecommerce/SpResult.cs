@@ -243,6 +243,20 @@ namespace DTO_Ecommerce
         public List<sp_GetPriceListByIdDetail_Result> Details { get; set; }
     }
 
+    public class sp_GetPriceListItemById_Result
+    {
+        public int Id { get; set; }
+        public int PriceListId { get; set; }
+        public int ProductId { get; set; }
+        public decimal Price { get; set; }
+        public int MinQuantity { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+
+        public string StartDateString => StartDate.ToString("yyyy-MM-dd");
+        public string EndDateString => EndDate.HasValue ? EndDate.Value.ToString("yyyy-MM-dd") : null;
+    }
+
     public class sp_GetProductById_Result
     {
         public int? Id { get; set; }
@@ -500,6 +514,16 @@ namespace DTO_Ecommerce
 
     }
 
+    public class sp_GetProductCategoryById_Result
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int DisplayOrder { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime CreatedDate { get; set; }
+    }
+
     public class sp_SearchProductCategory_Result
     {
         public int? Id { get; set; }
@@ -592,6 +616,8 @@ namespace DTO_Ecommerce
                 }
             }
         }
+
+        public int? Indirizzi { get; set; }
 
         public string emptyName
         {

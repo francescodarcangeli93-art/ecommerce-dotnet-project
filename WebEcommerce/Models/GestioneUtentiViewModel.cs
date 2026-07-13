@@ -107,7 +107,7 @@ namespace WebEcommerce.Models
     public class ProductCategoryViewModel
     {
         public List<sp_SearchProductCategory_Result> TheProductCategory { get; set; }
+        public sp_GetProductCategoryById_Result ThetCategory { get; set; }
 
-       
     }
 }

@@ -81,5 +81,126 @@ namespace WebEcommerce.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult Details(int id)
+        {
+            int idUser = 0;
+
+
+            try
+            {
+                idUser = (int)Session["UserId"];
+
+
+
+                ProductCategoryViewModel Model = new ProductCategoryViewModel
+                {
+                    ThetCategory = _ProductCategoryService.GetProductCategoryById(id),
+                   
+                };
+                return View(Model);
+
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return View("Error");
+            }
+
+        }
+
+
+        // POST: ProductCategory/Create
+        [HttpPost]
+        public JsonResult Save(sp_ManageProductCategory_Param param)
+        {
+            int idUser = 0;
+
+            try
+            {
+                idUser = (int)Session["UserId"];
+                // TODO: Add insert logic here
+                param.Operation = "I";
+
+                _ProductCategoryService.ManageProductCategory(param);
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        // POST: ProductCategory/Delete/5
+        [HttpPost]
+        public JsonResult Delete(int id)
+        {
+            int idUser = 0;
+            try
+            {
+                idUser = (int)Session["UserId"];
+
+                sp_ManageProductCategory_Param param = new sp_ManageProductCategory_Param
+                {
+                    Operation = "D",
+                    Id = id
+                };
+
+                _ProductCategoryService.ManageProductCategory(param);
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        // GET: Wharehouse/Edit/5
+        public JsonResult Edit(int id)
+        {
+            int idUser = 0;
+            try
+            {
+                idUser = (int)Session["UserId"];
+                //  prendere i dati dal database del supplier tramite id
+                sp_GetProductCategoryById_Result Category = _ProductCategoryService.GetProductCategoryById(id);
+                // impacchettare i dati e spedirli  alla pagina
+
+                return Json(new { success = true, data = Category }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        // POST: Wharehouse/Edit/5
+        [HttpPost]
+        public JsonResult Edit(sp_ManageProductCategory_Param param)
+        {
+            int idUser = 0;
+            try
+            {
+                idUser = (int)Session["UserId"];
+                // TODO: Add update logic here
+                param.Operation = "U";
+                _ProductCategoryService.ManageProductCategory(param);
+
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+
     }
 }
