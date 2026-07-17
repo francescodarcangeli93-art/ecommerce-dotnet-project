@@ -27,7 +27,7 @@ namespace DAL_Ecommerce
                 using (SqlConnection conn = DbConnectionFactory.CreateConnection())
                 using (SqlCommand cmd = new SqlCommand(spName, conn))
                 {
-                    System.Diagnostics.Debug.WriteLine($"[1] Dopo CreateConnection: {sw.ElapsedMilliseconds}ms");
+                   
 
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("@Id", (object)spParam.Id ?? DBNull.Value));

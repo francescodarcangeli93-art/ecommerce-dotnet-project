@@ -143,5 +143,46 @@ namespace DAL_Ecommerce
             return retVal;
         }
 
+
+        /*=======================================================================================
+           3 LISTA SUPPLIER 
+         =======================================================================================*/
+
+        public List<sp_GetListSupplier_Result> sp_GetListSupplier()
+        {
+            string spName = "dbo.sp_GetListSupplier";
+
+            List<sp_GetListSupplier_Result> retVal = new List<sp_GetListSupplier_Result>();
+            DataTable dtSupplier = new DataTable();
+
+            try
+            {
+                //  cmd.Parameters.Add(new SqlParameter("@Username", spParam.Username));
+                using (SqlConnection conn = DbConnectionFactory.CreateConnection())
+                using (SqlCommand cmd = new SqlCommand(spName, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    conn.Open();
+
+                    using (var da = new SqlDataAdapter(cmd))
+                    {
+                        da.Fill(dtSupplier);
+                    }
+
+                    if (dtSupplier.Rows.Count > 0)
+                    {
+                        retVal = dtSupplier.DataTableToList<sp_GetListSupplier_Result>();
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return retVal;
+        }
     }
 }

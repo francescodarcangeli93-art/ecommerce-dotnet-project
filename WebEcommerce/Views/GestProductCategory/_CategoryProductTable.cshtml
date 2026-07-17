@@ -10,9 +10,9 @@
                
                 <th scope="col" class="text-center">Nome</th>
                 <th scope="col" class="text-center">Descrizione</th>
-                <th scope="col" class="text-center">STATO</th>
-                <th class="text-center">Prodotti</th>
-                <th class="text-center px-4">COMANDI</th>
+                <th scope="col" class="text-center col-shrink-15">STATO</th>
+                <th scope="col" class="text-center col-shrink-10">Prodotti</th>
+                <th scope="col" class="text-center px-4 col-shrink-12">COMANDI</th>
             </tr>
         </thead>
         <tbody id="corpoTabella">
@@ -32,11 +32,13 @@
                             @(prCategory.IsActive ? "Attivo" : "Non Attivo")
                         </button>         
                     </td>
+                    <!--  PRODOTTI -->
                     <td class="text-center">
-                        <div class="products-icons">
-                            <a href="@Url.Action("Index", "GestProductFile")"><i class="bi bi-box-fill"></i></a>
+                        <div  class="@prCategory.IsNoProduct">
+                            <button class="filtro-categoria" data-filtro="@prCategory.Id" data-filtri-url="@Url.Action("index", "GestProductFile")" title="tot=@prCategory.ProductAmount"><i class="bi bi-box-fill"></i></button>
                         </div>
                     </td>
+
                     <td class="text-center px-4 spazio-comandi">
                         @*<a href="@Url.Action("Details","GestProductCategory", new {id = prCategory.Id})" class="btn btn-sm btn-outline-info py-1 simpleBevel btn-dettagli" data-id="@prCategory.Id" title="Visualizza Dettagli">
                             <i class="bi bi-search"></i>

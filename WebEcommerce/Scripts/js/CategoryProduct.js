@@ -33,7 +33,7 @@
             Name: $('input[name="Name"]').val(),
             IsActive: $('select[name="IsActive"]').val(),
             Description: $('input[name="Description"]').val()
-           
+            
         };
 
         // SESSIONE PER SALVARE I FILTRI

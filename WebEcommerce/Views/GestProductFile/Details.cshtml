@@ -1,0 +1,110 @@
+﻿@model WebEcommerce.Models.ProductCategoryViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles {
+    <link rel="stylesheet" href="@Url.Content("~/Content/Site.css")" />
+}
+<main class="container mt-4">
+
+    <h1 class="fw-bold mb-4 details-page-title">
+        Dettagli Prodotto
+    </h1>
+
+
+
+    <div class="d-flex justify-content-between align-items-end mb-3">
+        <h5 class="m-0">Immagini e Documenti</h5>
+
+        <button type="button" id="btnAggiungiFile" class="btn fw-semibold px-4 btn-animated buttonAdd" data-bs-toggle="modal" data-bs-target="#modalAggiungiFile">
+            <i class="bi bi-image-fill me-1"></i> Aggiungi Immagine/File
+        </button>
+    </div>
+
+
+    <div class="section-conteiner">
+
+
+        <div id="imagesList" >
+
+            @Html.Partial("_Images", Model)
+        </div>
+
+        <div class="details-conteiner">
+            <h3>@Model.TheProduct.ProductName</h3>
+            <hr />
+
+            <label>Prezzo: @Model.TheProduct.CompanyName</label>
+            <label>Prezzo: @Model.TheProduct.BasedUnitPrice</label>
+            <label> Package: @Model.TheProduct.Package</label>
+            <label>Stato: @Model.TheProduct.IsDiscontinued</label>
+            <label>Visibile in HD: @Model.TheProduct.VisibleinHP</label>
+
+        </div>
+    </div>
+    <hr />
+    <div class="file-conteiner">
+        <h3>lista file</h3>
+    </div>
+    <div class="d-flex justify-content-start align-items-center mt-4">
+        <a href="javascript:history.back();" class="btn btn-animated fw-semibold px-4 btn-details-back">
+            ← Indietro
+        </a>
+    </div>
+
+</main>
+
+
+<!--========================================================================================================================
+   1 MODALE AGGIUNGI PRODOTTO
+  ==========================================================================================================================-->
+
+<div class="modal" id="modalAggiungiFile" tabindex="-1" data-bs-backdrop="static" data-bs-focus="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Aggiungi Immagine/File</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+
+                <form id="formAggiungiFile">
+
+                    <div class="mb-3">
+                        <label for="uploadFile" class="">Seleziona File*</label>
+                        <input type="file" id="uploadFiles" accept="image/*,.pdf" class="form-control" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="uploadTitle" class="">Titolo Immagine*</label>
+                        <input type="text" id="uploadTitle" accept="image/*,.pdf" class="form-control" required />
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input type="checkbox" id="uploadIsMain" class="form-check-input" />
+                        <label class="form-check-label" for="uploadIsMain">Immagine principale</label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="uploadDescription" class="form-label">Descrizione</label>
+                        <input type="text" id="uploadDescription" class="form-control" />
+                    </div>
+
+                </form>
+
+                <div id="resultMessageUpload" class="mt-2"></div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" id="btnUploadFile" class="btn btn-primary" data-product-id="@Model.TheProduct.ProductId">Carica</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="@Url.Content("~/Scripts/js/ProductFiles.js")"></script>
+}

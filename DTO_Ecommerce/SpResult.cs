@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace DTO_Ecommerce
 {
@@ -99,8 +100,6 @@ namespace DTO_Ecommerce
 
     }
 
-
-
     public class sp_GetCustomerOrders_Result
     {
         public int? Id { get; set; }
@@ -132,6 +131,13 @@ namespace DTO_Ecommerce
         public int Id { get; set; }
 
         public string CategoryName { get; set; }
+    }
+
+    public class sp_GetListSupplier_Result
+    {
+        public int Id { get; set; }
+
+        public string CompanyName { get; set; }
     }
 
     public class sp_GetListUserRole_Result
@@ -273,9 +279,10 @@ namespace DTO_Ecommerce
 
     public class sp_GetProductById_Result
     {
-        public int? Id { get; set; }
+        public int? ProductId { get; set; }
         public string ProductName { get; set; }
         public int SupplierId { get; set; }
+        public string CompanyName { get; set; }
         public decimal BasedUnitPrice { get; set; }
         public string Package { get; set; }
         public bool IsDiscontinued { get; set; }
@@ -297,18 +304,27 @@ namespace DTO_Ecommerce
     public class sp_GetProductFileById_Result
     {
         public int Id { get; set; }
-        public int ProductId { get; set; }
-        public string ProductName { get; set; } 
+        public int ProductId { get; set; } 
         public string FileType { get; set; }
         public string FileName { get; set; }
-        public byte[] FileContent { get; set; }
+
         public long FileSizeKb { get; set; }
+      
         public string Title { get; set; }
         public string Description { get; set; }
         public bool IsMain { get; set; }
         public int DisplayOrder { get; set; }
         public DateTime CreatedDate { get; set; }
         public bool IsActive { get; set; }
+    }
+
+    public class sp_GetProductFileContent_Result
+    {
+        public int Id { get; set; }
+        public string FileType { get; set; }
+        public string FileName { get; set; }
+
+        public byte[] FileContent { get; set; }
     }
 
     public class sp_GetShipmentStatusById_Result
@@ -418,6 +434,9 @@ namespace DTO_Ecommerce
         public string PostalCode { get; set; }
         public string City { get; set; }
         public bool IsActive { get; set; }
+        public string ProductName { get; set; }
+         public DateTime LastUpdate { get; set; }
+        public int Quantity { get; set; }
     }
 
     public class sp_GetWarehouseMovementsById_Result
@@ -455,6 +474,18 @@ namespace DTO_Ecommerce
                 }
             }
         }
+    }
+
+    public class sp_GetWarehouseStockProductById_Result
+    {
+        public int Id { get; set; }
+        public string ProductName { get; set; }
+        public DateTime LastUpdate { get; set; }
+        public int Quantity { get; set; }
+
+        public int ProductId { get; set; }
+        public int QuantityMinReorder { get; set; }
+      
     }
 
     // SEARCH 
@@ -548,6 +579,11 @@ namespace DTO_Ecommerce
         public int? DisplayOrder { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
+
+        public int ProductAmount { get; set; }
+
+        public string IsNoProduct => ProductAmount == 0 ? "products-icons-disable button" : "products-icons button";
+
     }
 
     public class sp_SearchProductFile_Result
@@ -663,6 +699,55 @@ namespace DTO_Ecommerce
     {
 
     }
+
+    public class sp_SearchWarehousesMovements_Result
+    {
+        public int MovementId { get; set; }
+        public DateTime Date { get; set; }
+        public int WarehouseId { get; set; }
+
+        public string WarehouseName { get; set; }
+        public int ProductId { get; set; }
+        public string ProductName { get; set; }
+        public string CompanyName { get; set; }
+        public int? Quantity { get; set; }
+        public string MovementType { get; set; }
+        public int MovementReasonId { get; set; }
+        public string Description { get; set; }
+        public string Detail { get; set; }
+        public string Notes { get; set; }
+
+        public string DateString => Date.ToString("yyyy-MM-dd");
+
+        public string QuantityEdit =>  this.MovementType + this.Quantity;
+
+        public string quntityClass => this.MovementType == "+" ? "icon-green" : "icon-red";
+
+        public string ColorClass
+        {
+            get
+            {
+                // Usiamo ToUpper() per evitare bug se sul DB è scritto "carico" minuscolo
+                switch (this.Detail.ToUpper().Trim())
+                {
+                    case "CARICO":
+                        return "lText-green";
+
+                    case "RETTIFICA+":
+                        return "lText-green";
+                    case "FURTO":
+                        return "lText-yellow";
+                    case "INCENDIO":
+                        return "lText-red";
+                    default:
+                        return "lText-neutral"; // Colore neutro di sicurezza
+                }
+            }
+        }
+    
+
+
+}
 
     public class sp_LoginUser_Result
     {

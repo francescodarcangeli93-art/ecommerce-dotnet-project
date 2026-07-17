@@ -132,6 +132,7 @@
     <Compile Include="Controllers\GestPriceListController.cs" />
     <Compile Include="Controllers\GestProductFileController.cs" />
     <Compile Include="Controllers\GestProductCategoryController.cs" />
+    <Compile Include="Controllers\GestWarehousesMovementsController.cs" />
     <Compile Include="Controllers\GestWarehousesController.cs" />
     <Compile Include="Controllers\GestutentiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -734,6 +735,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\js\ProductFiles.js" />
     <Content Include="Scripts\js\Product.js" />
     <Content Include="Scripts\js\GestionePriceListItem.js" />
     <Content Include="Scripts\js\GestionePriceList.js" />
@@ -747,6 +749,7 @@
     <Content Include="Scripts\js\GestioneUtenti.js" />
     <Content Include="Scripts\js\ModificaUtente.js" />
     <Content Include="Scripts\js\Password.js" />
+    <Content Include="Scripts\js\site-global.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -786,6 +789,10 @@
     <Content Include="Views\GestProductCategory\_CategoryProductTable.cshtml" />
     <Content Include="Views\GestProductFile\Index.cshtml" />
     <Content Include="Views\GestProductFile\_ProductsTable.cshtml" />
+    <Content Include="Views\GestWarehousesMovements\Index.cshtml" />
+    <Content Include="Views\GestWarehousesMovements\_WarehousesMovementsTable.cshtml" />
+    <Content Include="Views\GestProductFile\Details.cshtml" />
+    <Content Include="Views\GestProductFile\_Images.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

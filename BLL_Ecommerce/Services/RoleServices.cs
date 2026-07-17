@@ -20,9 +20,19 @@ namespace BLL_Ecommerce.Services
         {
             List<sp_GetListUserRole_Result> retVal = new List<sp_GetListUserRole_Result>();
 
-            retVal = RoleDal.ListUserRole_Results();
+         
 
-            return retVal;
+            return RoleDal.ListUserRole_Results(); 
+        }
+
+        public List<sp_GetListProductCategory_Result> ListProductCategory()
+        {
+            return RoleDal.sp_GetListProductCategory();
+        }
+
+        public List<sp_GetListSupplier_Result> GetListSupplier()
+        {
+            return RoleDal.sp_GetListSupplier();
         }
     }
 }

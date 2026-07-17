@@ -1,0 +1,64 @@
+﻿@model WebEcommerce.Models.WarehousesViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles {
+    <link rel="stylesheet" href="@Url.Content("~/Content/Site.css")" />
+}
+
+
+<main class="container mt-4">
+    <div class="title-conteiner">
+        <h1>
+            Gestione Movimenti Magazzini
+        </h1>
+    </div>
+
+    <!--  FILTRI -->
+    <div class="mb-4 p-4 bg-white card-animated card-detail">
+        <h5 class="mb-4 fw-semibold text-dark">Ricerca Moviementi</h5>
+        <div>
+            <div class="card-body row g-3" id="filtriContainer">
+
+                <div class="col-md-3">
+                    <input type="Date" id="searchStartDate" name="StartDate" placeholder="Nome Categoria" class="form-control input-animated" />
+                    <label class="temp-place" for="searchStartDate">Data inizio</label>
+                </div>
+
+                <div class="col-md-3">
+                    <input type="Date" id="searchEndDate" name="EndDate" placeholder="Nome Categoria" class="form-control input-animated" />
+                    <label class="temp-place" for="searchEndDate">data fine</label>
+                </div>
+
+
+                <div class="col-md-3">
+                    <select name="WarehouseId" id="searchWarehouseId" class="form-select input-animated">
+                        <option value="">--Selezionare il magazzino--</option>
+                        <option value="1">Nome Magazzino</option>
+                        <option value="2">Nome Magazzino</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <input type="text" id="searchDescription" name="Description" placeholder="Cerca per Descrizione" class="form-control input-animated" />
+                </div>
+
+                <div class="col-md-3 d-flex align-items-center gap-2 justify-content-end">
+                    <button type="button" id="btnPulisci" class="btn fw-semibold px-4 btn-animated bt-pulisci"><i class="bi-eraser"></i>  Pulisci</button>
+                    <button type="button" id="btnCerca" class="btn fw-semibold px-4 btn-animated bt-cerca" data-search-url="@Url.Action("SearchProductCategoryPartial", "GestProductCategory")"><i class="bi bi-search me-1"></i> Cerca</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="tabellaContainer">
+        @Html.Partial("_WarehousesMovementsTable")
+    </div>
+</main>
+
+
+
+

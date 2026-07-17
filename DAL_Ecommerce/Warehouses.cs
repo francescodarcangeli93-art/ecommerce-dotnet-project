@@ -178,5 +178,41 @@ namespace DAL_Ecommerce
 
             return retVal;
         }
+
+        public List<sp_GetWarehouseStockProductById_Result> sp_GetWarehouseStockProductById(int WarehouseId)
+        {
+            string spName = "dbo.sp_GetWarehouseStockProductById";
+
+            List<sp_GetWarehouseStockProductById_Result> retVal = new List<sp_GetWarehouseStockProductById_Result>();
+            DataTable dtStock = new DataTable();
+
+            try
+            {
+                using (SqlConnection conn = DbConnectionFactory.CreateConnection())
+                using (SqlCommand cmd = new SqlCommand(spName, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@id", WarehouseId));
+
+                    conn.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        dtStock.Load(reader);
+                    }
+
+                    if (dtStock.Rows.Count > 0)
+                    {
+                        retVal = dtStock.DataTableToList<sp_GetWarehouseStockProductById_Result>();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return retVal;
+        }
     }
 }

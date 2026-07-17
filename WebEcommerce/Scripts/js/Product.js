@@ -20,6 +20,7 @@
             ProductName: $('#searchProductName').val(),
             BasedUnitPrice: $('#searchBasedUnitPrice').val(),
             IsDiscontinued: $('#searchIsDiscontinued').val(),
+            CategoryId: $('#searchCategoryId').val()
         };
 
         // SESSIONE PER SALVARE I FILTRI
@@ -33,7 +34,8 @@
             success: function (response) {
                 $tabellaContainer.html(response).show();
 
-                const nuovoUrl = window.location.pathname + '?ProductName=' + filtri.ProductName + '&BasedUnitPrice=' + filtri.BasedUnitPrice + '&IsDiscontinued=' + filtri.IsDiscontinued;
+                const nuovoUrl = window.location.pathname + '?ProductName=' + filtri.ProductName + '&BasedUnitPrice=' + filtri.BasedUnitPrice + '&IsDiscontinued=' + filtri.IsDiscontinued
+                    + '&CategoryId=' + filtri.CategoryId;
                 history.pushState(null, '', nuovoUrl);
 
             },
@@ -62,6 +64,7 @@
         $('#searchProductName').val(filtri.ProductName);
         $('#searchBasedUnitPrice').val(filtri.BasedUnitPrice);
         $('#searchIsDiscontinued').val(filtri.IsDiscontinued);
+        $('#searchCategoryId').val(filtri.CategoryId);
 
         haFiltri = true;
 
@@ -79,7 +82,7 @@
         $('#searchBasedUnitPrice').val('');
 
         $('#searchIsDiscontinued').val('');
-
+        $('#searchCategoryId').val('');
         $btnCerca.click();
         sessionStorage.removeItem("filtriMagazzini");
     });

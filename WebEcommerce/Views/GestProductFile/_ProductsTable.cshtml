@@ -13,7 +13,7 @@
                 <th scope="col" class="text-center">Categoria</th>
                 <th scope="col" class="text-center">Confezione</th>
                 <th scope="col" class="text-center">STATO</th>
-                <th class="text-center px-4">COMANDI</th>
+                <th class="text-center px-4 col-shrink-15">COMANDI</th>
             </tr>
         </thead>
         <tbody id="corpoTabella">
@@ -27,7 +27,7 @@
                     <td class="text-center">@product.Package</td>
               
                     <!-- GESTIONE ATTIVO NON ATTIVO -->
-                    <td class="text-center">
+                    <td class="text-center"> 
                         <button type="submit"
                     
                             class="btn btn-sm fw-bold text-uppercase d-inline-flex align-items-center justify-content-center border-2 attivo
@@ -36,8 +36,8 @@
                         </button>         
                     </td>
 
-                    <td class="text-center text-ce px-4 spazio-comandi">
-                        <a href="@Url.Action("Details", "GestProductFile")" class="btn btn-sm btn-outline-info py-1 simpleBevel btn-dettagli" data-id="@product.Id" title="Visualizza Dettagli">
+                    <td class="px-4 spazio-comandi">
+                        <a href="@Url.Action("Details", "GestProductFile", new { id = @product.Id})" class="btn btn-sm btn-outline-info py-1 simpleBevel btn-dettagli"  title="Visualizza Dettagli">
                             <i class="bi bi-search"></i>
                         </a>
                         <a class="btn btn-sm btn-outline-warning py-1 simpleBevel btn-modifica" data-id="@product.Id" title="Modifica riga">

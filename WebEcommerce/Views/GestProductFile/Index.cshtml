@@ -25,7 +25,13 @@
                 </div>
 
                 <div class="col-md-3">
-                    <input type="number" step="0.5" id="searchBasedUnitPrice" name="BasedUnitPrice" placeholder="Cerca per Prezzo €" class="form-control input-animated" />
+                    <input type="number" step="0.5" id="searchBasedUnitPriceDa" name="BasedUnitPrice" placeholder="Cerca per Prezzo €" class="form-control input-animated" />
+                    <label class="temp-place" for="searchBasedUnitPrice">Da</label>
+                </div>
+
+                <div class="col-md-3">
+                    <input type="number" step="0.5" id="searchBasedUnitPriceA" name="BasedUnitPrice" placeholder="Cerca per Prezzo €" class="form-control input-animated" />
+                    <label class="temp-place" for="searchBasedUnitPrice">A</label>
                 </div>
 
                 <div class="col-md-3">
@@ -37,10 +43,24 @@
                 </div>
 
                 <div class="col-md-3">
-                    <select name="IsDiscontinued" id="searchIsDiscontinued" class="form-select input-animated">
+                    <select name="CategoryId" id="searchCategoryId" class="form-select input-animated">
                         <option value="">--Selezionare la Categoria--</option>
-                        <option value="false">In Produzione</option>
-                        <option value="true">Fuori Produzione</option>
+                        @foreach (var category in Model.ListProductCategories)
+                        {
+                            <option value="@category.Id">@category.CategoryName</option>
+                        }
+                    </select>
+                </div>
+
+                
+
+                <div class="col-md-3">
+                    <select name="CategoryId" id="searchCategoryId" class="form-select input-animated">
+                        <option value="">--Selezionare Fornitore--</option>
+                        @foreach (var supplier in Model.TheSupplierList)
+                        {
+                            <option value="@supplier.Id">@supplier.CompanyName</option>
+                        }
                     </select>
                 </div>
 
@@ -53,6 +73,18 @@
         </div>
     </div>
 
+    <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+    @*TASTO AGGIUNGI*@
+    <div class="d-flex justify-content-between align-items-end mb-3">
+        <h3 class="m-0">Lista Fornitori</h3>
+
+        <a id="btnAggiungi" class="btn fw-semibold px-4 btn-animated buttonAdd">
+            <i class="bi-box-fill "></i> Aggiungi
+        </a>
+
+    </div>
+
     <!--========== TABELLA ================-->
 
     <div id="tabellaContainer">
@@ -63,5 +95,5 @@
 
 
 @section scripts {
-    <script src="@Url.Content("~/Scripts/js/Product.js")"></script>
+    <script src="@Url.Content("~/Scripts/js/ProductFiles.js")"></script>
 }

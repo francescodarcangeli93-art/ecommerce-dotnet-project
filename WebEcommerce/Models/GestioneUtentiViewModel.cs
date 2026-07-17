@@ -84,6 +84,8 @@ namespace WebEcommerce.Models
         public sp_GetSupplierById_Result TheSupplier { get; set; }
 
         public List<sp_GetListCountry_Result> Country { get; set; }
+
+        public List<sp_GetListSupplier_Result> TheSupplierList { get; set; }
     }
 
     public class WarehousesViewModel
@@ -93,6 +95,16 @@ namespace WebEcommerce.Models
         public sp_GetWarehouseById_Result TheWarehouse { get; set; }
 
        public List<sp_GetWarehouseMovementsById_Result> TheWarehouseMovementsList { get; set; }
+
+       public List<sp_GetWarehouseStockProductById_Result> TheWarehouseStock {  get; set; }
+
+        /*===============================================================================================================
+         *** ATTRIBUTI PER I MOVIMENTI DEI MAGAZZINI ***
+        ================================================================================================================ */
+
+        public List<sp_SearchWarehousesMovements_Result> TheWarehouseMovements { get; set; }
+
+       
     }
 
     public class PriceListViewModel
@@ -118,6 +130,16 @@ namespace WebEcommerce.Models
         public List<sp_SearchProduct_Result> TheProducts { get; set; }
 
         public List<sp_GetListProductCategory_Result> ListProductCategories { get; set; }
+
+        public sp_GetProductById_Result TheProduct {  get; set; }
+
+        public List<sp_GetListSupplier_Result> TheSupplierList { get; set; }
+
+        public List<sp_GetProductFileById_Result> GetProductFileByIdList { get; set; }
+
+        public sp_GetProductFileById_Result MainImage => GetProductFileByIdList.FirstOrDefault(x => x.IsMain);
+
+        public List<sp_GetProductFileById_Result> SecondaryImages => GetProductFileByIdList.Where(x => !x.IsMain).ToList();
 
     }
 }

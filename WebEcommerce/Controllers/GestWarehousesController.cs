@@ -96,7 +96,8 @@ namespace WebEcommerce.Controllers
                 WarehousesViewModel Model = new WarehousesViewModel
                 {
                     TheWarehouse = _warehousesService.GetWarehouseById(id),
-                    TheWarehouseMovementsList = _warehousesService.sp_GetWarehouseMovementsById(id)
+                    TheWarehouseMovementsList = _warehousesService.sp_GetWarehouseMovementsById(id),
+                    TheWarehouseStock = _warehousesService.sp_GetWarehouseStockProductById(id),
                 };
                 return View(Model);
 

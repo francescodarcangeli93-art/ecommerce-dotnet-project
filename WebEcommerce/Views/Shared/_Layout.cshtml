@@ -54,6 +54,9 @@
                                     <a class="dropdown-item  py-2" href="@Url.Action("Index", "GestProductFile")">
                                         <i class="bi-box-fill me-2 text-secondary"></i>Prodotti
                                     </a>
+                                    <a class="dropdown-item  py-2" href="@Url.Action("Index", "GestWarehousesMovements")">
+                                        <i class="bi bi-signpost-2-fill me-2 text-secondary"></i>Movimenti Magazzini
+                                    </a>
                                 </li>
                             </ul>
                         </li>
@@ -112,7 +115,7 @@
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - My Ecommerce Application 1.0.0</p>
-            @Scripts.Render("~/bundles/jquery")
+            @*@Scripts.Render("~/bundles/jquery")*@
         </footer>
     </div>
 
@@ -120,8 +123,9 @@
     @*  @Scripts.Render("~/bundles/bootstrap")*@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
+        <script src="@Url.Content("~/Scripts/js/site-global.js")"></script>
         <script src="@Url.Content("~/Scripts/js/Layout.js")"></script>
-    
+     
 
     @RenderSection("scripts", required: false)
 

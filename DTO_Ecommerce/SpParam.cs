@@ -143,7 +143,7 @@ namespace DTO_Ecommerce
 
     public class sp_GetProductById_Param
     {
-        public int? Id { get; set; }
+        public int? IdProduct { get; set; }
 
     }
     public class sp_GetProductCategoryById_Param
@@ -153,8 +153,15 @@ namespace DTO_Ecommerce
     }
     public class sp_GetProductFileById_Param
     {
-        public int? Id { get; set; }
+        public int? ProductId { get; set; }
+        public bool IncludeInactive { get; set; }
 
+    }
+
+    public class sp_GetProductFileContent_Param
+    {
+        public int Id { get; set; }
+        
     }
     public class sp_GetShipmentStatusById_Param
     {
@@ -190,6 +197,11 @@ namespace DTO_Ecommerce
     public class sp_GetWarehouseMovementsById_Param
     {
         public int WarehouseId { get; set; }
+    }
+
+    public class sp_GetWarehouseStockProductById_Param
+    {
+        public int? Id { get; set; }
     }
 
     public class sp_LoginUser_Param
@@ -330,22 +342,23 @@ namespace DTO_Ecommerce
         public DateTime? CreatedDate { get; set; }
 
     }
+
     public class sp_ManageProductFile_Param
     {
-        public string Operation { get; set; }
-        public int? Id { get; set; }
-        public int? ProductId { get; set; }
-        public string FileType { get; set; }
-        public string FileName { get; set; }
-        public string FileExtension { get; set; }
-        public string MimeType { get; set; }
-        public byte[] FileContent { get; set; }
-        public long FileSizeBytes { get; set; }
+        public string Operation { get; set; }     
+        public int? Id { get; set; }               
+        public int? ProductId { get; set; }        
+        public string FileType { get; set; }     
+        public string FileName { get; set; }     
+        public string FileExtension { get; set; } 
+        public string MimeType { get; set; } 
         public string Title { get; set; }
-        public string Description { get; set; }
-        public bool IsMain { get; set; }
-        public int? DisplayOrder { get; set; }
-        public bool IsActive { get; set; }
+        public byte[] FileContent { get; set; }   
+        public long? FileSizeBytes { get; set; }   
+        public string Description { get; set; }  
+        public bool? IsMain { get; set; }        
+        public int? DisplayOrder { get; set; }     
+        public bool? IsActive { get; set; }       
     }
     public class sp_ManageShipmentStatus_Param
     {
@@ -468,13 +481,14 @@ namespace DTO_Ecommerce
     public class sp_SearchProduct_Param
     {
         public string ProductName { get; set; }
-        public int? SupplierName { get; set; }
+        public int? SupplierId { get; set; }
         public decimal? BasedUnitPrice { get; set; }
         public string Package { get; set; }
         public bool? IsDiscontinued { get; set; }
 
         public int? CategoryId { get; set; }
     }
+
     public class sp_SearchProductCategory_Param
     {
     
@@ -540,6 +554,19 @@ namespace DTO_Ecommerce
         public string PostalCode { get; set; }
         public string Type { get; set; }
         public bool? IsActive { get; set; }
+
+    }
+
+    public class sp_SearchWarehousesMovements_Param
+    {
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public int? WarehouseId { get; set; }
+        public int? ProductId { get; set; }
+        public string MovementType { get; set; }
+        public int? MovementReasonId { get; set; }
+
+        public string CompanyName { get; set; }
 
     }
 

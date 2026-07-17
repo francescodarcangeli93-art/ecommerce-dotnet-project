@@ -23,7 +23,7 @@ namespace DAL_Ecommerce
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("@ProductName", (object)spParam.ProductName ?? DBNull.Value));
-                    cmd.Parameters.Add(new SqlParameter("@SupplierName", (object)spParam.SupplierName ?? DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@SupplierId", (object)spParam.SupplierId ?? DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@BasedUnitPrice", (object)spParam.BasedUnitPrice ?? DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@Package", (object)spParam.Package ?? DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@IsDiscontinued", (object)spParam.IsDiscontinued ?? DBNull.Value));
@@ -53,6 +53,154 @@ namespace DAL_Ecommerce
             return retVal;
         }
 
-       
+        public List<sp_GetProductFileById_Result> sp_GetProductFileById(int ProductId, bool IncludeInactive)
+        {
+            string spName = "dbo.sp_GetProductFileById";
+
+            List<sp_GetProductFileById_Result> retVal = new List<sp_GetProductFileById_Result>();
+            DataTable dtFiles = new DataTable();
+
+            try
+            {
+                using (SqlConnection conn = DbConnectionFactory.CreateConnection())
+                using (SqlCommand cmd = new SqlCommand(spName, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@ProductId", ProductId));
+                    cmd.Parameters.Add(new SqlParameter("@IncludeInactive", IncludeInactive));
+
+                    // Apertura connessione sincrona
+                    conn.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        dtFiles.Load(reader);
+                    }
+
+                    if (dtFiles.Rows.Count > 0)
+                    {
+                        retVal = dtFiles.DataTableToList<sp_GetProductFileById_Result>();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw; // "throw;" preserva lo Stack Trace completo dell'eccezione originale
+            }
+
+            return retVal;
+        }
+
+        public sp_GetProductFileContent_Result GetProductFileContent(int id)
+        {
+            string spName = "dbo.sp_GetProductFileContent";
+            sp_GetProductFileContent_Result retVal = new sp_GetProductFileContent_Result();
+            DataTable dt = new DataTable();
+
+            using (SqlConnection conn = DbConnectionFactory.CreateConnection())
+            using (SqlCommand cmd = new SqlCommand(spName, conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@Id", id));
+                conn.Open();
+
+                using (var da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(dt);
+                }
+
+                if (dt.Rows.Count > 0)
+                {
+                    retVal = dt.Rows[0].ToObject<sp_GetProductFileContent_Result>();
+                }
+            }
+
+            return retVal;
+        }
+
+        public sp_GetProductById_Result sp_GetProductById (int id)
+        {
+            string spName = "dbo.sp_GetProductById";
+            sp_GetProductById_Result retVal = new sp_GetProductById_Result();
+            DataTable product = new DataTable();
+
+            using (SqlConnection conn = DbConnectionFactory.CreateConnection())
+            using (SqlCommand cmd = new SqlCommand(spName, conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@IdProduct", id));
+                conn.Open();
+
+                using (var da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(product);
+                }
+
+                if (product.Rows.Count > 0)
+                {
+                    retVal = product.Rows[0].ToObject<sp_GetProductById_Result>();
+                }
+            }
+
+            return retVal;
+        }
+
+        public int ManageProductFile(sp_ManageProductFile_Param param)
+        {
+            string spName = "dbo.sp_ManageProductFile";
+            int resultId = 0;
+
+            using (SqlConnection conn = DbConnectionFactory.CreateConnection())
+            using (SqlCommand cmd = new SqlCommand(spName, conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                // Mappatura dei parametri con gestione dei valori NULL
+                cmd.Parameters.Add("@Operation", SqlDbType.Char, 1).Value = (object)param.Operation ?? DBNull.Value;
+                cmd.Parameters.Add("@Id", SqlDbType.Int).Value = (object)param.Id ?? DBNull.Value;
+                cmd.Parameters.Add("@ProductId", SqlDbType.Int).Value = (object)param.ProductId ?? DBNull.Value;
+                cmd.Parameters.Add("@FileType", SqlDbType.NVarChar, 20).Value = (object)param.FileType ?? DBNull.Value;
+                cmd.Parameters.Add("@FileName", SqlDbType.NVarChar, 150).Value = (object)param.FileName ?? DBNull.Value;
+                cmd.Parameters.Add("@FileExtension", SqlDbType.NVarChar, 10).Value = (object)param.FileExtension ?? DBNull.Value;
+                cmd.Parameters.Add("@MimeType", SqlDbType.NVarChar, 100).Value = (object)param.MimeType ?? DBNull.Value;
+
+                // Per il tipo VARBINARY(MAX) in ADO.NET si usa SqlDbType.VarBinary e dimensione -1
+                cmd.Parameters.Add("@FileContent", SqlDbType.VarBinary, -1).Value = (object)param.FileContent ?? DBNull.Value;
+
+                cmd.Parameters.Add("@FileSizeBytes", SqlDbType.BigInt).Value = (object)param.FileSizeBytes ?? DBNull.Value;
+                cmd.Parameters.Add("@Title", SqlDbType.NVarChar, 100).Value = (object)param.Title ?? DBNull.Value;
+                cmd.Parameters.Add("@Description", SqlDbType.NVarChar, 250).Value = (object)param.Description ?? DBNull.Value;
+                cmd.Parameters.Add("@IsMain", SqlDbType.Bit).Value = (object)param.IsMain ?? DBNull.Value;
+                cmd.Parameters.Add("@DisplayOrder", SqlDbType.Int).Value = (object)param.DisplayOrder ?? DBNull.Value;
+                cmd.Parameters.Add("@IsActive", SqlDbType.Bit).Value = (object)param.IsActive ?? DBNull.Value;
+
+                try
+                {
+                    conn.Open();
+
+                    // Se è un Inserimento, recuperiamo l'ID generato tramite ExecuteScalar
+                    if (param.Operation != null && param.Operation.ToUpper() == "I")
+                    {
+                        object scalarResult = cmd.ExecuteScalar();
+                        if (scalarResult != null && scalarResult != DBNull.Value)
+                        {
+                            resultId = Convert.ToInt32(scalarResult);
+                        }
+                    }
+                    else
+                    {
+                        // Per Update (U) e Delete (D) usiamo ExecuteNonQuery
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    throw new Exception(ex.Message, ex);
+                }
+            }
+
+            return resultId;
+        }
+
     }
 }

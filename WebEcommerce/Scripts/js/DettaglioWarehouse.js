@@ -8,34 +8,49 @@
         clearTimeout(timerRicerca);
 
         // Salviamo subito il valore scritto dall'utente
-        var filtro = event.target.value.toLowerCase();
-
+        let filtro = event.target.value.toLowerCase();
+        console.log(typeof filtro);
         // 3. Diciamo al computer di aspettare 300 millisecondi prima di fare qualsiasi calcolo
         timerRicerca = setTimeout(function () {
 
-            var righe = document.querySelectorAll('#tabellaGiacenze tbody tr');
-            var isMatch = false;
+            let righe = document.querySelectorAll('#tabellaGiacenze tbody tr');
+            
+            let isMatch = false;
 
             // Il tuo ciclo FOR originale, intatto:
-            for (var i = 0; i < righe.length; i++) {
-                var riga = righe[i];
+            //for (var i = 0; i < righe.length; i++) {
+            //    var riga = righe[i];
 
-                if (isMatch) {
-                    riga.style.display = 'none';
-                    continue;
-                }
+            //    if (isMatch) {
+            //        riga.style.display = 'none';
+            //        continue;
+            //    }
 
-                if (riga.cells[0].innerText.toLowerCase() === filtro) {
+            //    if (riga.cells[0].innerText.toLowerCase() === filtro) {
+            //        riga.style.display = '';
+            //        isMatch = true;
+            //    }
+            //    else if (filtro.length > 3 && riga.cells[1].innerText.toLowerCase().includes(filtro)) {
+            //        riga.style.display = '';
+            //    }
+            //    else if (filtro === '') {
+            //        riga.style.display = '';
+            //    }
+            //    else {
+            //        riga.style.display = 'none';
+            //    }
+            //}
+
+
+            for (riga of righe) {
+
+                let editedRow = riga.innerText.toLowerCase().trim();
+                
+
+                if (editedRow.includes(filtro)) {
+                   
                     riga.style.display = '';
-                    isMatch = true;
-                }
-                else if (filtro.length > 3 && riga.cells[1].innerText.toLowerCase().includes(filtro)) {
-                    riga.style.display = '';
-                }
-                else if (filtro === '') {
-                    riga.style.display = '';
-                }
-                else {
+                } else {
                     riga.style.display = 'none';
                 }
             }
@@ -80,4 +95,16 @@
         });
     });
 
+
+
+    function safelyTrim(input) {
+        // Add a "guard clause" to check if the input is a string.
+        if (typeof input !== 'string') {
+            console.error('Error: The provided input is not a string.');
+            // Return a predictable value or the original input on failure.
+            return input;
+        }
+
+        return input.trim();
+    }
 });

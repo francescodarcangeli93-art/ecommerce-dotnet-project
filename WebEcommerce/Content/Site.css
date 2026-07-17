@@ -508,12 +508,32 @@ select {
     min-width: 180px;
 }
 
-    .spazio-comandi > a, .spazio-comandi > button {
-        margin-left: 10px;
-    }
-        .spazio-comandi > a:first-child {
-            margin-left: 0px;
-        }
+.spazio-comandi > a, .spazio-comandi > button {
+    margin-left: 10px;
+}
+
+.spazio-comandi:first-child {
+    margin-left: 0px;
+}
+
+
+
+/* GESTIONE SPAZIATURE COLONNE*/
+.col-shrink-10 {
+    width: 10%;
+    white-space: nowrap;
+}
+
+.col-shrink-12 {
+    width: 12%;
+    white-space: nowrap;
+}
+
+.col-shrink-15 {
+    width: 15%;
+    white-space: nowrap;
+}
+
         /* ==========================================================================
             GESTIONE UTENTE
        ========================================================================== */
@@ -945,6 +965,9 @@ select {
     color:#c98400;
 }
 
+/* ==========================================================================
+    CAUSALI GRAFICA
+   ========================================================================== */
 .causale {
     border-radius: 20px;
 }
@@ -1068,11 +1091,11 @@ select {
 }
 
 .icon-green{
-    color:green;
+    color:green !important;
 }
 
 .icon-red {
-    color: red;
+    color: red !important;
 }
 
 .spedizione {
@@ -1122,12 +1145,91 @@ select {
     PRODOTTI GRAFICA
    ========================================================================== */
 
-    .products-icons a{
-        color: #ffc107;
-        font-size: 1.3em;
+.products-icons button {
+    color: #ffc107;
+    font-size: 1.5em;
+    border: none;
+    background-color: transparent;
+}
+
+.products-icons-disable button {
+    color: #8a8a8a;
+    font-size: 1.5em;
+    border: none;
+    background-color: transparent;
+    pointer-events:none
+}
+
+.products-icons button:hover {
+    color: #c19207;
+    font-size: 1.5em;
+}
+
+.primary-image {
+  
+    height:500px;
+    width:500px;
+    
+}
+
+.lista {
+  
+    background-color: red;
+    width: 50px;
+    margin-bottom: 5px;
+}
+
+.images-conteiner {
+
+    /*background-color: red;*/
+    height:580px;
+    width: 550px;
+    
+}
+
+.details-conteiner {
+    /*background-color: blue;*/
+    height: 580px;
+    width: 50%;
+    padding: 5px 5px 5px 20px;
+    border-left: 2px solid #ffc107;
+}
+
+.file-conteiner {
+    /*background-color:orange;*/
+}
+.details-conteiner label {
+    display: block;
+    margin-top: 20px;
+    font-weight: 600;
+}
+
+  
+
+    .section-conteiner {
+        display: flex;
     }
 
-        .products-icons a:hover {
-            color: black;
-            font-size: 1.3em;
+
+.list-images {
+    list-style-position: outside;
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+    .list-images li {
+       
+        margin-left:5px;
+        display: inline;
+    }
+
+        .list-images li img {
+            margin-top: 5px;
+            border: 1px solid black;
+            border-radius: 15px;
+            cursor: pointer;
+            object-fit: cover;
+            width: 40px;
+            height: 40px;
         }

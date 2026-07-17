@@ -16,5 +16,26 @@ namespace BLL_Ecommerce.Services
     }
 
 
+        public List<sp_GetProductFileById_Result> sp_GetProductFileById(int ProductId, bool IncludeInactive)
+        {
+            return ProductCategory.sp_GetProductFileById(ProductId, IncludeInactive);
+        }
+
+        public sp_GetProductFileContent_Result GetProductFileContent(int id)
+        {
+            return ProductCategory.GetProductFileContent(id);
+        }
+
+        public sp_GetProductById_Result sp_GetProductById(int id)
+        {
+            return ProductCategory.sp_GetProductById(id);
+        }
+
+        public int ManageProductFile(sp_ManageProductFile_Param param)
+        {
+            return ProductCategory.ManageProductFile(param);
+        }
+
+
     }
 }
