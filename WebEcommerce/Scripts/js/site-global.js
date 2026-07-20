@@ -8,8 +8,11 @@
 
         let $filtroId = $(this).data('filtro');
         let $url = $(this).data('filtri-url') + '?Id=' + $filtroId;
-       
-        window.location.href = $url;
+
+
+        setTimeout(function () {
+            window.location.href = $url;
+        }, 500);
 
     });
 

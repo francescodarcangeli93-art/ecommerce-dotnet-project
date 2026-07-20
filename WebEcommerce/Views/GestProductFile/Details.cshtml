@@ -24,21 +24,24 @@
 
     <div class="section-conteiner">
 
+        <!-- PARTIAL VIEW IMMAGGINI-->
 
-        <div id="imagesList" >
+        <div id="imagesList">
 
             @Html.Partial("_Images", Model)
         </div>
 
+<!------------------------------------------------------------------------------------------------------------------------------------------------------->
+
         <div class="details-conteiner">
             <h3>@Model.TheProduct.ProductName</h3>
             <hr />
-
-            <label>Prezzo: @Model.TheProduct.CompanyName</label>
-            <label>Prezzo: @Model.TheProduct.BasedUnitPrice</label>
-            <label> Package: @Model.TheProduct.Package</label>
-            <label>Stato: @Model.TheProduct.IsDiscontinued</label>
-            <label>Visibile in HD: @Model.TheProduct.VisibleinHP</label>
+        
+            <span><strong> Fornitore:</strong>  @Model.TheProduct.CompanyName</span>
+            <span><strong>Prezzo:</strong>  @Model.TheProduct.BasedUnitPrice</span>
+            <span> <strong>Package:</strong> @Model.TheProduct.Package</span>
+            <span><strong>Stato:</strong> @Model.TheProduct.IsDiscontinued</span>
+        
 
         </div>
     </div>
@@ -55,7 +58,7 @@
 </main>
 
 
-<!--========================================================================================================================
+<!--===========================================================================================================================
    1 MODALE AGGIUNGI PRODOTTO
   ==========================================================================================================================-->
 
@@ -87,7 +90,7 @@
 
                     <div class="mb-3">
                         <label for="uploadDescription" class="form-label">Descrizione</label>
-                        <input type="text" id="uploadDescription" class="form-control" />
+                        <textarea  id="uploadDescription" class="form-control" rows="5" cols="33"></textarea>
                     </div>
 
                 </form>
@@ -104,6 +107,50 @@
         </div>
     </div>
 </div>
+
+
+<!--=================================================================================================================================================================
+   2 MODALE DETTAGLIO IMMAGINE
+  ===================================================================================================================================================================-->
+
+<div class="myModal-overlay" id="modalShowImageDetail">
+    <div class="personal-card image-cardColor dimension-card personal-card-radius bodyImage-grid">
+
+        <div class="title-image">
+            <h2>Dettaglio <span id="ImageTitle"></span></h2>
+            <button class="mybtn-close" type="button">&times;</button>
+            <hr />
+        </div>
+
+        <div class="Image-picture">
+          
+            <img id="modalImage" src="" alt="Immagine Ingrandita" />
+
+        </div>
+        <div class="image-detail">
+
+            <div class="description-conteiner">
+                <p id="Detail-Description" class="description-text"></p>
+               
+            </div>
+            
+
+            <div class="info-product">
+                <p><strong>File:</strong> <span id="Detail-FileType"></span></p>
+                <p><strong>Nome file:</strong> <span id="Detail-FileName"></span></p>
+                <p><strong>Dimensioni file in byte:</strong>  <span id="Detail-FileSizeKb"></span></p>
+                <p><strong>Data creazione:</strong>   <span id="Detail-CreatedDate"></span></p>
+                <p><strong>Stato:</strong>  <span id="Detail-IsActive"></span></p>
+                <p> Immagine <span id="Detail-IsMain"></span></p>
+            </div>
+            <hr />
+
+            <div id="ModalSmallImageConteiner" class="Modal-smallImage-conteiner"></div>
+        </div>
+
+    </div>
+</div>
+
 
 @section scripts {
     <script src="@Url.Content("~/Scripts/js/ProductFiles.js")"></script>

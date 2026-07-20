@@ -216,7 +216,7 @@
     });
 
 /* ==========================================================
-         4. APERTURA MODALE Modifica
+         4. APERTURA MODALE MODIFICA
   ==========================================================*/
 
     $('#tabellaContainer').on('click', '.btn-modifica', function () {

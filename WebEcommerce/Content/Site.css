@@ -764,8 +764,9 @@ select {
         pointer-events: auto;
     }
 
-    body 
-    {
+    .body 
+    {   
+      
         font-family: Poppins;
         font-weight: 350;
     }
@@ -1165,43 +1166,52 @@ select {
     font-size: 1.5em;
 }
 
-.primary-image {
+.primary-image-conteiner{
+    margin-right:20px;
+    background-color:#393939;
+    width: 400px;
+    height:400px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+   cursor:pointer;
   
-    height:500px;
-    width:500px;
-    
+}
+
+primary-image-conteiner img {
+    display:block;
+   
 }
 
 .lista {
-  
     background-color: red;
     width: 50px;
     margin-bottom: 5px;
 }
 
-.images-conteiner {
+.image-conteiner {
 
     /*background-color: red;*/
-    height:580px;
-    width: 550px;
-    
+    height:600px;
+    width: 600px;
 }
 
-.details-conteiner {
-    /*background-color: blue;*/
-    height: 580px;
-    width: 50%;
-    padding: 5px 5px 5px 20px;
-    border-left: 2px solid #ffc107;
-}
+
+    .details-conteiner {
+        /*background-color: blue;*/
+        height: 580px;
+        width: 50%;
+        padding: 5px 5px 5px 20px;
+        border-left: 2px solid #ffc107;
+    }
 
 .file-conteiner {
     /*background-color:orange;*/
 }
-.details-conteiner label {
+.details-conteiner span {
     display: block;
     margin-top: 20px;
-    font-weight: 600;
+  
 }
 
   
@@ -1233,3 +1243,161 @@ select {
             width: 40px;
             height: 40px;
         }
+
+/* grafica dettaglio immagini*/
+
+  .dimension-card {
+      width:1700px;
+      height:800px;
+  }
+
+  .bodyImage-grid {
+      display:grid;
+      grid-template-columns: 1fr 600px 0.8fr 1fr;
+      grid-template-rows: 90px 600px;
+   
+  }
+
+.image-cardColor{
+    background-color:white;
+}
+
+.title-image {
+    grid-column: 1;
+    grid-row: 1;
+    grid-column: span 4;
+
+    position: relative;
+}
+    .detail-image h3 {
+        text-align: initial;
+    }
+.Image-picture {
+ 
+    height: 100%;
+    width: 100%;
+    grid-column: 2;
+    grid-row: 2;
+
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+    .Image-picture img {
+        width: 600px;
+        height:600px;
+    }
+    .image-detail {
+      
+        grid-column: 4;
+        grid-row: 2;
+    }
+
+.description-conteiner {
+    min-height:220px;
+
+}
+.description-conteiner .description-text {
+    font-size: 18px !important;
+    line-height: 1.3em !important;
+    padding: 0px 15px 0px 0px !important;
+}
+
+.image-detail .description-text {
+    text-align: start;
+    margin:0px;
+}
+
+.image-detail .description-line {
+    margin: 10px 0px;
+}
+
+.info-product p {
+    margin-bottom: 10px;
+    opacity: 60%;
+    font-size: 16px;
+    text-align:start;
+}
+
+.title-image h2 {
+    display:inline-block;
+}
+
+.title-image hr {
+    margin: 0px;
+}
+
+.mybtn-close {
+    display: inline-block;
+    text-align: end;
+    border: none;
+    background: none;
+    font-size: 40px;
+    opacity: 50%;
+    cursor: pointer;
+    line-height: 1;
+    padding: 5px;
+    position: absolute;
+    top: -2px;
+    right: 0px;
+    transition: color 0.2s;
+}
+.mybtn-close:hover{
+    color:#ffc107;
+}
+
+.modal-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    font-size: 24px;
+    padding: 12px 16px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+    user-select: none;
+    z-index: 10;
+}
+
+    .modal-nav-btn:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+
+.prev-btn {
+    left: 10px;
+}
+
+.next-btn {
+    right: 10px;
+}
+
+.Modal-smallImage-conteiner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+    max-height: 120px;
+    overflow-y: auto;
+}
+.modal-thumb-item {
+    width: 50px;
+    height: 50px;
+    border: 2px solid #ddd;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+    .modal-thumb-item:hover {
+        border-color: #999;
+    }
+
+    .modal-thumb-item.active {
+        border-color: #007bff; /* Bordo blu/rosso sulla foto selezionata */
+        box-shadow: 0 0 5px rgba(0,123,255,0.5);
+    }

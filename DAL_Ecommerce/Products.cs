@@ -164,7 +164,7 @@ namespace DAL_Ecommerce
                 cmd.Parameters.Add("@FileExtension", SqlDbType.NVarChar, 10).Value = (object)param.FileExtension ?? DBNull.Value;
                 cmd.Parameters.Add("@MimeType", SqlDbType.NVarChar, 100).Value = (object)param.MimeType ?? DBNull.Value;
 
-                // Per il tipo VARBINARY(MAX) in ADO.NET si usa SqlDbType.VarBinary e dimensione -1
+                // Per il tipo VARBINARY(MAX) in ADO.NET viene usato SqlDbType.VarBinary e dimensione -1
                 cmd.Parameters.Add("@FileContent", SqlDbType.VarBinary, -1).Value = (object)param.FileContent ?? DBNull.Value;
 
                 cmd.Parameters.Add("@FileSizeBytes", SqlDbType.BigInt).Value = (object)param.FileSizeBytes ?? DBNull.Value;
@@ -189,7 +189,7 @@ namespace DAL_Ecommerce
                     }
                     else
                     {
-                        // Per Update (U) e Delete (D) usiamo ExecuteNonQuery
+                        
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -200,6 +200,37 @@ namespace DAL_Ecommerce
             }
 
             return resultId;
+        }
+
+        public sp_GetImageFileById_Result sp_GetImageFileById(int id, int productId)
+        {
+            string spName = "dbo.sp_GetImagesFileById";
+            sp_GetImageFileById_Result retVal = new sp_GetImageFileById_Result();
+            DataTable dt = new DataTable();
+
+            using (SqlConnection conn = DbConnectionFactory.CreateConnection())
+            using (SqlCommand cmd = new SqlCommand(spName, conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                // Parametri richiesti dalla Stored Procedure sp_GetImagesFileById
+                cmd.Parameters.Add(new SqlParameter("@Id", id));
+                cmd.Parameters.Add(new SqlParameter("@ProductId", productId));
+
+                conn.Open();
+
+                using (var da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(dt);
+                }
+
+                if (dt.Rows.Count > 0)
+                {
+                    retVal = dt.Rows[0].ToObject<sp_GetImageFileById_Result>();
+                }
+            }
+
+            return retVal;
         }
 
     }

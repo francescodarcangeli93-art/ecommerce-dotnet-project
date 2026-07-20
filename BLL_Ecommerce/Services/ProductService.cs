@@ -21,6 +21,17 @@ namespace BLL_Ecommerce.Services
             return ProductCategory.sp_GetProductFileById(ProductId, IncludeInactive);
         }
 
+        public byte[] GetProductFileContentResized (int id)
+        {
+            sp_GetProductFileContent_Result OriginalSize = ProductCategory.GetProductFileContent(id);
+
+            byte[] raw = OriginalSize.FileContent;
+
+            // TODO: fare una classe image helper che usa l'algoritmo di CROP dell'immagine di Thumbor  
+
+            return raw;
+        }
+
         public sp_GetProductFileContent_Result GetProductFileContent(int id)
         {
             return ProductCategory.GetProductFileContent(id);
@@ -36,6 +47,10 @@ namespace BLL_Ecommerce.Services
             return ProductCategory.ManageProductFile(param);
         }
 
+        public sp_GetImageFileById_Result sp_GetImageFileById(int id, int productId)
+        {
+            return ProductCategory.sp_GetImageFileById(id, productId);
+        }
 
     }
 }

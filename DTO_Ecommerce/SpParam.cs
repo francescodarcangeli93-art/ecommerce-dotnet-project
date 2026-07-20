@@ -70,6 +70,13 @@ namespace DTO_Ecommerce
 
     }
 
+    public class sp_GetImageFileById_Param
+    {
+        public int? Id { get; set; }
+        public int? ProductId { get; set; }
+
+    }
+
 
     public class sp_GetCustomerById_Param
     {

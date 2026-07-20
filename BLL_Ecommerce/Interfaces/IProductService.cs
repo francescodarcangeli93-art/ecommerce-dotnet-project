@@ -15,5 +15,7 @@ namespace BLL_Ecommerce.Interfaces
         sp_GetProductById_Result sp_GetProductById(int id);
 
         int ManageProductFile(sp_ManageProductFile_Param param);
+
+         sp_GetImageFileById_Result sp_GetImageFileById(int id, int productId);
     }
 }

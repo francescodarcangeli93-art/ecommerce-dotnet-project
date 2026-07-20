@@ -1,19 +1,42 @@
 ﻿@model WebEcommerce.Models.ProductCategoryViewModel
-<div class="images-conteiner">
+<div class="image-conteiner">
 
-    <img id="mainProductImage" class="primary-image" src="@Url.Action("GetProductFileContent", "GestProductFile", new { id = Model.MainImage.Id })" alt="@(Model.MainImage.Description)" />
+   
+    <div class="primary-image-conteiner ">
+
+        @if (Model != null && Model.MainImage != null)
+        {
+            <img id="mainProductImage" class="primary-image test-click" 
+                 src="@Url.Action("GetProductFileContent", "GestProductFile", new { id = Model.MainImage?.Id })" 
+                 alt="@(Model?.MainImage?.Description)" 
+                 data-full-src="@Url.Action("GetProductFileContent", "GestProductFile", new { id = Model.MainImage?.Id })"
+                 data-id="@(Model.MainImage.Id)"
+                 data-product-id="@(Model.MainImage.ProductId)"
+                 data-url="@Url.Action("ImageDetails", "GestProductFile")"/>
+        }
+        else
+        {
+            <img id="mainProductImage" class="primary-image" src="" alt="Immagine Prodotto" />
+        }
+    </div>
+  
 
 
     <ul class="list-images">
         @foreach (var image in Model.GetProductFileByIdList)
         {
             <li>
-                <img class="product-img"
-                     src="@Url.Action("GetProductFileContent", "GestProductFile", new { id = image.Id })" 
+                <img class="product-img test-click"
+                     src="@Url.Action("GetProductFileContent", "GestProductFile", new { id = image.Id })"
                      data-full-src="@Url.Action("GetProductFileContent", "GestProductFile", new { id = image.Id })"
-                     alt="@(image.Description)"/>
+                     alt="@(image.Description)"
+                     data-id="@(image.Id)"
+                     data-product-id="@(image.ProductId)"
+                     data-url="@Url.Action("ImageDetails", "GestProductFile")" />  <!-- data-full-src serve per l'immagine ad alta risoluzione STATO: TO DO'-->
             </li>
         }
 
     </ul>
+
+
 </div>

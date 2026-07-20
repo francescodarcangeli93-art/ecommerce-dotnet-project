@@ -141,5 +141,8 @@ namespace WebEcommerce.Models
 
         public List<sp_GetProductFileById_Result> SecondaryImages => GetProductFileByIdList.Where(x => !x.IsMain).ToList();
 
+        // dettaglio immagini
+        public sp_GetImageFileById_Result TheImageDetail {  get; set; }
+
     }
 }

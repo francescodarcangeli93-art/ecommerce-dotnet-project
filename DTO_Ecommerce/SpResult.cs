@@ -78,6 +78,26 @@ namespace DTO_Ecommerce
        
     }
 
+    // TODO: Aggiornare questa classse con i parametri corretti
+    public class sp_GetImageFileById_Result
+    {
+        public int? Id { get; set; }
+        public int? ProductId { get; set; }
+        public string FileType { get; set; }
+        public string FileName { get; set; }
+        public long? FileSizeKb { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public bool? IsMain { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public bool? IsActive { get; set; }
+
+        public string CreatedDateString => CreatedDate.ToString("yyyy-MM-dd");
+        public string IsMainString => IsMain == true ? "Principale" : "Secondaria";
+
+        public string IsActiveString => IsActive == true ? "Attivo" : "Non Attivo";
+    }
+
     public class sp_GetCustomerById_Result
     {
         public int? Id { get; set; }
