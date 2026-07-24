@@ -24,7 +24,8 @@ namespace DAL_Ecommerce
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("@ProductName", (object)spParam.ProductName ?? DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@SupplierId", (object)spParam.SupplierId ?? DBNull.Value));
-                    cmd.Parameters.Add(new SqlParameter("@BasedUnitPrice", (object)spParam.BasedUnitPrice ?? DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@BasedUnitPriceDa", (object)spParam.BasedUnitPriceDa ?? DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@BasedUnitPriceA", (object)spParam.BasedUnitPriceA ?? DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@Package", (object)spParam.Package ?? DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@IsDiscontinued", (object)spParam.IsDiscontinued ?? DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@CategoryId", (object)spParam.CategoryId ?? DBNull.Value));
@@ -53,7 +54,7 @@ namespace DAL_Ecommerce
             return retVal;
         }
 
-        public List<sp_GetProductFileById_Result> sp_GetProductFileById(int ProductId, bool IncludeInactive)
+        public List<sp_GetProductFileById_Result> sp_GetProductFileById(int ProductId, bool IncludeInactive, string FileType)
         {
             string spName = "dbo.sp_GetProductFileById";
 
@@ -68,6 +69,7 @@ namespace DAL_Ecommerce
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("@ProductId", ProductId));
                     cmd.Parameters.Add(new SqlParameter("@IncludeInactive", IncludeInactive));
+                    cmd.Parameters.AddWithValue("@FileType", (object)FileType ?? DBNull.Value);
 
                     // Apertura connessione sincrona
                     conn.Open();
@@ -231,6 +233,122 @@ namespace DAL_Ecommerce
             }
 
             return retVal;
+        }
+
+        public List<sp_GetListProductCategoryProduct_Result> sp_GetListProductCategoryProduct()
+        {
+            string spName = "dbo.sp_GetListProductCategoryProduct";
+
+            List<sp_GetListProductCategoryProduct_Result> retVal = new List<sp_GetListProductCategoryProduct_Result>();
+            DataTable dtProducts = new DataTable();
+
+            try
+            {
+                using (SqlConnection conn = DbConnectionFactory.CreateConnection())
+                using (SqlCommand cmd = new SqlCommand(spName, conn))
+                {
+                   
+
+
+                    // Apertura connessione sincrona
+                    conn.Open();
+
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        dtProducts.Load(reader);
+                    }
+
+                    if (dtProducts.Rows.Count > 0)
+                    {
+                        retVal = dtProducts.DataTableToList<sp_GetListProductCategoryProduct_Result>();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex; // Mantiene intatto lo Stack Trace dell'errore originale
+            }
+
+            return retVal;
+        }
+
+        public List<sp_GetListSupplierProduct_Result> sp_GetListSupplierProduct()
+        {
+            string spName = "dbo.sp_GetListSupplierProduct";
+
+            List<sp_GetListSupplierProduct_Result> retVal = new List<sp_GetListSupplierProduct_Result>();
+            DataTable dtProducts = new DataTable();
+
+            try
+            {
+                using (SqlConnection conn = DbConnectionFactory.CreateConnection())
+                using (SqlCommand cmd = new SqlCommand(spName, conn))
+                {
+
+
+
+                    // Apertura connessione sincrona
+                    conn.Open();
+
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        dtProducts.Load(reader);
+                    }
+
+                    if (dtProducts.Rows.Count > 0)
+                    {
+                        retVal = dtProducts.DataTableToList<sp_GetListSupplierProduct_Result>();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex; // Mantiene intatto lo Stack Trace dell'errore originale
+            }
+
+            return retVal;
+        }
+
+        /*===================================================================================================================================================
+           MANAGE PRODUCT
+         ====================================================================================================================================================*/
+
+        public void sp_ManageProduct(sp_ManageProduct_Param param)
+        {
+            string spName = "dbo.sp_ManageProduct";
+
+            using (SqlConnection conn = DbConnectionFactory.CreateConnection())
+            using (SqlCommand cmd = new SqlCommand(spName, conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@Operation", SqlDbType.Char, 1).Value = param.Operation;
+                cmd.Parameters.Add("@Id", SqlDbType.Int).Value = (object)param.Id ?? DBNull.Value;
+                cmd.Parameters.Add("@ProductName", SqlDbType.NVarChar, 50).Value = (object)param.ProductName ?? DBNull.Value;
+                cmd.Parameters.Add("@SupplierId", SqlDbType.Int).Value = (object)param.SupplierId ?? DBNull.Value;
+                cmd.Parameters.Add("@CategoryId", SqlDbType.Int).Value = (object)param.CategoryId ?? DBNull.Value;
+
+                var priceParam = cmd.Parameters.Add("@BasedUnitPrice", SqlDbType.Decimal);
+                priceParam.Precision = 12;
+                priceParam.Scale = 2;
+                priceParam.Value = (object)param.BasedUnitPrice ?? DBNull.Value;
+
+                cmd.Parameters.Add("@Package", SqlDbType.NVarChar, 30).Value = (object)param.Package ?? DBNull.Value;
+                cmd.Parameters.Add("@IsDiscontinued", SqlDbType.Bit).Value = (object)param.IsDiscontinued ?? DBNull.Value;
+                cmd.Parameters.Add("@VisibleInHP", SqlDbType.Bit).Value = (object)param.VisibleInHP ?? DBNull.Value;
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery(); // ignora SCOPE_IDENTITY(), va bene comunque anche con Insert
+                }
+                catch (SqlException ex)
+                {
+                    throw new Exception(ex.Message, ex);
+                }
+            }
         }
 
     }

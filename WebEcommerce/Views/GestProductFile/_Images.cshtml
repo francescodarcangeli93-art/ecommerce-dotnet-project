@@ -1,42 +1,60 @@
 ﻿@model WebEcommerce.Models.ProductCategoryViewModel
-<div class="image-conteiner">
-
-   
-    <div class="primary-image-conteiner ">
-
-        @if (Model != null && Model.MainImage != null)
-        {
-            <img id="mainProductImage" class="primary-image test-click" 
-                 src="@Url.Action("GetProductFileContent", "GestProductFile", new { id = Model.MainImage?.Id })" 
-                 alt="@(Model?.MainImage?.Description)" 
-                 data-full-src="@Url.Action("GetProductFileContent", "GestProductFile", new { id = Model.MainImage?.Id })"
-                 data-id="@(Model.MainImage.Id)"
-                 data-product-id="@(Model.MainImage.ProductId)"
-                 data-url="@Url.Action("ImageDetails", "GestProductFile")"/>
-        }
-        else
-        {
-            <img id="mainProductImage" class="primary-image" src="" alt="Immagine Prodotto" />
-        }
-    </div>
-  
 
 
-    <ul class="list-images">
+
+    @if (Model != null && Model.MainImage != null)
+    {
+        <img id="mainProductImage" class="primary-image test-click"
+             src="@Url.Action("GetProductFileContent", "GestProductFile", new { id = Model.MainImage?.Id})"
+             alt="@(Model?.MainImage?.Description)"
+             data-full-src="@Url.Action("GetProductFileContent", "GestProductFile", new { id = Model.MainImage?.Id, isThumb = "M" })"
+             data-id="@(Model.MainImage.Id)"
+             data-product-id="@(Model.MainImage.ProductId)"
+             data-hires-url="@Url.Action("GetProductFileContent", "GestProductFile", new { id = Model.MainImage?.Id, isThumb = "H" })"
+             data-url="@Url.Action("ImageDetails", "GestProductFile")" />
+    }
+    else
+    {
+        <img id="mainProductImage" class="primary-image" src="" alt="Immagine Prodotto" />
+    }
+
+
+
+    <input type="hidden" id="idImmagineDaEliminare" value="" />
+
+    <ul  id="imagesList-2" class="list-images">
         @foreach (var image in Model.GetProductFileByIdList)
         {
-            <li>
-                <img class="product-img test-click"
-                     src="@Url.Action("GetProductFileContent", "GestProductFile", new { id = image.Id })"
-                     data-full-src="@Url.Action("GetProductFileContent", "GestProductFile", new { id = image.Id })"
+            <li data-id="@image.Id" data-product-id="@image.ProductId" draggable="true">
+                <img class="product-img test-click"  
+                     src="@Url.Action("GetProductFileContent", "GestProductFile", new { id = image.Id,   isThumb = "T"})"
+                     data-full-src="@Url.Action("GetProductFileContent", "GestProductFile", new { id = image.Id,  isThumb = "M"})"
                      alt="@(image.Description)"
+                     data-hires-url="@Url.Action("GetProductFileContent", "GestProductFile", new { id =image.Id, isThumb = "H" })"
                      data-id="@(image.Id)"
                      data-product-id="@(image.ProductId)"
-                     data-url="@Url.Action("ImageDetails", "GestProductFile")" />  <!-- data-full-src serve per l'immagine ad alta risoluzione STATO: TO DO'-->
+                     data-url="@Url.Action("ImageDetails", "GestProductFile")" /> 
+                
+
+                <!-- OVERLAY AZIONI -->
+                <div class="actions">
+                    <i class="bi @(image.IsMain == true ? "bi-star-fill" : "bi-star") text-warning btn-set-main"
+                       data-id="@image.Id"
+                       data-product-id="@image.ProductId"
+                       title="Imposta come Principale"></i>
+
+                    <i class="bi bi-trash-fill text-danger btn-delete-img"
+                       data-id="@image.Id"
+                       data-product-id="@image.ProductId"
+                       title="Elimina Immagine"></i>
+                </div>
+
             </li>
         }
 
     </ul>
 
 
-</div>
+   
+
+

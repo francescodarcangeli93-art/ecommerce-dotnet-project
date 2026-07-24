@@ -16,9 +16,9 @@ namespace BLL_Ecommerce.Services
     }
 
 
-        public List<sp_GetProductFileById_Result> sp_GetProductFileById(int ProductId, bool IncludeInactive)
+        public List<sp_GetProductFileById_Result> sp_GetProductFileById(int ProductId, bool IncludeInactive, string FileType)
         {
-            return ProductCategory.sp_GetProductFileById(ProductId, IncludeInactive);
+            return ProductCategory.sp_GetProductFileById(ProductId, IncludeInactive, FileType);
         }
 
         public byte[] GetProductFileContentResized (int id)
@@ -50,6 +50,22 @@ namespace BLL_Ecommerce.Services
         public sp_GetImageFileById_Result sp_GetImageFileById(int id, int productId)
         {
             return ProductCategory.sp_GetImageFileById(id, productId);
+        }
+
+
+        public List<sp_GetListProductCategoryProduct_Result> sp_GetListProductCategoryProduct()
+        {
+            return ProductCategory.sp_GetListProductCategoryProduct();
+        }
+
+        public List<sp_GetListSupplierProduct_Result> sp_GetListSupplierProduct()
+        {
+            return ProductCategory.sp_GetListSupplierProduct();
+        }
+
+        public void ManageProduct(sp_ManageProduct_Param param)
+        {
+             ProductCategory.sp_ManageProduct(param);
         }
 
     }

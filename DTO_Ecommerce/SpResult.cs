@@ -153,7 +153,21 @@ namespace DTO_Ecommerce
         public string CategoryName { get; set; }
     }
 
+    public class sp_GetListProductCategoryProduct_Result
+    {
+        public int Id { get; set; }
+
+        public string CategoryName { get; set; }
+    }
+
     public class sp_GetListSupplier_Result
+    {
+        public int Id { get; set; }
+
+        public string CompanyName { get; set; }
+    }
+
+    public class sp_GetListSupplierProduct_Result
     {
         public int Id { get; set; }
 
@@ -169,6 +183,11 @@ namespace DTO_Ecommerce
        
     }
 
+    public class FileValidation_Result
+    {
+        public bool IsValid { get; set; }
+        public string Message { get; set; }
+    }
     public class sp_GetMainProductImageOrProductManual_Result
     {
         public int? Id { get; set; }
@@ -345,6 +364,7 @@ namespace DTO_Ecommerce
         public string FileName { get; set; }
 
         public byte[] FileContent { get; set; }
+        public bool IsMain { get; set; }
     }
 
     public class sp_GetShipmentStatusById_Result

@@ -34,11 +34,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Drawing.Common.10.0.10\lib\net462\System.Drawing.Common.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,7 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EncryptionHelper.cs" />
-    <Compile Include="Helper\Imaging\CropBox.cs" />
     <Compile Include="Helper\Imaging\ImageHelper.cs" />
     <Compile Include="Interfaces\ICustomerService.cs" />
     <Compile Include="Interfaces\ILogService.cs" />
@@ -58,7 +59,8 @@
     <Compile Include="Interfaces\ICountryService.cs" />
     <Compile Include="Interfaces\IPriceListService.cs" />
     <Compile Include="Interfaces\IProductCategoryService.cs" />
-    <Compile Include="Interfaces\IWarehousesMovementsService .cs" />
+    <Compile Include="Interfaces\IValidationService.cs" />
+    <Compile Include="Interfaces\IWarehousesMovementsService.cs" />
     <Compile Include="Interfaces\IWarehousesService.cs" />
     <Compile Include="Interfaces\ISupplierService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
@@ -71,10 +73,12 @@
     <Compile Include="Services\CountryService.cs" />
     <Compile Include="Services\PriceListService.cs" />
     <Compile Include="Services\ProductCategoryService.cs" />
+    <Compile Include="Services\ValidationService.cs" />
     <Compile Include="Services\WarehousesMovementsService.cs" />
     <Compile Include="Services\WarehouseService.cs" />
     <Compile Include="Services\SupplierService.cs" />
     <Compile Include="Services\UserServices.cs" />
+    <Compile Include="ValidationResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DAL_Ecommerce\DAL_Ecommerce.csproj">

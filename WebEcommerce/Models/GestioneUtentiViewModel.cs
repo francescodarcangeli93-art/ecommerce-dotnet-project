@@ -129,13 +129,14 @@ namespace WebEcommerce.Models
          =========================================================================================*/
         public List<sp_SearchProduct_Result> TheProducts { get; set; }
 
-        public List<sp_GetListProductCategory_Result> ListProductCategories { get; set; }
+        public List<sp_GetListProductCategoryProduct_Result> ListProductCategories { get; set; }
 
         public sp_GetProductById_Result TheProduct {  get; set; }
-
-        public List<sp_GetListSupplier_Result> TheSupplierList { get; set; }
+        public List<sp_GetListSupplier_Result> TheSupList {  get; set; }
+        public List<sp_GetListSupplierProduct_Result> TheSupplierList { get; set; }
 
         public List<sp_GetProductFileById_Result> GetProductFileByIdList { get; set; }
+        public List<sp_GetProductFileById_Result> GetManualsList { get; set; }
 
         public sp_GetProductFileById_Result MainImage => GetProductFileByIdList.FirstOrDefault(x => x.IsMain);
 
@@ -143,6 +144,8 @@ namespace WebEcommerce.Models
 
         // dettaglio immagini
         public sp_GetImageFileById_Result TheImageDetail {  get; set; }
+
+
 
     }
 }

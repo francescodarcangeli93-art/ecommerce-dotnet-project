@@ -5,61 +5,92 @@
 @section styles {
     <link rel="stylesheet" href="@Url.Content("~/Content/Site.css")" />
 }
-<main class="container mt-4">
+<main class="Main-product-conteiner">
 
-    <h1 class="fw-bold mb-4 details-page-title">
-        Dettagli Prodotto
-    </h1>
+    <div class="header">
+        <h1 class="fw-bold  details-page-title">
+            Dettagli Prodotto
+        </h1>
+   
+    </div>
+
+    <div class="second-header">
+        <h3>@Model.TheProduct.ProductName</h3>
+
+    </div>
+
+    <div class="details-conteiner">
 
 
+        <span><strong> Fornitore:</strong>  @Model.TheProduct.CompanyName</span>
+        <span><strong>Prezzo:</strong>  @Model.TheProduct.BasedUnitPrice €</span>
+        <span> <strong>Package:</strong> @Model.TheProduct.Package</span>
+        <span><strong>Stato:</strong> @Model.TheProduct.IsDiscontinued</span>
 
-    <div class="d-flex justify-content-between align-items-end mb-3">
-        <h5 class="m-0">Immagini e Documenti</h5>
 
-        <button type="button" id="btnAggiungiFile" class="btn fw-semibold px-4 btn-animated buttonAdd" data-bs-toggle="modal" data-bs-target="#modalAggiungiFile">
-            <i class="bi bi-image-fill me-1"></i> Aggiungi Immagine/File
-        </button>
+        <hr />
     </div>
 
 
     <div class="section-conteiner">
-
         <!-- PARTIAL VIEW IMMAGGINI-->
+        <div class="image-title">
+            <h4 class="m-0">Immagini</h4>
+        </div>
+
+        <div class="btn-buttons">
+            <button type="button" id="btnAggiungiFile" class="btn fw-semibold px-4 btn-animated buttonAdd" data-bs-toggle="modal" data-bs-target="#modalAggiungiFile">
+                <i class="bi bi-image-fill me-1"></i> Aggiungi Immagine
+            </button>
+        </div>
 
         <div id="imagesList">
 
-            @Html.Partial("_Images", Model)
+            @Html.Action("GetProductImagesPartial", "GestProductFile", new { ProductId = Model.TheProduct.ProductId })
         </div>
 
-<!------------------------------------------------------------------------------------------------------------------------------------------------------->
 
-        <div class="details-conteiner">
-            <h3>@Model.TheProduct.ProductName</h3>
-            <hr />
-        
-            <span><strong> Fornitore:</strong>  @Model.TheProduct.CompanyName</span>
-            <span><strong>Prezzo:</strong>  @Model.TheProduct.BasedUnitPrice</span>
-            <span> <strong>Package:</strong> @Model.TheProduct.Package</span>
-            <span><strong>Stato:</strong> @Model.TheProduct.IsDiscontinued</span>
-        
-
-        </div>
     </div>
-    <hr />
+
+    <div class="vertical-line"></div>
+
+
     <div class="file-conteiner">
-        <h3>lista file</h3>
+
+        <div class="file-title">
+            <h4>Lista file</h4>
+        </div>
+        <!-- BOTTONE PER APRIRE LA MODALE DOCUMENTI/PDF -->
+        <div class="btn-buttons">
+            <button type="button" class="btn fw-semibold px-4 btn-animated buttonAdd" data-bs-toggle="modal" data-bs-target="#modalAggiungiDocumento">
+                <i class="bi bi-file-earmark-plus me-1"></i> Aggiungi Documento
+            </button>
+        </div>
+
+
+        <div id="fileConteiner">
+            @Html.Action("GetProductFilesPartial", "GestProductFile", new { ProductId = Model.TheProduct.ProductId })
+        </div>
     </div>
-    <div class="d-flex justify-content-start align-items-center mt-4">
+
+
+    <div class="footer">
+
         <a href="javascript:history.back();" class="btn btn-animated fw-semibold px-4 btn-details-back">
             ← Indietro
         </a>
+
     </div>
+
+
 
 </main>
 
 
+
+
 <!--===========================================================================================================================
-   1 MODALE AGGIUNGI PRODOTTO
+   1 MODALE AGGIUNGI IMMAGINE/FILE
   ==========================================================================================================================-->
 
 <div class="modal" id="modalAggiungiFile" tabindex="-1" data-bs-backdrop="static" data-bs-focus="false">
@@ -67,7 +98,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Aggiungi Immagine/File</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
             </div>
             <div class="modal-body">
 
@@ -75,22 +106,34 @@
 
                     <div class="mb-3">
                         <label for="uploadFile" class="">Seleziona File*</label>
-                        <input type="file" id="uploadFiles" accept="image/*,.pdf" class="form-control" required />
+                        <input type="file" id="uploadFiles" accept="image/*" class="form-control" required
+                               data-width=" @System.Configuration.ConfigurationManager.AppSettings["ImageCropWidth"]"
+                               data-height="@System.Configuration.ConfigurationManager.AppSettings["ImageCropHeight"]" />
+                    </div>
+
+                    <!--========================================================================================================
+                         PREVIEW CROP
+                      ========================================================================================================-->
+
+                    <div class="mb-3" id="cropContainer" style="display:none;">
+                        <label class="form-label">Anteprima ritaglio (trascina se vuoi modificarlo)</label>
+                        <canvas id="cropCanvas" style="border:1px solid #ccc; max-width:100%; cursor: move; display:block;"></canvas>
                     </div>
 
                     <div class="mb-3">
                         <label for="uploadTitle" class="">Titolo Immagine*</label>
-                        <input type="text" id="uploadTitle" accept="image/*,.pdf" class="form-control" required />
+                        <input type="text" id="uploadTitle" class="form-control" required />
                     </div>
 
-                    <div class="form-check mb-3">
+                    <div class="mb-3">
                         <input type="checkbox" id="uploadIsMain" class="form-check-input" />
                         <label class="form-check-label" for="uploadIsMain">Immagine principale</label>
                     </div>
 
                     <div class="mb-3">
                         <label for="uploadDescription" class="form-label">Descrizione</label>
-                        <textarea  id="uploadDescription" class="form-control" rows="5" cols="33"></textarea>
+
+                        <textarea id="uploadDescription" class="form-control" rows="8"></textarea>
                     </div>
 
                 </form>
@@ -109,6 +152,113 @@
 </div>
 
 
+<!--===========================================================================================================================
+   2 MODALE AGGIUNGI DOCUMENTO / PDF
+  ==========================================================================================================================-->
+<div class="modal fade" id="modalAggiungiDocumento" tabindex="-1" data-bs-backdrop="static" data-bs-focus="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-file-earmark-pdf me-2"></i>Aggiungi Manuale / PDF</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+
+                <form id="formAggiungiDocumento">
+
+                    <div class="mb-3">
+                        <label for="uploadDocumentFile" class="form-label">Seleziona Documento (PDF)*</label>
+                        <input type="file" id="uploadDocumentFile" accept=".pdf" class="form-control" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="uploadDocTitle" class="form-label">Titolo Documento*</label>
+                        <input type="text" id="uploadDocTitle" class="form-control" required />
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input type="checkbox" id="uploadDocIsMain" class="form-check-input" />
+                        <label class="form-check-label" for="uploadDocIsMain">Documento principale</label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="uploadDocDescription" class="form-label">Descrizione</label>
+                        <textarea id="uploadDocDescription" class="form-control" rows="3"></textarea>
+                    </div>
+
+                </form>
+
+                <div id="resultMessageUploadDoc" class="mt-2"></div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" id="btnUploadDocument" class="btn btn-primary" data-product-id="@Model.TheProduct.ProductId">Carica Documento</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!--=================================================================================================================================
+    MODALE ELIMINA PDF
+==================================================================================================================================-->
+
+<div class="myModal-overlay" id="modalEliminaPDF">
+    <div class="personal-card">
+        <div class="body">
+
+            <!--risultato messaggio errore o successo-->
+            <div id="resultMessageDel"></div>
+
+            <div class="cont-icon">
+                <span class="icona-attenzione"></span>
+            </div>
+
+
+            <h3>Conferma eliminazione</h3>
+            <p>Sei sicuro di voler cancellare questo file?</p>
+
+        </div>
+        <div class="buttons">
+            <button class="no-btn">No, Annulla</button>
+            <button id="delFile-btn" class="si-btn" data-delete-url="@Url.Action("DeleteProductFile", "GestProductFile")">Si, Cancella</button>
+        </div>
+    </div>
+</div>
+
+<!--=================================================================================================================================
+    MODALE ELIMINA IMMAGINE
+==================================================================================================================================-->
+
+<div class="myModal-overlay" id="modalEliminaImmagine">
+    <div class="personal-card">
+        <div class="body">
+
+            <!--risultato messaggio errore o successo-->
+            <div id="resultMessageDel"></div>
+
+            <div class="cont-icon">
+                <span class="icona-attenzione"></span>
+            </div>
+
+
+            <h3>Conferma eliminazione</h3>
+            <p>Sei sicuro di voler cancellare questa Immagine?</p>
+
+        </div>
+        <div class="buttons">
+            <button class="immagine-no-btn">No, Annulla</button>
+            <button id="delImage-btn" class="si-btn" data-delete-Image-url="@Url.Action("deleteImage", "GestProductFile")">Si, Cancella</button>
+        </div>
+    </div>
+</div>
+
 <!--=================================================================================================================================================================
    2 MODALE DETTAGLIO IMMAGINE
   ===================================================================================================================================================================-->
@@ -117,23 +267,26 @@
     <div class="personal-card image-cardColor dimension-card personal-card-radius bodyImage-grid">
 
         <div class="title-image">
+
             <h2>Dettaglio <span id="ImageTitle"></span></h2>
             <button class="mybtn-close" type="button">&times;</button>
             <hr />
+
         </div>
 
         <div class="Image-picture">
-          
+
             <img id="modalImage" src="" alt="Immagine Ingrandita" />
 
         </div>
+
         <div class="image-detail">
 
             <div class="description-conteiner">
                 <p id="Detail-Description" class="description-text"></p>
-               
+
             </div>
-            
+
 
             <div class="info-product">
                 <p><strong>File:</strong> <span id="Detail-FileType"></span></p>

@@ -1,0 +1,89 @@
+﻿@model WebEcommerce.Models.ProductCategoryViewModel
+
+<div class="table bevel">
+
+    <input type="hidden" id="idFileDaEliminare" value="" />
+
+    <table class="table table-striped table-hover table-bordered align-middle mb-0 tab-fix">
+        <thead class="table-dark table-bordered">
+            <tr>
+                <th scope="col" class="text-center">Titolo / Nome File</th>
+                <th scope="col" class="text-center">Dimensione</th>
+                <th scope="col" class="text-center">Principale</th>
+                <th scope="col" class="text-center">STATO</th>
+                <th class="text-center px-4 col-shrink-15">COMANDI</th>
+            </tr>
+        </thead>
+        <tbody id="corpoTabellaFile">
+            @if (Model != null && Model.GetManualsList != null && Model.GetManualsList.Any())
+            {
+                foreach (var file in Model.GetManualsList)
+                {
+                    <tr data-id="@file.Id">
+
+                        <!-- NOME FILE E TITOLO -->
+                        <td class="text-start">
+                            <i class="bi bi-file-earmark-pdf-fill text-danger me-2 fs-5"></i>
+                            <strong>@(string.IsNullOrEmpty(file.Title) ? file.FileName : file.Title)</strong>
+                            @if (!string.IsNullOrEmpty(file.Title) && file.Title != file.FileName)
+                            {
+                                <br /><small class="text-muted ms-4">@file.FileName</small>
+                            }
+                        </td>
+
+                        <!-- DIMENSIONE KB -->
+                        <td class="text-center">
+                            @(file.FileSizeKb > 0 ? $"{file.FileSizeKb} KB" : "-")
+                        </td>
+
+                        <!-- FILE PRINCIPALE -->
+                        <td class="text-center">
+                            <span class="@(file.IsMain ? "badge bg-success bg-opacity-10 text-success border border-success fw-bold" : "text-muted")">
+                                @(file.IsMain ? "SÌ" : "-")
+                            </span>
+                        </td>
+
+                        <!-- GESTIONE ATTIVO / NON ATTIVO -->
+                        <td class="text-center">
+                            <button type="button"
+                                    class="btn btn-sm fw-bold text-uppercase d-inline-flex align-items-center justify-content-center border-2 attivo
+                                    @(file.IsActive ? "btn-outline-success text-success bg-success bg-opacity-10" : "btn-outline-danger text-danger bg-danger bg-opacity-10")">
+                                @(file.IsActive ? "Attivo" : "Inattivo")
+                            </button>
+                        </td>
+
+                        <!-- COMANDI -->
+                        <td class="px-4 spazio-comandi text-center">
+                            <!-- DOWNLOAD / APRI FILE -->
+                            <a href="@Url.Action("DownloadProductDocument", "GestProductFile", new { id = file.Id })"
+                               class="btn btn-sm btn-outline-info py-1 simpleBevel btn-scarica"
+                               title="Scarica / Apri File">
+                                <i class="bi bi-download"></i>
+                            </a>
+
+                            <!-- ELIMINA FILE -->
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-danger py-1 simpleBevel btn-elimina-file"
+                                    title="Cancella File"
+                                    data-id="@file.Id"
+                                    data-name="@file.FileName">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-center py-4 text-muted fw-bold">
+                        <i class="bi bi-folder-x fs-3 d-block mb-1"></i>
+                        Nessun manuale o file PDF caricato.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

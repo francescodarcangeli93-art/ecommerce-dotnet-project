@@ -55,7 +55,7 @@
 
 
                 <div class="col-md-3">
-                    <select name="CategoryId" id="searchCategoryId" class="form-select input-animated">
+                    <select name="SupplierId" id="searchSupplierId" class="form-select input-animated">
                         <option value="">--Selezionare Fornitore--</option>
                         @foreach (var supplier in Model.TheSupplierList)
                         {
@@ -76,9 +76,9 @@
     <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
     @*TASTO AGGIUNGI*@
     <div class="d-flex justify-content-between align-items-end mb-3">
-        <h3 class="m-0">Lista Fornitori</h3>
+        <h3 class="m-0">Lista Prodotti</h3>
 
-        <a id="btnAggiungi" class="btn fw-semibold px-4 btn-animated buttonAdd">
+        <a id="btnAggiungi" class="btn fw-semibold px-4 btn-animated buttonAdd" data-bs-toggle="modal" data-bs-target="#aggiungi">
             <i class="bi-box-fill "></i> Aggiungi
         </a>
 
@@ -93,9 +93,130 @@
 </main>
 
 
+<!--=============================================================================================================================================================================
+    MODALE AGGIUNGI
+================================================================================================================================================================================-->
+<div class="modal" id="aggiungi" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Aggiungi Prodotto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="mb-4 p-4 bg-white card-animated card-detail">
+                    <div>
+                        <div class="card-body row g-3">
+
+                            <form id="ProductForm">
+
+                                <div class="col-md-6">
+
+                                    <div class="mb-3">
+                                        <label for="addProductName">Nome Prodotto*</label>
+                                        <input type="text" id="addProductName" name="ProductName" placeholder="Nome Prodotto" class="form-control input-animated" required />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="addPackage">Confezione</label>
+                                        <input type="text" id="addPackage" name="Package" placeholder="Es. Scatola da 100" class="form-control input-animated" />
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <div class="mb-3">
+                                        <label for="add-SupplierId">Fornitore*</label>
+                                        <select name="SupplierId" id="addSupplierId" class="form-select" required>
+                                            <option value="">--Selezionare il fornitore--</option>
+                                            @foreach (var supplier in Model.TheSupList)
+                                            {
+                                                <option value="@supplier.Id">@supplier.CompanyName</option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="addCategoryId">Categorie*</label>
+                                        <select name="CategoryId" id="addCategoryId" class="form-select" required>
+                                            <option value="">--Selezionare la categoria del prodotto--</option>
+                                            @foreach (var category in Model.ListProductCategories)
+                                            {
+                                                <option value="@category.Id">@category.CategoryName</option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="addBasedUnitPrice">Prezzo Base (€)</label>
+                                        <input type="number" step="0.01" id="addBasedUnitPrice" name="BasedUnitPrice" placeholder="Prezzo in €" class="form-control input-animated" />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="d-block">Stato Produzione</label>
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" id="addIsDiscontinued" name="IsDiscontinued" value="false" class="form-check-input" checked />
+                                            <label class="form-check-label" for="addIsDiscontinued">In Produzione</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" id="addIsDiscontinued" name="IsDiscontinued" value="true" class="form-check-input" />
+                                            <label class="form-check-label" for="addIsDiscontinued">Fuori Produzione</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-check mb-3">
+                                        <input type="checkbox" id="addVisibleInHP" class="form-check-input" />
+                                        <label class="form-check-label" for="addVisibleInHP">Visibile in Homepage</label>
+                                    </div>
+
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div id="resultMessage" class="mt-2 text-center"></div>
+
+            </div>
+
+            <div class="modal-footer buttons">
+                <button type="button" class="no-btn" data-bs-dismiss="modal">Indietro</button>
+                <button type="button" id="btnSalvaProdotto" class="si-edit-btn">Salva</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--=================================================================================================================================
+    MODALE ELIMINA
+==================================================================================================================================-->
+
+<div class="myModal-overlay" id="modalElimina">
+    <div class="personal-card">
+        <div class="body">
+
+            <!--risultato messaggio errore o successo-->
+            <div id="resultMessageDel"></div>
+
+            <div class="cont-icon">
+                <span class="icona-attenzione"></span>
+            </div>
 
 
+            <h3>Conferma eliminazione</h3>
+            <p>Sei sicuro di voler cancellare questo prodotto"<strong id="ProdottoDaCancellare"></strong>"?</p>
 
+        </div>
+        <div class="buttons">
+            <button class="no-btn">No, Annulla</button>
+            <button id="delList-btn" class="si-btn" data-delete-url="@Url.Action("Delete", "GestProductFile")">Si, Cancella</button>
+        </div>
+    </div>
+</div>
 
 @section scripts {
     <script src="@Url.Content("~/Scripts/js/Product.js")"></script>

@@ -710,6 +710,7 @@
     <Content Include="Content\Image\Icons\flags\4x3\za.svg" />
     <Content Include="Content\Image\Icons\flags\4x3\zm.svg" />
     <Content Include="Content\Image\Icons\flags\4x3\zw.svg" />
+    <Content Include="Content\Image\logo-watermark.png" />
     <Content Include="Content\Image\LogoEcommerce.png" />
     <Content Include="Content\Image\Products\prodotto-1.png" />
     <Content Include="Content\Image\Products\prodotto-2.png" />
@@ -793,6 +794,7 @@
     <Content Include="Views\GestWarehousesMovements\_WarehousesMovementsTable.cshtml" />
     <Content Include="Views\GestProductFile\Details.cshtml" />
     <Content Include="Views\GestProductFile\_Images.cshtml" />
+    <Content Include="Views\GestProductFile\_Files.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

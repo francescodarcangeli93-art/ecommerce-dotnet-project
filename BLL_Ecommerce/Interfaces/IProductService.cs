@@ -7,7 +7,7 @@ namespace BLL_Ecommerce.Interfaces
     {
         List<sp_SearchProduct_Result> sp_SearchProduct(sp_SearchProduct_Param spParam);
 
-        List<sp_GetProductFileById_Result> sp_GetProductFileById(int ProductId, bool IncludeInactive);
+        List<sp_GetProductFileById_Result> sp_GetProductFileById(int ProductId, bool IncludeInactive, string FileType);
 
         sp_GetProductFileContent_Result GetProductFileContent(int id);
 
@@ -17,5 +17,12 @@ namespace BLL_Ecommerce.Interfaces
         int ManageProductFile(sp_ManageProductFile_Param param);
 
          sp_GetImageFileById_Result sp_GetImageFileById(int id, int productId);
+
+        List<sp_GetListProductCategoryProduct_Result> sp_GetListProductCategoryProduct();
+
+        List<sp_GetListSupplierProduct_Result> sp_GetListSupplierProduct();
+
+        void ManageProduct(sp_ManageProduct_Param param);
+
     }
 }

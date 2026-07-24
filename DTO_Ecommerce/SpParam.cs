@@ -14,6 +14,11 @@ namespace DTO_Ecommerce
        }
     */
 
+    public class ImageOrderDto
+    {
+        public int Id { get; set; }
+        public int DisplayOrder { get; set; }
+    }
     public class sp_ManageLog_Param
     {
         public int? IdUser {  get; set; }
@@ -162,6 +167,8 @@ namespace DTO_Ecommerce
     {
         public int? ProductId { get; set; }
         public bool IncludeInactive { get; set; }
+
+        public string FileType { get; set; }
 
     }
 
@@ -333,10 +340,11 @@ namespace DTO_Ecommerce
         public int? Id { get; set; }
         public string ProductName { get; set; }
         public int? SupplierId { get; set; }
-        public decimal BasedUnitPrice { get; set; }
+        public int? CategoryId { get; set; }
+        public decimal? BasedUnitPrice { get; set; }
         public string Package { get; set; }
-        public bool IsDiscontinued { get; set; }
-        public bool VisibleInHP { get; set; }
+        public bool? IsDiscontinued { get; set; }
+        public bool? VisibleInHP { get; set; }
     }
     public class sp_ManageProductCategory_Param
     {
@@ -489,7 +497,8 @@ namespace DTO_Ecommerce
     {
         public string ProductName { get; set; }
         public int? SupplierId { get; set; }
-        public decimal? BasedUnitPrice { get; set; }
+        public decimal? BasedUnitPriceDa { get; set; }
+        public decimal? BasedUnitPriceA { get; set; }
         public string Package { get; set; }
         public bool? IsDiscontinued { get; set; }
 
