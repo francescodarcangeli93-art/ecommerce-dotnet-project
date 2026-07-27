@@ -185,7 +185,7 @@
         const model = {
             id: $('#idProdottoDaEliminare').val()
         }
-        console.log($id);
+   
         $.ajax({
 
             url: $deleteUrl,

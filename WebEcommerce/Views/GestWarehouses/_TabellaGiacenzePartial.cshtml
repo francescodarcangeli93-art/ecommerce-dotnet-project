@@ -1,0 +1,40 @@
+﻿@model WebEcommerce.Models.WarehousesViewModel
+
+<table class="table tabella-magazzino" id="tabellaGiacenze">
+
+    <thead>
+        <tr>
+
+            <th>Prodotto</th>
+            <th class="text-center">Ultimo Aggiornamento</th>
+            <th class="text-center">Quantità</th>
+            <th class="text-center">Azioni</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var magazzino in Model.TheWarehouseStock)
+        {
+            <tr>
+                @*<td>P-0012</td>*@
+
+                <td>@magazzino.ProductName</td>
+                <td class="text-center">@magazzino.LastUpdate</td>
+                <td class="text-center">@magazzino.Quantity</td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" title="Storico prodotto">
+                        <i class="bi bi-clock-history"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-danger"
+                            data-bs-toggle="modal" data-bs-target="#modalScaricoProdotto"
+                            data-product-id="@magazzino.ProductId"
+                            data-product-name="@magazzino.ProductName"
+                            data-quantita-attuale="@magazzino.Quantity"
+                            title="Scarica/Rettifica">
+                        <i class="bi bi-dash-circle"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>

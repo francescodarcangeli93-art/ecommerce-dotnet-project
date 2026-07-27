@@ -16,7 +16,7 @@ namespace BLL_Ecommerce.Helper.Imaging
             if (targetHeight <= 0) targetHeight = GetConfigInt("ImageCropHeight", 1200);
 
             using (MemoryStream msInput = new MemoryStream(originalBytes))
-                
+
             using (Image original = Image.FromStream(msInput))
             {
 
@@ -54,19 +54,22 @@ namespace BLL_Ecommerce.Helper.Imaging
                     posY = (original.Height - cropHeight) / 2;
                 }
 
-                int finalWidth = targetWidth;
-                int finalHeight = targetHeight;
+                // Il canvas finale è SEMPRE targetWidth x targetHeight
+                int outputWidth = targetWidth;
+                int outputHeight = targetHeight;
 
-            
-                
-                    finalWidth = targetWidth;
-                    finalHeight = targetHeight;
-                
+                // Ma disegniamo l'immagine solo alla sua vera risoluzione (mai più grande del crop originale, niente upscale)
+                int drawWidth = Math.Min(cropWidth, targetWidth);
+                int drawHeight = Math.Min(cropHeight, targetHeight);
+
+                //  Centriamo il disegno dentro il canvas finale
+                int destX = (outputWidth - drawWidth) / 2;
+                int destY = (outputHeight - drawHeight) / 2;
 
                 Rectangle cutter = new Rectangle(posX, posY, cropWidth, cropHeight);
-                Rectangle finaleImage = new Rectangle(0, 0, finalWidth, finalHeight);
+                Rectangle finaleImage = new Rectangle(destX, destY, drawWidth, drawHeight);
 
-                using (Bitmap bitmap = new Bitmap(finalWidth, finalHeight, PixelFormat.Format32bppArgb))
+                using (Bitmap bitmap = new Bitmap(outputWidth, outputHeight, PixelFormat.Format32bppArgb))
                 using (Graphics graphics = Graphics.FromImage(bitmap))
                 {
                     graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -74,13 +77,13 @@ namespace BLL_Ecommerce.Helper.Imaging
                     graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
                     //se il formato non supporta l'alpha 
-                    if(!SupportsAlpha(orignalFormat))
+                    if (!SupportsAlpha(orignalFormat))
                     {
                         graphics.Clear(Color.White);
                     }
 
                     graphics.DrawImage(original, finaleImage, cutter, GraphicsUnit.Pixel);
-                    
+
                     using (MemoryStream msOut = new MemoryStream())
                     {
                         bitmap.Save(msOut, orignalFormat);
@@ -92,13 +95,13 @@ namespace BLL_Ecommerce.Helper.Imaging
 
 
         public static byte[] ApplyWatermark(
-       byte[] imageBytes,
-       string logoPath,
-       float opacity = 0.5f,
-       int logoFixedWidth = 300,      // larghezza fissa in pixel, uguale per tutte le immagini
-       int marginRightPx = 25,        // margine fisso in pixel dal bordo destro
-       int marginBottomPx = 25)       // margine fisso in pixel dal bordo inferiore
-        {
+           byte[] imageBytes,
+           string logoPath,
+           float opacity = 0.5f,
+           int logoFixedWidth = 300,      // larghezza fissa in pixel, uguale per tutte le immagini
+           int marginRightPx = 25,        // margine fisso in pixel dal bordo destro
+           int marginBottomPx = 25)       // margine fisso in pixel dal bordo inferiore
+            {
             // Clamp difensivo sui parametri
             opacity = Math.Max(0f, Math.Min(1f, opacity));
             logoFixedWidth = Math.Max(1, logoFixedWidth);
@@ -118,11 +121,11 @@ namespace BLL_Ecommerce.Helper.Imaging
 
                     using (Image logo = Image.FromFile(logoPath))
                     {
-                        // ✅ Larghezza fissa, altezza proporzionale al logo (mantiene aspect ratio)
+                        // Larghezza fissa, altezza proporzionale al logo (mantiene aspect ratio)
                         int logoWidth = logoFixedWidth;
                         int logoHeight = (int)(logo.Height * ((float)logoWidth / logo.Width));
 
-                        // ✅ Margine fisso in pixel — identico su qualsiasi immagine
+                        // Margine fisso in pixel — identico su qualsiasi immagine
                         int posX = original.Width - logoWidth - marginRightPx;
                         int posY = original.Height - logoHeight - marginBottomPx;
 
@@ -135,6 +138,9 @@ namespace BLL_Ecommerce.Helper.Imaging
                         imageAttributes.SetColorMatrix(colorMatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
                         Rectangle destRect = new Rectangle(posX, posY, logoWidth, logoHeight);
+
+                       
+
                         graphics.DrawImage(logo, destRect, 0, 0, logo.Width, logo.Height,
                             GraphicsUnit.Pixel, imageAttributes);
                     }

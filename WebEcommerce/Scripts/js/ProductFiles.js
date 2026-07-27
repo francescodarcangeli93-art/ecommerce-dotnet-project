@@ -18,33 +18,24 @@ $(document).ready(function () {
         });
     }
 
-   
+
 
     // quando apre la modale di upload pulisce i filtri
     $('#btnAggiungiFile').on('click', function () {
 
         resetCropModal();
-      
+
 
     });
 
     function resetCropModal() {
-        // 1. Svuota l'input file vero e proprio (questo accetta .val(''))
         $('#uploadFiles').val('');
         $('#uploadTitle').val('');
-        $('#uploadIsMain').val('');
         $('#uploadDescription').val('');
-        $('#cropCanvas').val('');
-        // 2. Cancella la grafica dal Canvas
-        const canvas = document.getElementById('cropCanvas');
-        if (canvas) {
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
+        $('#resultMessageUpload').text('');
+        $('#multiCropContainer').empty(); //svuota tutte le anteprime generate dinamicamente
 
-        // 3. Azzera lo stato e nascondi il contenitore del crop
-        cropState = null;
-        $('#cropContainer').hide();
+        cropStates = []; //resetta l'array, non la variabile singola inesistente
     }
 
 
@@ -55,12 +46,12 @@ $(document).ready(function () {
     // 1. Selezioni il tuo tag <input type="file"> (sostituisci "fileInput" col tuo ID reale)
     const fileInput = document.getElementById('uploadFiles');
 
-   
+
 
     /*=========================================================================================================
-    ANTEPRIMA RITAGLIO
-   =========================================================================================================*/
-    let cropState = null;
+  ANTEPRIMA RITAGLIO
+ =========================================================================================================*/
+    let cropStates = [];
 
     // Leggi le dimensioni dall'input file esistente
     const targetW = parseInt($('#uploadFiles').data('width')) || 1200;
@@ -71,262 +62,320 @@ $(document).ready(function () {
 
     $(document).on('change', '#uploadFiles', function () {
 
-        const file = this.files[0];
+        const files = Array.from(this.files);
+        cropStates = [];
 
-        // se  il file non è un immagine mandalo cosi come è 
+        $('#multiCropContainer').empty();
 
-        if (!file || !file.type.startsWith('image/')) {
-            $('#cropContainer').hide();
-            cropState = null;
-            return;
-        }
+        files.forEach(function (file, index) {
 
-        const reader = new FileReader();
-        reader.onload = function (e) {
+            // se il file non è un'immagine, saltalo
+            if (!file || !file.type.startsWith('image/')) return;
 
-            const img = new Image();
+            const reader = new FileReader();
+            reader.onload = function (e) {
 
-            img.onload = function () {
+                const img = new Image();
 
-                const canvas = document.getElementById('cropCanvas');
-                const maxW = 500;
-                const scale = Math.min(1, maxW / img.width);
+                img.onload = function () {
 
-                //calcola la grandezza dell'immagine per la scala cosi che il canvas non sara mai più grande di 500
-                canvas.width = img.width * scale;
-                canvas.height = img.height * scale
+                    const canvasId = 'cropCanvas_' + index;
+                    const radioId = 'isMain_' + index;
 
-                // Logica identica all'algoritmo in c#
-                const sourceRatio = img.width / img.height;
+                    $('#multiCropContainer').append(`
+                    <div class="crop-item text-center">
+                        <canvas id="${canvasId}" style="border:1px solid #ccc;  max-width:100%; cursor: move; display:block;"></canvas>
+                        <small class="text-muted d-block mt-1">${file.name}</small>
 
-                let cropWidth = img.width;
-                let cropHeight = img.height;
-                let offsetX = 0, offsetY = 0;
+                        <div class="form-check form-check-inline mt-1">
+                            <input type="checkbox" name="isMainRadio" class="form-check-input isMain-radio" id="${radioId}" value="${index}">
+                            <label class="form-check-label" for="${radioId}">Principale</label>
+                        </div>
+                    </div>
+                `);
 
-                if (sourceRatio > TARGET_RATIO) {
-                    cropWidth = Math.round(img.height * TARGET_RATIO);
-                    offsetX = Math.round((img.width - cropWidth) / 2);
-                } else {
-                    cropHeight = Math.round(img.width / TARGET_RATIO);
-                    offsetY = Math.round((img.height - cropHeight) / 2);
-                }
-                // ------------------------------------------------------------------------
+                    const canvas = document.getElementById(canvasId);
+                    const maxW = 500;
+                    const scale = Math.min(1, maxW / img.width);
 
-                cropState = {
-                    img: img,
-                    scale: scale,
-                    // coordinate in pixel REALI dell'immagine originale
-                    x: offsetX,
-                    y: offsetY,
-                    w: cropWidth,
-                    h: cropHeight,
-                    dragging: false
+                    // calcola la grandezza dell'immagine per la scala cosi che il canvas non sara mai più grande di 500
+                    canvas.width = img.width * scale;
+                    canvas.height = img.height * scale;
+
+                    // Logica identica all'algoritmo in c#
+                    const sourceRatio = img.width / img.height;
+
+                    let cropWidth = img.width;
+                    let cropHeight = img.height;
+                    let offsetX = 0, offsetY = 0;
+
+                    if (sourceRatio > TARGET_RATIO) {
+                        cropWidth = Math.round(img.height * TARGET_RATIO);
+                        offsetX = Math.round((img.width - cropWidth) / 2);
+                    } else {
+                        cropHeight = Math.round(img.width / TARGET_RATIO);
+                        offsetY = Math.round((img.height - cropHeight) / 2);
+                    }
+                    // ------------------------------------------------------------------------
+
+                    cropStates[index] = {
+                        img: img,
+                        scale: scale,
+                        canvasId: canvasId,
+                        file: file,
+                        // coordinate in pixel REALI dell'immagine originale
+                        x: offsetX,
+                        y: offsetY,
+                        w: cropWidth,
+                        h: cropHeight,
+                        dragging: false
+                    };
+
+                    drawCrop(index);
                 };
 
-                $('#cropContainer').show();
-                drawCrop();
+                img.onerror = function () {
+                    cropStates[index] = null;
+                };
+
+                img.src = e.target.result;
             };
 
-            img.onerror = function () {
-                $('#cropContainer').hide();
-                cropState = null; // Forza a null così non andrà in crash dopo
-            };
+            reader.readAsDataURL(file);
+        });
+    });
 
-            img.src = e.target.result;
-        };
-
-        reader.readAsDataURL(file);
+    $(document).on('change', '.isMain-radio', function () {
+        if (this.checked) {
+            // Deseleziona tutti gli altri checkbox "Principale"
+            $('.isMain-radio').not(this).prop('checked', false);
+        }
     });
 
     // funzione che disegna il ritaglio
-    function drawCrop() {
+    function drawCrop(index) {
 
-        const canvas = document.getElementById('cropCanvas');
+        const state = cropStates[index];
+        if (!state) return;
+
+        const canvas = document.getElementById(state.canvasId);
         const ctx = canvas.getContext('2d');
-        const s = cropState.scale;
+        const s = state.scale;
 
         // pulire il canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(cropState.img, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(state.img, 0, 0, canvas.width, canvas.height);
 
-        // riquadro  con le coordinate adattate alla scala calcolata in precedenza
-        const rx = cropState.x * s, ry = cropState.y * s;
-        const rw = cropState.w * s, rh = cropState.h * s
+        // riquadro con le coordinate adattate alla scala calcolata in precedenza
+        const rx = state.x * s, ry = state.y * s;
+        const rw = state.w * s, rh = state.h * s;
 
         ctx.fillStyle = 'rgba(0,0,0,0.5)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.clearRect(rx, ry, rw, rh);
-        ctx.drawImage(cropState.img, cropState.x, cropState.y, cropState.w, cropState.h, rx, ry, rw, rh);
+        ctx.drawImage(state.img, state.x, state.y, state.w, state.h, rx, ry, rw, rh);
 
         ctx.strokeStyle = '#fff';
         ctx.lineWidth = 2;
         ctx.strokeRect(rx, ry, rw, rh);
+    }
 
+    function getStateIndexFromCanvas(canvasEl) {
+        return cropStates.findIndex(s => s && s.canvasId === canvasEl.id);
     }
 
     // Trascinamento del riquadro (solo spostamento, la dimensione resta quella calcolata dall'aspect ratio)
-    $(document).on('mousedown', '#cropCanvas', function (e) {
+    $(document).on('mousedown', 'canvas[id^="cropCanvas_"]', function (e) {
 
-        if (!cropState) return;
+        const index = getStateIndexFromCanvas(this);
+        const state = cropStates[index];
+        if (!state) return;
 
-        // capire dove si trova il canvas 
+        // capire dove si trova il canvas
         const rect = this.getBoundingClientRect();
 
-        const mx = (e.clientX - rect.left) / cropState.scale;
-        const my = (e.clientY - rect.top) / cropState.scale;
+        const mx = (e.clientX - rect.left) / state.scale;
+        const my = (e.clientY - rect.top) / state.scale;
 
-        // controllo  se il punto cliccato dal mouse si trova alll'intenrno dei confini del rettangolo di ritaglio attuale 
-        if (mx >= cropState.x && mx <= cropState.x + cropState.w &&
-            my >= cropState.y && my <= cropState.y + cropState.h) {
-            // se il click è all'intenro si imposta lo stato a true
-            cropState.dragging = true;
+        // controllo se il punto cliccato dal mouse si trova all'interno dei confini del rettangolo di ritaglio attuale
+        if (mx >= state.x && mx <= state.x + state.w &&
+            my >= state.y && my <= state.y + state.h) {
+            // se il click è all'interno si imposta lo stato a true
+            state.dragging = true;
 
-            cropState.offsetMX = mx - cropState.x;
-            cropState.offsetMY = my - cropState.y;
+            state.offsetMX = mx - state.x;
+            state.offsetMY = my - state.y;
         }
     });
 
     // renderizza la posizione del riquadro quando si muove
-    $(document).on('mousemove', '#cropCanvas', function (e) {
+    $(document).on('mousemove', 'canvas[id^="cropCanvas_"]', function (e) {
 
-        if (!cropState || !cropState.dragging) return;
+        const index = getStateIndexFromCanvas(this);
+        const state = cropStates[index];
+        if (!state || !state.dragging) return;
 
-        //trovare dove sta il mouse e convertire la posizoine nei pixel effettivi della foto originale 
+        // trovare dove sta il mouse e convertire la posizione nei pixel effettivi della foto originale
         const rect = this.getBoundingClientRect();
-        const mx = (e.clientX - rect.left) / cropState.scale;
-        const my = (e.clientY - rect.top) / cropState.scale;
+        const mx = (e.clientX - rect.left) / state.scale;
+        const my = (e.clientY - rect.top) / state.scale;
 
-        //calcolare la nuova posizione  del canvas
-        let newX = mx - cropState.offsetMX;
-        let newY = my - cropState.offsetMY;
+        // calcolare la nuova posizione del canvas
+        let newX = mx - state.offsetMX;
+        let newY = my - state.offsetMY;
 
         // 1. Controllo Bordo Sinistro: non può andare sotto lo 0
         if (newX < 0) {
             newX = 0;
         }
         // 2. Controllo Bordo Destro: non può superare la fine della foto
-        else if (newX > cropState.img.width - cropState.w) {
-            newX = cropState.img.width - cropState.w;
+        else if (newX > state.img.width - state.w) {
+            newX = state.img.width - state.w;
         }
-        // (Se non entra in nessuno dei due if, newX rimane esattamente com'è!)
 
         // 1. Controllo Bordo Superiore: non può andare sotto lo 0
         if (newY < 0) {
             newY = 0;
         }
         // 2. Controllo Bordo Inferiore: non può superare il fondo della foto
-        else if (newY > cropState.img.height - cropState.h) {
-            newY = cropState.img.height - cropState.h;
+        else if (newY > state.img.height - state.h) {
+            newY = state.img.height - state.h;
         }
 
-        cropState.x = newX;
-        cropState.y = newY;
-        drawCrop();
+        state.x = newX;
+        state.y = newY;
+        drawCrop(index);
     });
 
-    $(document).on('mouseup mouseleave', '#cropCanvas', function () {
-        if (cropState) cropState.dragging = false;
+    $(document).on('mouseup mouseleave', 'canvas[id^="cropCanvas_"]', function () {
+        const index = getStateIndexFromCanvas(this);
+        if (cropStates[index]) cropStates[index].dragging = false;
     });
 
     /*=========================================================================================================
        UPLOAD IMMAGINI
     =========================================================================================================*/
 
-
     $(document).on('click', '#btnUploadFile', function () {
 
         const id = $(this).data('product-id');
         const fileInput = document.getElementById('uploadFiles');
-       
 
         if (!fileInput.files || fileInput.files.length === 0) {
             $('#resultMessageUpload').html('<span style="color:red">Seleziona un file.</span>');
             return;
         }
-        function inviaFile(fileToSend) {
-            const formData = new FormData();
-            formData.append('ProductId', id);
-            formData.append('Description', $('#uploadDescription').val() || '');
-            formData.append('Title', $('#uploadTitle').val());
-            formData.append('IsMain', $('#uploadIsMain').is(':checked'));
 
-            formData.append('uploadFiles', fileToSend, file.name);
+        // Determina quale immagine è "principale": se l'utente ha spuntato un checkbox, usa quello; altrimenti la prima (indice 0)
+        const checkboxSelezionato = $('.isMain-radio:checked').val();
 
-            $.ajax({
-                url: '/GestProductFile/UploadProductImage',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                dataType: 'json',
+        let mainIndex;
 
-                success: function (response) {
-                    if (response.success) {
+        if (checkboxSelezionato !== undefined) {
+            // L'utente ha scelto esplicitamente quale immagine è principale
+            mainIndex = parseInt(checkboxSelezionato);
+        } else if (fileInput.files.length === 1) {
+            // Una sola immagine, nessun checkbox spuntato -> nessuna principale
+            mainIndex = null;
+        } else {
+            // Più immagini, nessun checkbox spuntato -> fallback sulla prima
+            mainIndex = 0;
+        }
 
+        function inviaFile(fileToSend, index, fileName) {
+            return new Promise(function (resolve, reject) {
+                const formData = new FormData();
+                formData.append('ProductId', id);
+                formData.append('Description', $('#uploadDescription').val() || '');
+                formData.append('Title', $('#uploadTitle').val());
+                formData.append('IsMain', index === mainIndex);
 
-                            var modalEl = document.getElementById('modalAggiungiFile');
-                            var modalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
-                            if (modalInstance) modalInstance.hide();
+                formData.append('uploadFiles', fileToSend, fileName);
 
-                            $('#uploadFiles').val('');
-                            ricaricaImmaginiProdotto(id);
-                    
-                       
-                    } else {
-                        $('#resultMessageUpload').html('<span style="color:red">' + response.message + '</span>');
+                $.ajax({
+                    url: '/GestProductFile/UploadProductImage',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+
+                    success: function (response) {
+                        if (response.success) {
+                            resolve();
+                        } else {
+                            reject(response.message);
+                        }
+                    },
+                    error: function (xhr) {
+                        reject(xhr.responseText);
                     }
-                },
-                error: function (xhr) {
-                    $('#resultMessageUpload').html('<span style="color:red">Errore: ' + xhr.responseText + '</span>');
-                }
+                });
             });
         }
 
+        const files = Array.from(fileInput.files);
+        let promiseChain = Promise.resolve();
 
-        const file = fileInput.files[0];
+        files.forEach(function (file, index) {
 
-        if (!cropState) {
-            if (file) {
-                // Opzione A (Consigliata per il TEST):
-                // Invia il file originale grezzo al server così da far scattare la validazione C#
-                inviaFile(file);
-                return;
-            } else {
-                alert("Seleziona prima un'immagine valida.");
-                return;
-            }
-        }
+            promiseChain = promiseChain.then(function () {
 
+                const state = cropStates[index];
 
+                // Se per qualche motivo non c'è uno stato di crop per questa immagine, invia il file grezzo
+                if (!state) {
+                    return inviaFile(file, index, file.name);
+                }
 
-        // Ritaglia alla risoluzione REALE del rettangolo scelto (niente resize, mantiene qualità)
-        const outputCanvas = document.createElement('canvas');
-        outputCanvas.width = cropState.w;
-        outputCanvas.height = cropState.h;
+                // Ritaglia alla risoluzione REALE del rettangolo scelto (niente resize, mantiene qualità)
+                return new Promise(function (resolve, reject) {
+                    const outputCanvas = document.createElement('canvas');
+                    outputCanvas.width = state.w;
+                    outputCanvas.height = state.h;
 
-        const ctx = outputCanvas.getContext('2d');
-        ctx.drawImage(cropState.img,
-            cropState.x,
-            cropState.y,
-            cropState.w,
-            cropState.h,
-            0, 0, cropState.w,
-            cropState.h);
+                    const ctx = outputCanvas.getContext('2d');
+                    ctx.drawImage(state.img,
+                        state.x,
+                        state.y,
+                        state.w,
+                        state.h,
+                        0, 0, state.w,
+                        state.h);
 
-        outputCanvas.toBlob(function (blob) {
-            inviaFile(blob); // sostituisce il file originale con quello già ritagliato
-        }, file.type === 'image/png' ? 'image/png' : 'image/jpeg', 0.92);
+                    outputCanvas.toBlob(function (blob) {
+                        inviaFile(blob, index, file.name).then(resolve).catch(reject);
+                    }, file.type === 'image/png' ? 'image/png' : 'image/jpeg', 0.92);
+                });
+            });
+        });
+
+        promiseChain
+            .then(function () {
+                var modalEl = document.getElementById('modalAggiungiFile');
+                var modalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
+                if (modalInstance) modalInstance.hide();
+
+                $('#uploadFiles').val('');
+                cropStates = [];
+                $('#multiCropContainer').empty();
+
+                ricaricaImmaginiProdotto(id);
+            })
+            .catch(function (errMsg) {
+                $('#resultMessageUpload').html('<span style="color:red">Errore: ' + errMsg + '</span>');
+            });
     });
 
-   
 
-      /*=========================================================================================================
-       UPLOAD MANUALI
-    =========================================================================================================*/
-  
+
+    /*=========================================================================================================
+     UPLOAD PDF/MANUALI
+  =========================================================================================================*/
+
     $(document).on('click', '#btnUploadDocument', function () {
 
-        const id = $(this).data('product-id');
+        const productId = $(this).data('product-id');
         const fileInput = document.getElementById('uploadDocumentFile'); // Input file specifico per PDF
 
         $('#resultMessageUploadDoc').empty();
@@ -345,7 +394,7 @@ $(document).ready(function () {
         }
 
         const formData = new FormData();
-        formData.append('ProductId', id);
+        formData.append('ProductId', productId);
         formData.append('Title', $('#uploadDocTitle').val() || '');
         formData.append('Description', $('#uploadDocDescription').val() || '');
         formData.append('IsMain', $('#uploadDocIsMain').is(':checked'));
@@ -367,8 +416,10 @@ $(document).ready(function () {
 
                     $('#formAggiungiDocumento')[0].reset();
 
-                    // 🌟 RICARICA SOLO LA PARTIAL DEI MANUALI
-                    ricaricaManualiProdotto(id);
+                    // RICARICA SOLO LA PARTIAL DEI MANUALI
+
+                    $('#fileConteiner').load('/GestProductFile/GetProductFilesPartial?ProductId=' + productId);
+
                 } else {
                     $('#resultMessageUploadDoc').html('<span class="text-danger">' + response.message + '</span>');
                 }
@@ -380,9 +431,7 @@ $(document).ready(function () {
     });
 
     // Funzione helper per ricaricare la partial view dei file
-    function ricaricaManualiProdotto(productId) {
-        $('.file-conteiner').load('/GestProductFile/GetProductFilesPartial?ProductId=' + productId);
-    }
+  
 
     /*========================================================================================================================
         GESTIONE DEL CAMBIO IMMAGINI QUANDO PASSO SOPRA CON IL MOUSE
@@ -390,7 +439,7 @@ $(document).ready(function () {
 
 
     $(document).on('mouseenter', '.product-img', function () {
-       
+
         const fullResUrl = $(this).data('full-src');
 
         $('#mainProductImage').attr('src', fullResUrl);
@@ -399,7 +448,7 @@ $(document).ready(function () {
 
     $(document).on('mouseleave', '.product-img', function () {
         const originalUrl = $('#mainProductImage').data('full-src') || '';
-        console.log(originalUrl);
+    
         $('#mainProductImage').attr('src', originalUrl);
     });
 
@@ -409,12 +458,12 @@ $(document).ready(function () {
 
     $(document).on('click', '.test-click', function () {
 
-       
+
 
         let $id = $(this).data('id');
         let $productId = $(this).data('product-id');
         const $url = $(this).data('url');
-      
+
         // questo serve per prendere l'immagine ad alta risoluzione 
         let $fullSrc = $(this).data('hires-url');
 
@@ -458,7 +507,7 @@ $(document).ready(function () {
 
     });
 
-   //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     // Evento click su una miniatura DENTRO la modale
     $(document).on('click', '.modal-thumb-item', function () {
@@ -472,7 +521,7 @@ $(document).ready(function () {
         let $productId = $(this).data('product-id');
         const $url = $(this).data('url');
         let $fullSrc = $(this).data('hires-url');
-        console.log($fullSrc);
+     
         $('#modalImage').attr('src', $fullSrc);
 
         $.ajax({
@@ -488,7 +537,7 @@ $(document).ready(function () {
         });
     });
 
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     $('.mybtn-close').on('click', function () {
 
@@ -512,7 +561,9 @@ $(document).ready(function () {
 
     });
 
-    //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    /* ===========================================================================================================================================================================
+          1. EVENTO CLICK CHE ELIMINA IL FILE
+      ===========================================================================================================================================================================*/
 
     $('#delFile-btn').on('click', function () {
 
@@ -525,7 +576,7 @@ $(document).ready(function () {
         const model = {
             id: $('#idFileDaEliminare').val()
         }
-      
+
         $.ajax({
 
             url: $deleteUrl,
@@ -559,7 +610,7 @@ $(document).ready(function () {
     });
 
 
-  
+
     /* ===========================================================================================================================================================================
        1. FUNZIONI JAVASCRIPT
    ===========================================================================================================================================================================*/
@@ -611,9 +662,9 @@ $(document).ready(function () {
   ===========================================================================================================================================================================*/
 
     $(document).on('click', '.btn-delete-img', function () {
-  
+
         const id = $(this).data('id');
-   
+
 
         $('#idImmagineDaEliminare').val(id);
 
@@ -626,13 +677,14 @@ $(document).ready(function () {
 
     $('#delImage-btn').on('click', function () {
 
- 
-        const $deleteUrl = $(this).data('delete-Image-url');
 
-       
+        const $deleteUrl = $(this).data('delete-image-url');
+        const $productId = $(this).data('product-id');
+
 
         const model = {
-            id: $('#idImmagineDaEliminare').val()
+            id: $('#idImmagineDaEliminare').val(),
+            productId: $productId
         }
 
         $.ajax({
@@ -649,17 +701,17 @@ $(document).ready(function () {
                     $('#modalEliminaImmagine').removeClass('active2');
 
                     // rimuovo dell'immagine nella lista
-                    $('[data-id="' + model.id + '"]').closest('li').fadeOut(300, function () {
-                        $(this).remove();
-                    });
-
+                    //$('[data-id="' + model.id + '"]').closest('li').fadeOut(300, function () {
+                    //    $(this).remove();
+                    //});
+                    $('#imagesList').load('/GestProductFile/GetProductImagesPartial?ProductId=' + model.productId);
                 } else {
                     $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
                 }
             },
 
         });
-       
+
 
     });
 
@@ -668,7 +720,7 @@ $(document).ready(function () {
 ===========================================================================================================================================================================*/
 
     $('.immagine-no-btn').on('click', function () {
-    
+
         $('#modalEliminaImmagine').removeClass('active2');
     });
 
@@ -811,6 +863,6 @@ $(document).ready(function () {
         });
     }
 
-   
+
 
 });

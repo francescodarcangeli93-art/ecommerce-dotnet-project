@@ -139,11 +139,24 @@ namespace DTO_Ecommerce
         
     }
 
+    public class sp_GetAllWareHouseList_Result
+    {
+        public int Id { get; set; }
+
+        public string Type { get; set; }
+        public string Name { get; set; }
+
+        public string City { get; set; }
+    }
+
     public class sp_GetListProduct_Result
     {
         public int Id { get; set; }
 
         public string ProductName { get; set; }
+        public bool IsDiscontinued { get; set; }
+
+        public bool VisibleinHP { get; set; }
     }
 
     public class sp_GetListProductCategory_Result
@@ -181,6 +194,15 @@ namespace DTO_Ecommerce
         public string Description { get; set; }
         public bool IsActive { get; set; }
        
+    }
+
+    public class sp_GetMovementReasonList_Result
+    {
+        public int Id { get; set; }
+        public string Code { get; set; }
+        public string Description { get; set; }
+        public string MovementType { get; set; }
+
     }
 
     public class FileValidation_Result

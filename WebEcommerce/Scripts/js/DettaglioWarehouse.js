@@ -96,6 +96,35 @@
     });
 
 
+    /*=============================================================================================================================================
+        MODAL: CLICK CONFERMA CARICO 
+    ==================================================================================================================================================*/
+
+    $('#btnConfermaCarico').on('click', function () {
+
+        const $url = $(this).data('carico-url');
+  
+
+
+        $.ajax({
+            url: '/Warehouse/MoveProducts',
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                // 1. Chiudi la modal
+                $('#modalCaricaProdotto').modal('hide');
+
+                // 2. Ricarica SOLO la tabella tramite Partial View
+                $('#contenitoreTabellaGiacenze').load('/Warehouse/GetTabellaGiacenze?warehouseId=' + magazzinoId);
+            },
+            error: function (xhr) {
+                alert(xhr.responseText); // Mostra l'errore del RAISERROR/WarehouseOperationException
+            }
+        });
+
+    });
+
+
 
     function safelyTrim(input) {
         // Add a "guard clause" to check if the input is a string.

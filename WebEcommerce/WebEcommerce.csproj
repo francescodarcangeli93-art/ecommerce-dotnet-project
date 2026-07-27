@@ -710,6 +710,7 @@
     <Content Include="Content\Image\Icons\flags\4x3\za.svg" />
     <Content Include="Content\Image\Icons\flags\4x3\zm.svg" />
     <Content Include="Content\Image\Icons\flags\4x3\zw.svg" />
+    <Content Include="Content\Image\immagine_cortesia.png" />
     <Content Include="Content\Image\logo-watermark.png" />
     <Content Include="Content\Image\LogoEcommerce.png" />
     <Content Include="Content\Image\Products\prodotto-1.png" />
@@ -736,6 +737,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\js\WarehouseMovements.js" />
     <Content Include="Scripts\js\ProductFiles.js" />
     <Content Include="Scripts\js\Product.js" />
     <Content Include="Scripts\js\GestionePriceListItem.js" />
@@ -795,6 +797,7 @@
     <Content Include="Views\GestProductFile\Details.cshtml" />
     <Content Include="Views\GestProductFile\_Images.cshtml" />
     <Content Include="Views\GestProductFile\_Files.cshtml" />
+    <Content Include="Views\GestWarehouses\_TabellaGiacenzePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -47,7 +47,10 @@
 
     <div class="tab-content" id="tabMagazzinoContent">
 
-        <!-- TAB 1: GIACENZE -->
+        <!--=========================================================================================
+            TAB GIACENZE
+      =============================================================================================-->
+
         <div class="tab-pane fade show active" id="tab-giacenze" role="tabpanel">
 
             <div class="d-flex justify-content-between mb-3 gap-2">
@@ -55,48 +58,16 @@
                 <input type="text" id="ricercaProdotto" class="form-control" style="max-width: 350px;" placeholder="Cerca prodotto per nome o codice" />
 
                 <button type="button" class="btn btn-animated btn-giallo" data-bs-toggle="modal" data-bs-target="#modalCaricaProdotto">
-                    <i class="bi bi-plus-lg"></i> Carica Nuovo Prodotto
+                    <i class="bi bi-plus-lg"></i> Aggiungi Prodotto (Carico Merce)
                 </button>
             </div>
 
-     
+            <!-- PARTIAL VIEW TABELLA GIACENZE -->
+            <div id="contenitoreTabellaGiacenze">
+                @Html.Action("GetTabellaGiacenze", "GestWarehouses", new { Warehouseid = Model.TheWarehouse.Id})
+            </div>
 
-            <table class="table tabella-magazzino" id="tabellaGiacenze">
-                <thead>
-                    <tr>
-                 
-                        <th>Prodotto</th>
-                        <th class="text-center">Ultimo Aggiornamento</th>
-                        <th class="text-center">Quantità</th>
-                        <th class="text-center">Azioni</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var magazzino in Model.TheWarehouseStock)
-                    {
-                        <tr>
-                            @*<td>P-0012</td>*@
-                
-                            <td>@magazzino.ProductName</td>
-                            <td class="text-center">@magazzino.LastUpdate</td>
-                            <td class="text-center">@magazzino.Quantity</td>
-                            <td class="text-center">
-                                <button type="button" class="btn btn-sm btn-outline-secondary" title="Storico prodotto">
-                                    <i class="bi bi-clock-history"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-danger"
-                                        data-bs-toggle="modal" data-bs-target="#modalScaricoProdotto"
-                                        data-product-id="@magazzino.ProductId"
-                                        data-product-name="@magazzino.ProductName"
-                                        data-quantita-attuale="@magazzino.Quantity"
-                                        title="Scarica/Rettifica">
-                                    <i class="bi bi-dash-circle"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+
         </div>
 
         <!-- TAB 2: CRONOLOGIA MOVIMENTI -->
@@ -162,14 +133,14 @@
         </div>
 
         <!-- TAB 3: IMPOSTAZIONI ANAGRAFICHE -->
-        <div class="tab-pane fade" id="tab-impostazioni" role="tabpanel" >
+        <div class="tab-pane fade" id="tab-impostazioni" role="tabpanel">
 
             <form id="formImpostazioni">
                 <div class="card p-3 mb-3">
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="inputNome" value="@Model.TheWarehouse.Name" disabled/>
+                            <input type="text" class="form-control" id="inputNome" value="@Model.TheWarehouse.Name" disabled />
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Tipo</label>
@@ -180,18 +151,18 @@
                         </div>
                         <div class="col-md-12">
                             <label class="form-label">Indirizzo</label>
-                            <input type="text" class="form-control" id="inputIndirizzo" value="@Model.TheWarehouse.Address" disabled/>
+                            <input type="text" class="form-control" id="inputIndirizzo" value="@Model.TheWarehouse.Address" disabled />
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Città</label>
-                            <input type="text" class="form-control" id="inputCitta" value="@Model.TheWarehouse.City" disabled/>
+                            <input type="text" class="form-control" id="inputCitta" value="@Model.TheWarehouse.City" disabled />
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">CAP</label>
-                            <input type="text" class="form-control" id="inputCap" value="@Model.TheWarehouse.PostalCode" disabled/>
+                            <input type="text" class="form-control" id="inputCap" value="@Model.TheWarehouse.PostalCode" disabled />
                         </div>
                         <div class="col-md-12 form-check mt-2">
-                            <input type="checkbox" class="form-check-input" id="inputIsActive" checked="@Model.TheWarehouse.IsActive" disabled/>
+                            <input type="checkbox" class="form-check-input" id="inputIsActive" checked="@Model.TheWarehouse.IsActive" disabled />
                             <label class="form-check-label" for="inputIsActive">Magazzino attivo</label>
                         </div>
                     </div>
@@ -200,7 +171,7 @@
                         <i class="bi bi-lock"></i> Il tipo non è modificabile se il magazzino contiene prodotti o movimenti registrati.
                     </div>*@
 
-                  
+
                 </div>
             </form>
 
@@ -218,7 +189,9 @@
     </div>
 </div>
 
-<!-- MODAL: Carica Nuovo Prodotto -->
+<!--=============================================================================================================================================
+    MODAL: Carica Nuovo Prodotto
+==================================================================================================================================================-->
 
 <div class="modal fade" id="modalCaricaProdotto" tabindex="-1">
     <div class="modal-dialog">
@@ -228,13 +201,19 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
+
                 <div class="mb-3">
                     <label class="form-label">Prodotto</label>
                     <select class="form-select" id="selectProdotto">
                         <option value="">-- Seleziona prodotto a catalogo --</option>
-                       <!-- Bisognerà fare un loop sulla tabella Product -->
+                        @foreach (var prodotto in Model.TheProductsList)
+                        {
+                            <option value="@(prodotto.Id)">@prodotto.ProductName</option>
+                        }
+
                     </select>
                 </div>
+
                 <div class="mb-3">
                     <label class="form-label">Quantità da caricare</label>
                     <input type="number" min="1" class="form-control" id="inputQuantitaCarico" />
@@ -242,13 +221,16 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annulla</button>
-                <button type="button" class="btn btn-giallo" id="btnConfermaCarico">Conferma Carico</button>
+                <button type="button" class="btn btn-giallo" data-carico-url="@Url.Action("CaricoProdotti","GestWarehousesController")" id="btnConfermaCarico">Conferma Carico</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- MODAL: Scarica/Rettifica Prodotto -->
+
+<!--=============================================================================================================================================
+    MODAL: Scarica/Rettifica Prodotto
+==================================================================================================================================================-->
 <div class="modal fade" id="modalScaricoProdotto" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -296,7 +278,7 @@
                     </div>
                     <select class="form-select" id="selectMagazzinoDest" disabled>
                         <option value="">Seleziona magazzino destinazione</option>
-                       <!-- Loop da fare sulla tabella dei magazzini che però hanno l'id diverso da quello corrente' -->
+                        <!-- Loop da fare sulla tabella dei magazzini che però hanno l'id diverso da quello corrente' -->
                         <option value="2">Magazzino2 (Stock)</option>
                         <option value="3">Magazzino Spedizioni (Shipment)</option>
                     </select>
@@ -325,7 +307,7 @@
 
 
 @section scripts {
-        <script src="@Url.Content("~/Scripts/js/DettaglioWarehouse.js")"></script>
-    }
+    <script src="@Url.Content("~/Scripts/js/DettaglioWarehouse.js")"></script>
+}
 
 

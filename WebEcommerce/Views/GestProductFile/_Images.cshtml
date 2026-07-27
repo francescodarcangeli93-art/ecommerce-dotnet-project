@@ -1,7 +1,7 @@
 ﻿@model WebEcommerce.Models.ProductCategoryViewModel
 
 
-
+<div class="image-conteiner">
     @if (Model != null && Model.MainImage != null)
     {
         <img id="mainProductImage" class="primary-image test-click"
@@ -15,12 +15,13 @@
     }
     else
     {
-        <img id="mainProductImage" class="primary-image" src="" alt="Immagine Prodotto" />
+        <img id="mainProductImage" class="primary-image" src="~/Content/Image/immagine_cortesia.png" width="500" alt="Immagine Prodotto" />
     }
-
+</div>
 
 
     <input type="hidden" id="idImmagineDaEliminare" value="" />
+  
 
     <ul  id="imagesList-2" class="list-images">
         @foreach (var image in Model.GetProductFileByIdList)

@@ -94,6 +94,7 @@ namespace WebEcommerce.Models
 
         public sp_GetWarehouseById_Result TheWarehouse { get; set; }
 
+        public List<sp_GetListProduct_Result> TheProductsList { get; set; }
        public List<sp_GetWarehouseMovementsById_Result> TheWarehouseMovementsList { get; set; }
 
        public List<sp_GetWarehouseStockProductById_Result> TheWarehouseStock {  get; set; }
@@ -104,7 +105,9 @@ namespace WebEcommerce.Models
 
         public List<sp_SearchWarehousesMovements_Result> TheWarehouseMovements { get; set; }
 
-       
+        public List<sp_GetMovementReasonList_Result> TheMovementReasonList { get; set; }
+
+        public List<sp_GetAllWareHouseList_Result> sp_GetAllWareHouseList {  get; set; }
     }
 
     public class PriceListViewModel

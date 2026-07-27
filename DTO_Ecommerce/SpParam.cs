@@ -590,9 +590,9 @@ namespace DTO_Ecommerce
     public class sp_WarehouseMoveProducts_Param
     {
         public short MovementReasonId { get; set; }
-        public int? ProductId { get; set; }
-        public int? QtyToTransfer { get; set; }
-        public int? WarehouseId { get; set; }
+        public int ProductId { get; set; }
+        public int QtyToTransfer { get; set; }
+        public int WarehouseId { get; set; }
         public int? DestinationWarehouseId { get; set; }
 
     }

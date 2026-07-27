@@ -10,5 +10,12 @@ namespace BLL_Ecommerce.Interfaces
     public interface IWarehousesMovementsService
     {
         List<sp_SearchWarehousesMovements_Result> sp_SearchWarehousesMovements(sp_SearchWarehousesMovements_Param spParam);
+
+        void sp_WarehouseMoveProducts(sp_WarehouseMoveProducts_Param param);
+
+        List<sp_GetMovementReasonList_Result> sp_GetMovementReasonList();
+
+        List<sp_GetAllWareHouseList_Result> sp_GetAllWareHouseList();
     }
+
 }

@@ -52,13 +52,114 @@
         </div>
     </div>
 
+    @*TASTO AGGIUNGI*@
+    <div class="d-flex justify-content-between align-items-end mb-3">
+        <h3 class="m-0">Lista Magazzini</h3>
 
+        <a id="btnAggiungi" class="btn fw-semibold px-4 btn-animated buttonAdd" data-bs-toggle="modal" data-bs-target="#modalNuovoMovimento">
+            <i class="bi bi-box-seam"></i> Nuovo movimento
+        </a>
 
-    <div id="tabellaContainer">
+    </div>
+    <div id="tabellaContainer"
+         data-partial-url="@Url.Action("SearchWarehousesMovementsPartial", "GestWarehousesMovements")">
         @Html.Partial("_WarehousesMovementsTable")
     </div>
+
 </main>
 
 
+<!-- MODALE AGGIUNGI MOVIMENTO-->
+<div class="modal fade" id="modalNuovoMovimento" tabindex="-1" aria-labelledby="modalNuovoMovimentoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
 
+            <form id="formNuovoMovimento">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalNuovoMovimentoLabel">Nuovo movimento di magazzino</h5>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <!-- Alert per errori restituiti dal backend (es. RAISERROR della SP) -->
+                    <div id="alertErroreMovimento" class="alert alert-danger d-none" role="alert"></div>
+
+                    <!-- CAUSALE -->
+                    <div class="mb-3">
+                        <label for="saveCausale" class="form-label">Causale <span class="text-danger">*</span></label>
+                        <select id="saveCausale" name="MovementReasonId" class="form-select" required>
+                            <option value="" selected>-- Seleziona una causale --</option>
+                            @foreach (var causale in Model.TheMovementReasonList)
+                            {
+                                <option value="@(causale.Id)">@causale.Code @causale.MovementType</option>
+                            }
+                        </select>
+                    </div>
+
+                    <!-- PRODOTTO -->
+                    <div class="mb-3">
+                        <label for="saveProdotto" class="form-label">Prodotto <span class="text-danger">*</span></label>
+                        <select id="saveProdotto" name="ProductId" class="form-select" required>
+                            <option value="" selected disabled>-- Seleziona un prodotto --</option>
+                            @foreach (var product in Model.TheProductsList)
+                            {
+                                <option value="@(product.Id)">@product.ProductName</option>
+                            }
+                        </select>
+                    </div>
+
+                    <!-- MAGAZZINO (partenza / unico) -->
+                    <div id="magazzinoDestinazione" class="mb-3">
+                        <label for="saveMagazzino" id="lblMagazzino" class="form-label">Magazzino <span class="text-danger">*</span></label>
+                        <select id="saveMagazzino" name="WarehouseId" class="form-select" required>
+                            <option value="" selected disabled>-- Seleziona un magazzino --</option>
+                            @foreach (var wharehouses in Model.sp_GetAllWareHouseList.Where(x => x.Type.ToUpper().Trim() == "STOCK"))
+                            {
+                                <option value="@(wharehouses.Id)">@wharehouses.Name @wharehouses.Type (@wharehouses.City)</option>
+                            }
+
+                        </select>
+                        <small id="hintGiacenza" class="form-text text-muted"></small>
+                    </div>
+
+                    <!-- MAGAZZINO DESTINAZIONE (solo per TRASF, nascosto di default) -->
+                    <div class="mb-3" id="rowMagazzinoDestinazione">
+                        <label for="saveMagazzinoDestinazione" class="form-label">Magazzino destinazione <span class="text-danger">*</span></label>
+                        <select id="saveMagazzinoDestinazione" name="DestinationWarehouseId" class="form-select">
+                            <option value="" selected disabled>-- Seleziona un magazzino --</option>
+                            @foreach (var wharehouses in Model.sp_GetAllWareHouseList.Where(x => x.Type.ToUpper().Trim() == "SHIPMENT"))
+                            {
+                                <option value="@(wharehouses.Id)">@wharehouses.Name @wharehouses.Type (@wharehouses.City)</option>
+                            }
+
+                        </select>
+                    </div>
+
+                    <!-- QUANTITA' -->
+                    <div class="mb-3">
+                        <label for="saveQuantita" class="form-label">Quantità <span class="text-danger">*</span></label>
+                        <input type="number" id="saveQuantita" name="QtyToTransfer" class="form-control" min="1" step="1" required />
+                    </div>
+
+                </div>
+                <div class="error-message-3">
+                    <div id="resultMessageSaveMovement"></div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="cmButton no-btn" data-bs-dismiss="modal">Annulla</button>
+                    <button type="button" class="cmButton si-edit-btn" data-save-url="@Url.Action("SaveMovement","GestWarehousesMovements")" id="SalvaMovimento">Conferma</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script src="@Url.Content("~/Scripts/js/WarehouseMovements.js")"></script>
+}
 

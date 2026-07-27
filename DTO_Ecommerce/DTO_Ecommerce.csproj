@@ -49,6 +49,7 @@
     <Compile Include="Extensions\DataReaderExt.cs" />
     <Compile Include="Extensions\DataTableExt.cs" />
     <Compile Include="Extensions\EnumExt.cs" />
+    <Compile Include="Extensions\WarehouseOperationException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpParam.cs" />
     <Compile Include="SpResult.cs" />

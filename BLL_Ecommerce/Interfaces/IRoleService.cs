@@ -9,10 +9,11 @@ namespace BLL_Ecommerce.Interfaces
 {
     public interface IRoleService
     {
-            List<sp_GetListUserRole_Result> UserRoleList();
+        List<sp_GetListUserRole_Result> UserRoleList();
 
-            List<sp_GetListProductCategory_Result> ListProductCategory();
+        List<sp_GetListProduct_Result> sp_GetListProduct();
+        List<sp_GetListProductCategory_Result> ListProductCategory();
 
-            List<sp_GetListSupplier_Result> GetListSupplier();
+        List<sp_GetListSupplier_Result> GetListSupplier();
     }
 }

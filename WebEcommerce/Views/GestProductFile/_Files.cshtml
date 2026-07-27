@@ -11,7 +11,7 @@
                 <th scope="col" class="text-center">Dimensione</th>
                 <th scope="col" class="text-center">Principale</th>
                 <th scope="col" class="text-center">STATO</th>
-                <th class="text-center px-4 col-shrink-15">COMANDI</th>
+                <th class="text-center px-4">COMANDI</th>
             </tr>
         </thead>
         <tbody id="corpoTabellaFile">
@@ -23,11 +23,14 @@
 
                         <!-- NOME FILE E TITOLO -->
                         <td class="text-start">
+
                             <i class="bi bi-file-earmark-pdf-fill text-danger me-2 fs-5"></i>
+
                             <strong>@(string.IsNullOrEmpty(file.Title) ? file.FileName : file.Title)</strong>
+
                             @if (!string.IsNullOrEmpty(file.Title) && file.Title != file.FileName)
                             {
-                                <br /><small class="text-muted ms-4">@file.FileName</small>
+                                <br /><small class="text-muted">@file.FileName</small>
                             }
                         </td>
 

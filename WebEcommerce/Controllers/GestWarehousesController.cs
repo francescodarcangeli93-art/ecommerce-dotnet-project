@@ -5,9 +5,10 @@ using DTO_Ecommerce;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web.ApplicationServices;
 using System.Web.Mvc;
-using WebEcommerce.Models;
 using  WebEcommerce.Filters;
+using WebEcommerce.Models;
 
 
 namespace WebEcommerce.Controllers
@@ -18,11 +19,13 @@ namespace WebEcommerce.Controllers
     [CheckAdmin]
     public class GestWarehousesController : Controller
     {
+        private readonly IRoleService _roleService;
         private readonly ILogService _logService;
         private readonly IWarehousesService _warehousesService;
     
         public GestWarehousesController()
         {
+            _roleService = new RoleServices();
             _warehousesService = new WarehouseService();
             _logService = new LogService();
         }
@@ -82,6 +85,31 @@ namespace WebEcommerce.Controllers
         }
 
         [HttpGet]
+        public ActionResult GetTabellaGiacenze(int warehouseId)
+        {
+
+            int idUser = 0;
+            try
+            {
+                idUser = (int)Session["UserId"];
+
+                WarehousesViewModel Model = new WarehousesViewModel
+                {
+                    TheWarehouseStock = _warehousesService.sp_GetWarehouseStockProductById(warehouseId)
+                };
+
+                return PartialView("_TabellaGiacenzePartial", Model);
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Content("<tr><td colspan='10' class='text-center text-danger'>Errore durante la ricerca</td></tr>");
+            }
+        }
+
+
+
+        [HttpGet]
         public ActionResult Details(int id)
         {
             int idUser = 0;
@@ -95,9 +123,12 @@ namespace WebEcommerce.Controllers
 
                 WarehousesViewModel Model = new WarehousesViewModel
                 {
+                    TheProductsList = _roleService.sp_GetListProduct(),
                     TheWarehouse = _warehousesService.GetWarehouseById(id),
                     TheWarehouseMovementsList = _warehousesService.sp_GetWarehouseMovementsById(id),
-                    TheWarehouseStock = _warehousesService.sp_GetWarehouseStockProductById(id),
+
+                    //TODO: verificare ce non ci siano problemi
+                    //TheWarehouseStock = _warehousesService.sp_GetWarehouseStockProductById(id)
                 };
                 return View(Model);
 
@@ -201,6 +232,8 @@ namespace WebEcommerce.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
+
+
 
     }
 }

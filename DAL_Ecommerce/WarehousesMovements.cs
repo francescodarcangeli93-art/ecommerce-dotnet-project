@@ -53,6 +53,111 @@ namespace DAL_Ecommerce
             return retVal;
         }
 
-        
+        public void sp_WarehouseMoveProducts(sp_WarehouseMoveProducts_Param param)
+        {
+            string spName = "dbo.sp_WarehouseMoveProducts";
+
+            using (SqlConnection conn = DbConnectionFactory.CreateConnection())
+            using (SqlCommand cmd = new SqlCommand(spName, conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                // Mappatura corretta con i parametri della Stored Procedure
+                cmd.Parameters.Add("@MovementReasonId", SqlDbType.SmallInt).Value = param.MovementReasonId;
+                cmd.Parameters.Add("@ProductId", SqlDbType.Int).Value = param.ProductId;
+                cmd.Parameters.Add("@QtyToTransfer", SqlDbType.Int).Value = param.QtyToTransfer;
+                cmd.Parameters.Add("@WarehouseId", SqlDbType.Int).Value = param.WarehouseId;
+
+                // Parametro opzionale (può essere NULL se si tratta di carico o scarico singolo)
+                cmd.Parameters.Add("@DestinationWarehouseId", SqlDbType.Int).Value = (object)param.DestinationWarehouseId ?? DBNull.Value;
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SqlException ex)
+                {
+
+                    throw new WarehouseOperationException($"Errore nella movimentazione di magazzino: {ex.Message}", ex);
+                }
+            }
+        }
+
+        public List<sp_GetMovementReasonList_Result> sp_GetMovementReasonList()
+        {
+            string spName = "dbo.sp_GetMovementReasonList";
+
+            List<sp_GetMovementReasonList_Result> retVal = new List<sp_GetMovementReasonList_Result>();
+            DataTable dtMovementReasonList = new DataTable();
+
+            try
+            {
+                using (SqlConnection conn = DbConnectionFactory.CreateConnection())
+                using (SqlCommand cmd = new SqlCommand(spName, conn))
+                {
+                 
+                    // Apertura connessione sincrona
+                    conn.Open();
+
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        dtMovementReasonList.Load(reader);
+                    }
+
+                    if (dtMovementReasonList.Rows.Count > 0)
+                    {
+                        retVal = dtMovementReasonList.DataTableToList<sp_GetMovementReasonList_Result>();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return retVal;
+
+        }
+
+        public List<sp_GetAllWareHouseList_Result> sp_GetAllWareHouseList()
+        {
+            string spName = "dbo.sp_GetAllWareHouseList";
+
+            List<sp_GetAllWareHouseList_Result> retVal = new List<sp_GetAllWareHouseList_Result>();
+            DataTable dtGetAllWareHouse = new DataTable();
+
+            try
+            {
+                using (SqlConnection conn = DbConnectionFactory.CreateConnection())
+                using (SqlCommand cmd = new SqlCommand(spName, conn))
+                {
+
+                    // Apertura connessione sincrona
+                    conn.Open();
+
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        dtGetAllWareHouse.Load(reader);
+                    }
+
+                    if (dtGetAllWareHouse.Rows.Count > 0)
+                    {
+                        retVal = dtGetAllWareHouse.DataTableToList<sp_GetAllWareHouseList_Result>();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return retVal;
+
+        }
+
+
     }
 }

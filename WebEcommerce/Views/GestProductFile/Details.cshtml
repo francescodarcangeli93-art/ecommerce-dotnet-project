@@ -8,10 +8,15 @@
 <main class="Main-product-conteiner">
 
     <div class="header">
+        
         <h1 class="fw-bold  details-page-title">
             Dettagli Prodotto
         </h1>
-   
+
+        <a href="javascript:history.back();" class="btn  fw-semibold  btn-details-back goBack-position">
+            ← Indietro
+        </a>
+
     </div>
 
     <div class="second-header">
@@ -25,17 +30,30 @@
         <span><strong> Fornitore:</strong>  @Model.TheProduct.CompanyName</span>
         <span><strong>Prezzo:</strong>  @Model.TheProduct.BasedUnitPrice €</span>
         <span> <strong>Package:</strong> @Model.TheProduct.Package</span>
-        <span><strong>Stato:</strong> @Model.TheProduct.IsDiscontinued</span>
+
+        <span>
+            <strong>Stato:</strong>
+            @if (!@Model.TheProduct.IsDiscontinued)
+            {
+                <span class="badge bg-success rounded-pill px-3">In Produzione</span>
+            }
+            else
+            {
+                <span class="badge bg-danger rounded-pill px-3">Fuori Produzione</span>
+            }
+        </span>
 
 
         <hr />
     </div>
 
-
+    <!--==============================================================================================================================================================
+     CONTENITORE IMMAGINI
+    ==================================================================================================================================================================-->
     <div class="section-conteiner">
         <!-- PARTIAL VIEW IMMAGGINI-->
         <div class="image-title">
-            <h4 class="m-0">Immagini</h4>
+            <h4>Immagini</h4>
         </div>
 
         <div class="btn-buttons">
@@ -43,6 +61,8 @@
                 <i class="bi bi-image-fill me-1"></i> Aggiungi Immagine
             </button>
         </div>
+
+        <div class="rect-yellow"></div>
 
         <div id="imagesList">
 
@@ -52,9 +72,11 @@
 
     </div>
 
-    <div class="vertical-line"></div>
 
 
+    <!--==============================================================================================================================================================
+     CONTENITORE FILE
+    ==================================================================================================================================================================-->
     <div class="file-conteiner">
 
         <div class="file-title">
@@ -73,24 +95,10 @@
         </div>
     </div>
 
-
-    <div class="footer">
-
-        <a href="javascript:history.back();" class="btn btn-animated fw-semibold px-4 btn-details-back">
-            ← Indietro
-        </a>
-
-    </div>
-
-
-
 </main>
 
-
-
-
-<!--===========================================================================================================================
-   1 MODALE AGGIUNGI IMMAGINE/FILE
+<!--========================================================================================================================
+   MODALE AGGIUNGI IMMAGINI/FILE
   ==========================================================================================================================-->
 
 <div class="modal" id="modalAggiungiFile" tabindex="-1" data-bs-backdrop="static" data-bs-focus="false">
@@ -106,7 +114,7 @@
 
                     <div class="mb-3">
                         <label for="uploadFile" class="">Seleziona File*</label>
-                        <input type="file" id="uploadFiles" accept="image/*" class="form-control" required
+                        <input type="file" id="uploadFiles" accept="image/*" multiple class="form-control" required
                                data-width=" @System.Configuration.ConfigurationManager.AppSettings["ImageCropWidth"]"
                                data-height="@System.Configuration.ConfigurationManager.AppSettings["ImageCropHeight"]" />
                     </div>
@@ -115,20 +123,18 @@
                          PREVIEW CROP
                       ========================================================================================================-->
 
-                    <div class="mb-3" id="cropContainer" style="display:none;">
-                        <label class="form-label">Anteprima ritaglio (trascina se vuoi modificarlo)</label>
-                        <canvas id="cropCanvas" style="border:1px solid #ccc; max-width:100%; cursor: move; display:block;"></canvas>
-                    </div>
+                    <div id="multiCropContainer" class="d-flex flex-wrap gap-3 mb-3"></div>
+
 
                     <div class="mb-3">
                         <label for="uploadTitle" class="">Titolo Immagine*</label>
                         <input type="text" id="uploadTitle" class="form-control" required />
                     </div>
 
-                    <div class="mb-3">
+                    @*<div class="mb-3">
                         <input type="checkbox" id="uploadIsMain" class="form-check-input" />
                         <label class="form-check-label" for="uploadIsMain">Immagine principale</label>
-                    </div>
+                    </div>*@
 
                     <div class="mb-3">
                         <label for="uploadDescription" class="form-label">Descrizione</label>
@@ -254,7 +260,7 @@
         </div>
         <div class="buttons">
             <button class="immagine-no-btn">No, Annulla</button>
-            <button id="delImage-btn" class="si-btn" data-delete-Image-url="@Url.Action("deleteImage", "GestProductFile")">Si, Cancella</button>
+            <button id="delImage-btn" class="si-btn" data-product-id="@Model.TheProduct.ProductId"  data-delete-image-url="@Url.Action("deleteImage", "GestProductFile")">Si, Cancella</button>
         </div>
     </div>
 </div>

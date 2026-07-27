@@ -39,5 +39,6 @@ namespace BLL_Ecommerce.Services
             return Warehouses.sp_GetWarehouseStockProductById(WarehouseId);
         }
 
+      
     }
 }

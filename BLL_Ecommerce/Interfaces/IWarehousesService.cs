@@ -15,5 +15,7 @@ namespace BLL_Ecommerce.Interfaces
         List<sp_GetWarehouseMovementsById_Result> sp_GetWarehouseMovementsById(int WarehouseId);
 
         List<sp_GetWarehouseStockProductById_Result> sp_GetWarehouseStockProductById(int WarehouseId);
+
+     
     }
 }

@@ -14,7 +14,19 @@ namespace BLL_Ecommerce.Services
             return WarehousesMovements.sp_SearchWarehousesMovements(spParam);
         }
 
+        public void sp_WarehouseMoveProducts(sp_WarehouseMoveProducts_Param param)
+        {
+            WarehousesMovements.sp_WarehouseMoveProducts(param);
+        }
 
+        public List<sp_GetMovementReasonList_Result> sp_GetMovementReasonList()
+        {
+            return WarehousesMovements.sp_GetMovementReasonList();
+        }
 
+        public List<sp_GetAllWareHouseList_Result> sp_GetAllWareHouseList()
+        {
+            return WarehousesMovements.sp_GetAllWareHouseList();
+        }
     }
 }
