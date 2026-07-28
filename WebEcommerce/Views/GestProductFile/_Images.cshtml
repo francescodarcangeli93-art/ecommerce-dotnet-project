@@ -27,7 +27,8 @@
         @foreach (var image in Model.GetProductFileByIdList)
         {
             <li data-id="@image.Id" data-product-id="@image.ProductId" draggable="true">
-                <img class="product-img test-click"  
+
+                <img class="product-img  test-click  @(image.IsMain  ? "imageActive" : "")"  
                      src="@Url.Action("GetProductFileContent", "GestProductFile", new { id = image.Id,   isThumb = "T"})"
                      data-full-src="@Url.Action("GetProductFileContent", "GestProductFile", new { id = image.Id,  isThumb = "M"})"
                      alt="@(image.Description)"

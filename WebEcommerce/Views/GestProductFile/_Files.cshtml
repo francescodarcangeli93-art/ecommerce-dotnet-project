@@ -1,11 +1,11 @@
 ﻿@model WebEcommerce.Models.ProductCategoryViewModel
 
-<div class="table bevel">
+<div class="table-responsive bevel">
 
     <input type="hidden" id="idFileDaEliminare" value="" />
 
     <table class="table table-striped table-hover table-bordered align-middle mb-0 tab-fix">
-        <thead class="table-dark table-bordered">
+        <thead class="table-dark table-bordered text-nowrap">
             <tr>
                 <th scope="col" class="text-center">Titolo / Nome File</th>
                 <th scope="col" class="text-center">Dimensione</th>
@@ -26,28 +26,45 @@
 
                             <i class="bi bi-file-earmark-pdf-fill text-danger me-2 fs-5"></i>
 
-                            <strong>@(string.IsNullOrEmpty(file.Title) ? file.FileName : file.Title)</strong>
+                            <strong class="text-truncate">@(string.IsNullOrEmpty(file.Title) ? file.FileName : file.Title)</strong>
 
                             @if (!string.IsNullOrEmpty(file.Title) && file.Title != file.FileName)
                             {
-                                <br /><small class="text-muted">@file.FileName</small>
+                                <br /><small class="d-block text-muted text-truncate" title="@(file.FileName)">@file.FileName</small>
                             }
                         </td>
 
                         <!-- DIMENSIONE KB -->
-                        <td class="text-center">
-                            @(file.FileSizeKb > 0 ? $"{file.FileSizeKb} KB" : "-")
+                        <td class="text-center text-nowrap">
+                            @if (file.FileSizeKb >= 1024 * 1024)
+                            {
+                                @($"{(file.FileSizeKb / (1024.0 * 1024.0)):0.#} GB")
+                            }
+                            else if (file.FileSizeKb >= 1024)
+                            {
+                                @($"{(file.FileSizeKb / 1024.0):0.#} MB")
+                            }
+                            else
+                            {
+                                @($"{file.FileSizeKb} KB")
+                            }
+
                         </td>
 
                         <!-- FILE PRINCIPALE -->
-                        <td class="text-center">
-                            <span class="@(file.IsMain ? "badge bg-success bg-opacity-10 text-success border border-success fw-bold" : "text-muted")">
-                                @(file.IsMain ? "SÌ" : "-")
-                            </span>
+                        <td class="text-center text-nowrap">
+                            @if (file.IsMain)
+                            {
+                                <i class="bi bi-star-fill text-warning fs-5" title="File Principale"></i>
+                            }
+                            else
+                            {
+                                <i class="bi bi-star text-muted opacity-25" title="Non principale"></i>
+                            }
                         </td>
 
                         <!-- GESTIONE ATTIVO / NON ATTIVO -->
-                        <td class="text-center">
+                        <td class="text-center text-nowrap">
                             <button type="button"
                                     class="btn btn-sm fw-bold text-uppercase d-inline-flex align-items-center justify-content-center border-2 attivo
                                     @(file.IsActive ? "btn-outline-success text-success bg-success bg-opacity-10" : "btn-outline-danger text-danger bg-danger bg-opacity-10")">
@@ -56,7 +73,7 @@
                         </td>
 
                         <!-- COMANDI -->
-                        <td class="px-4 spazio-comandi text-center">
+                        <td class="px-4 spazio-comandi text-center text-nowrap">
                             <!-- DOWNLOAD / APRI FILE -->
                             <a href="@Url.Action("DownloadProductDocument", "GestProductFile", new { id = file.Id })"
                                class="btn btn-sm btn-outline-info py-1 simpleBevel btn-scarica"

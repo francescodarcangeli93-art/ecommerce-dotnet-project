@@ -1173,21 +1173,25 @@ select {
        width: 50%;
 
     }
+.imageActive {
+    border: none !important;
+    outline: thick double #ffc107;
+
+}
 
 .goBack-position {
     position: absolute;
     right: 5px;
     top: 5px;
-    border: none;
-  
+    border: 2px solid;
+    font-size: 1.5rem;
     transition: all 0.3s ease;
-    
+    color: #d4a345;
 }
 
     .goBack-position:hover {
         transform: translateY(-2px);
-        color: #ffc107;
- 
+        color: #e1ad4a;
     }
 
 .second-header {
@@ -1285,27 +1289,38 @@ select {
     grid-template-columns: 500px 1fr;
     grid-template-rows: 50px 50px 550px;
 }
-    .file-conteiner .file-title {
-        grid-column:1/ 3;
-        grid-row: 1;
-        display:flex;
-        padding:15px 0;
-        justify-content:flex-start;
+
+    .file-conteiner  .btnPositioning {
+        position:fixed !important;
+        right:290px !important;
     }
 
-    .file-conteiner .btn-buttons {
-        padding: 5px;
-        grid-column: 1 / 3;
-        grid-row: 2;
+    .file-conteiner .file-title {
+        grid-column: 1/ 3;
+        grid-row: 1;
         display: flex;
-        justify-content: flex-end;
+        padding: 15px 0;
+        justify-content: flex-start;
     }
+
+#fileConteiner .table-responsive th {
+    width: 15%;
+}
+
+.file-conteiner .btn-buttons {
+    padding: 5px;
+    grid-column: 1 / 3;
+    grid-row: 2;
+    display: flex;
+    justify-content: flex-end;
+}
 
 #fileConteiner {
     grid-column:1 / 3;
     grid-row:3;
     position:relative;
     top: 30px;
+    left:25px;
     
 }
 
@@ -1442,6 +1457,9 @@ select {
 /* FONDAMENTALE: Impedisce alle immagini interne di intercettare il drag del <li> */
 
 /**/
+
+
+
 #imagesList li img {
   cursor:move;
 }
@@ -1504,12 +1522,43 @@ select {
     grid-row: 2;
 
     /*background-color:red;*/
-    border: 2px solid black;
+
     position:relative;
     display:flex;
     align-items:center;
     justify-content:center;
 }
+
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.0); 
+    color: black;
+    border: 1px solid #d3d3d3;
+    font-size: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%; /* Bottone circolare */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    z-index: 10;
+}
+
+.prev-btn {
+  
+    left:-130px;
+}
+.next-btn {
+    right: -130px;
+}
+.nav-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
 
     .Image-picture img {
         width: 100%;
@@ -1594,13 +1643,7 @@ select {
         background-color: rgba(0, 0, 0, 0.8);
     }
 
-.prev-btn {
-    left: 10px;
-}
 
-.next-btn {
-    right: 10px;
-}
 
 .Modal-smallImage-conteiner {
     display: flex;

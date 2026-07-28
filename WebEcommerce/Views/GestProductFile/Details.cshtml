@@ -84,7 +84,7 @@
         </div>
         <!-- BOTTONE PER APRIRE LA MODALE DOCUMENTI/PDF -->
         <div class="btn-buttons">
-            <button type="button" class="btn fw-semibold px-4 btn-animated buttonAdd" data-bs-toggle="modal" data-bs-target="#modalAggiungiDocumento">
+            <button type="button" class="btn fw-semibold px-4 btn-animated buttonAdd btnPositioning" data-bs-toggle="modal" data-bs-target="#modalAggiungiDocumento">
                 <i class="bi bi-file-earmark-plus me-1"></i> Aggiungi Documento
             </button>
         </div>
@@ -282,11 +282,20 @@
 
         <div class="Image-picture">
 
+            <button id="btnPrevImage" class="nav-btn prev-btn" (click)="prevImage()" aria-label="Immagine precedente">
+                &#10094; <!-- Oppure un'icona come <i class="bi bi-chevron-left"></i> -->
+            </button>
+
             <img id="modalImage" src="" alt="Immagine Ingrandita" />
+
+            <button id="btnNextImage" class="nav-btn next-btn" aria-label="Immagine successiva">
+                &#10095; <!-- Oppure un'icona come <i class="bi bi-chevron-right"></i> -->
+            </button>
 
         </div>
 
         <div class="image-detail">
+
 
             <div class="description-conteiner">
                 <p id="Detail-Description" class="description-text"></p>

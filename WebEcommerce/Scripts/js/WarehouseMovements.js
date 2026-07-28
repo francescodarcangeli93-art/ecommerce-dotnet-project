@@ -14,6 +14,48 @@
 
     });
 
+    /*=============================================================================================================================================
+        1 RICERCA 
+    ==============================================================================================================================================*/
+
+
+    function eseguiRicerca() {
+
+        var filtri = {
+            StartDate: $('#searchStartDate').val(),
+            EndDate: $('#searchEndDate').val(),
+            WarehouseId: $('#searchWarehouseId').val(),
+            Description: $('Description').val(),
+      
+        };
+
+
+        // sessione per salvare i filtri
+        sessionStorage.setItem('filtri', JSON.stringify(filtri));
+
+        $.ajax({
+            url: '@Url.Action("SearchWarehousesPartial", "GestWarehouses")',
+            type: 'GET',
+            data: filtri,
+            success: function (response) {
+                $tabellaContainer.html(response).show();
+
+                const nuovoUrl = window.location.pathname + '?Type=' + filtri.Type + '&Nome=' + filtri.Name + '&City=' + filtri.City + '&PostalCode=' + filtri.PostalCode + '&IsActive=' + filtri.IsActive;
+                history.pushState(null, '', nuovoUrl);
+
+            },
+            error: function (xhr, status, error) {
+                console.error("Errore ricerca:", error);
+                $tabellaContainer.html('<tr><td colspan="10" class="text-center text-danger">Errore di connessione durante la ricerca.</td></tr>');
+            }
+        });
+    }
+
+
+     /*=============================================================================================================================================
+        2 SALVAMOVIMENTO 
+    ==============================================================================================================================================*/
+
     $('#SalvaMovimento').on('click', function () {
 
         const $url = $(this).data('save-url');

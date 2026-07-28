@@ -34,7 +34,8 @@
         sessionStorage.setItem('filtriMagazzini', JSON.stringify(filtri));
 
         $.ajax({
-            url: '/GestWarehouses/SearchWarehousesPartial',
+           
+            url: searchWarehousesUrl,
             type: 'GET',
             data: filtri,
             success: function (response) {

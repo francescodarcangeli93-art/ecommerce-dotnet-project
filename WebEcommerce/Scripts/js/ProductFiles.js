@@ -18,8 +18,6 @@ $(document).ready(function () {
         });
     }
 
-
-
     // quando apre la modale di upload pulisce i filtri
     $('#btnAggiungiFile').on('click', function () {
 
@@ -256,7 +254,7 @@ $(document).ready(function () {
        UPLOAD IMMAGINI
     =========================================================================================================*/
 
-    $(document).on('click', '#btnUploadFile', function () {
+    $(document).on('click', '#btnUploadFile', async function () {
 
         const id = $(this).data('product-id');
         const fileInput = document.getElementById('uploadFiles');
@@ -266,106 +264,101 @@ $(document).ready(function () {
             return;
         }
 
-        // Determina quale immagine è "principale": se l'utente ha spuntato un checkbox, usa quello; altrimenti la prima (indice 0)
+        // Determina quale immagine è "principale"
         const checkboxSelezionato = $('.isMain-radio:checked').val();
-
         let mainIndex;
 
         if (checkboxSelezionato !== undefined) {
-            // L'utente ha scelto esplicitamente quale immagine è principale
             mainIndex = parseInt(checkboxSelezionato);
         } else if (fileInput.files.length === 1) {
-            // Una sola immagine, nessun checkbox spuntato -> nessuna principale
             mainIndex = null;
         } else {
-            // Più immagini, nessun checkbox spuntato -> fallback sulla prima
             mainIndex = 0;
         }
 
-        function inviaFile(fileToSend, index, fileName) {
-            return new Promise(function (resolve, reject) {
-                const formData = new FormData();
-                formData.append('ProductId', id);
-                formData.append('Description', $('#uploadDescription').val() || '');
-                formData.append('Title', $('#uploadTitle').val());
-                formData.append('IsMain', index === mainIndex);
-
-                formData.append('uploadFiles', fileToSend, fileName);
-
-                $.ajax({
-                    url: '/GestProductFile/UploadProductImage',
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    dataType: 'json',
-
-                    success: function (response) {
-                        if (response.success) {
-                            resolve();
-                        } else {
-                            reject(response.message);
-                        }
-                    },
-                    error: function (xhr) {
-                        reject(xhr.responseText);
-                    }
-                });
-            });
-        }
-
         const files = Array.from(fileInput.files);
-        let promiseChain = Promise.resolve();
 
-        files.forEach(function (file, index) {
+        try {
+            // Ritaglia TUTTE le immagini in parallelo (lavoro locale, nessun rischio)
+            const blobsRitagliati = await Promise.all(
+                files.map((file, index) => ritagliaImmagine(file, cropStates[index]))
+            );
 
-            promiseChain = promiseChain.then(function () {
+            // Invia le immagini una alla volta, in ordine (sicuro lato server)
+            for (let index = 0; index < files.length; index++) {
+                await inviaFile(blobsRitagliati[index], index, files[index].name, id, mainIndex);
+            }
 
-                const state = cropStates[index];
+            var modalEl = document.getElementById('modalAggiungiFile');
+            var modalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
+            if (modalInstance) modalInstance.hide();
 
-                // Se per qualche motivo non c'è uno stato di crop per questa immagine, invia il file grezzo
-                if (!state) {
-                    return inviaFile(file, index, file.name);
+            $('#uploadFiles').val('');
+            cropStates = [];
+            $('#multiCropContainer').empty();
+
+            ricaricaImmaginiProdotto(id);
+
+        } catch (errMsg) {
+            $('#resultMessageUpload').html('<span style="color:red">Errore: ' + errMsg + '</span>');
+        }
+    });
+
+    // Ritaglia l'immagine secondo lo stato di crop scelto dall'utente (o restituisce il file grezzo se non c'è crop)
+    function ritagliaImmagine(file, state) {
+        return new Promise(function (resolve) {
+            if (!state) {
+                resolve(file); // nessun crop disponibile, invia il file così com'è
+                return;
+            }
+
+            const outputCanvas = document.createElement('canvas');
+            outputCanvas.width = state.w;
+            outputCanvas.height = state.h;
+
+            const ctx = outputCanvas.getContext('2d');
+            ctx.drawImage(state.img,
+                            state.x,
+                            state.y,
+                            state.w,
+                            state.h, 0, 0,
+                            state.w,
+                            state.h);
+
+            outputCanvas.toBlob(function (blob) {
+                resolve(blob);
+            }, file.type === 'image/png' ? 'image/png' : 'image/jpeg', 0.92);
+        });
+    }
+
+    // Invia un singolo file al server
+    function inviaFile(fileToSend, index, fileName, productId, mainIndex) {
+        return new Promise(function (resolve, reject) {
+            const formData = new FormData();
+            formData.append('ProductId', productId);
+            formData.append('Description', $('#uploadDescription').val() || '');
+            formData.append('Title', $('#uploadTitle').val());
+            formData.append('IsMain', index === mainIndex);
+            formData.append('uploadFiles', fileToSend, fileName);
+
+            $.ajax({
+                url: '/GestProductFile/UploadProductImage',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+
+                success: function (response) {
+                    if (response.success) resolve();
+                    else reject(response.message);
+                },
+                error: function (xhr) {
+                    reject(xhr.responseText);
                 }
-
-                // Ritaglia alla risoluzione REALE del rettangolo scelto (niente resize, mantiene qualità)
-                return new Promise(function (resolve, reject) {
-                    const outputCanvas = document.createElement('canvas');
-                    outputCanvas.width = state.w;
-                    outputCanvas.height = state.h;
-
-                    const ctx = outputCanvas.getContext('2d');
-                    ctx.drawImage(state.img,
-                        state.x,
-                        state.y,
-                        state.w,
-                        state.h,
-                        0, 0, state.w,
-                        state.h);
-
-                    outputCanvas.toBlob(function (blob) {
-                        inviaFile(blob, index, file.name).then(resolve).catch(reject);
-                    }, file.type === 'image/png' ? 'image/png' : 'image/jpeg', 0.92);
-                });
             });
         });
-
-        promiseChain
-            .then(function () {
-                var modalEl = document.getElementById('modalAggiungiFile');
-                var modalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
-                if (modalInstance) modalInstance.hide();
-
-                $('#uploadFiles').val('');
-                cropStates = [];
-                $('#multiCropContainer').empty();
-
-                ricaricaImmaginiProdotto(id);
-            })
-            .catch(function (errMsg) {
-                $('#resultMessageUpload').html('<span style="color:red">Errore: ' + errMsg + '</span>');
-            });
-    });
+    }
 
 
 
@@ -628,6 +621,7 @@ $(document).ready(function () {
 
     //-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+
     // Funzione che crea la griglia di miniature dentro la modale
     function caricaMiniatureModale(productId, activeId, url) {
 
@@ -656,6 +650,90 @@ $(document).ready(function () {
             $container.append($thumb);
         });
     }
+
+    // scorrimento immagini
+   let currentImageIndex = 0;
+
+/* ===========================================================================================================================================================================
+     1. CAMBIO IMMAGINI CON LE FRECCETTE NEL DETTAGLIO IMMAGINI
+ ===========================================================================================================================================================================*/
+
+ function showImageAtIndex(index) {
+
+
+  let $thumbs = $('#ModalSmallImageConteiner img');
+  let totalThumbs = $thumbs.length;
+
+
+  if (totalThumbs === 0) return;
+
+  // Ciclo infinito
+  if (index < 0) {
+    currentImageIndex = totalThumbs - 1; // se l'indice è minore di zero -> le immagini sono 13 l'indice arriva 12
+  } else if (index >= totalThumbs) {
+    currentImageIndex = 0; //
+  } else {
+    currentImageIndex = index;
+  }
+
+  // Prendo l'immagine corrispondente dentro #ModalSmallImageConteiner
+  let $selectedThumb = $thumbs.eq(currentImageIndex);
+  let newSrc = $selectedThumb.data('hires-url'); //  mi serve il hiresurl
+
+  // Aggiorno l'immagine principale
+    $('#modalImage').attr('src', newSrc);
+
+  // Aggiorno il bordo blu sulla miniatura
+  $thumbs.removeClass('active');
+  $selectedThumb.addClass('active');
+}
+// --------------------------------------------------------------
+// Click sulla Freccia Sinistra
+$(document).on('click', '#btnPrevImage', function (e) {
+    e.preventDefault();
+
+    let activeIndex = $('#ModalSmallImageConteiner img.active').index();
+    let currentImageIndex = 0;
+
+    if (activeIndex >= 0) {
+        currentImageIndex = activeIndex;
+    } else {
+        currentImageIndex
+    }
+
+  showImageAtIndex(currentImageIndex - 1);
+});
+
+// Click sulla Freccia Destra
+    $(document).on('click', '#btnNextImage', function (e) {
+   
+        e.preventDefault();
+        let activeIndex = $('#ModalSmallImageConteiner img.active').index();
+        let currentImageIndex = 0;
+
+
+        if (activeIndex >= 0) {
+            currentImageIndex = activeIndex;
+        } else {
+            currentImageIndex
+        }
+  showImageAtIndex(currentImageIndex + 1);
+});
+
+// Click su una miniatura dentro il tuo #ModalSmallImageConteiner
+$(document).on('click', '#ModalSmallImageConteiner img', function () {
+  let index = $(this).index(); // Prende la posizione dell'immagine nella griglia
+  showImageAtIndex(index);
+});
+
+// Navigazione da tastiera con le frecce
+$(document).on('keyup', function (e) {
+  if ($('#ModalSmallImageConteiner').is(':visible')) {
+    if (e.key === 'ArrowLeft') showImageAtIndex(currentImageIndex - 1);
+    if (e.key === 'ArrowRight') showImageAtIndex(currentImageIndex + 1);
+  }
+});
+
 
     /* ===========================================================================================================================================================================
       1.CANCELLA IMMAGINE
@@ -778,56 +856,51 @@ $(document).ready(function () {
     $(document).ready(function () {
         let $draggedItem = null;
 
-        // 1. Inizio trascinamento del <li>
-        $('#imagesList-2').on('dragstart', 'li', function (e) {
-            $draggedItem = $(this);
-            $draggedItem.addClass('dragging');
+        // Delegazione globale per elementi correnti e futuri
+        $(document)
+            .off('dragstart dragend dragover drop', '#imagesList-2 li') // Pulisce eventuali vecchi listener
 
-            // Necessario per abilitare il drag-and-drop su Firefox e Safari
-            e.originalEvent.dataTransfer.setData('text/plain', '');
-            e.originalEvent.dataTransfer.effectAllowed = 'move';
-        });
+            .on('dragstart', '#imagesList-2 li', function (e) {
+                $draggedItem = $(this);
+                $draggedItem.addClass('dragging');
+                e.originalEvent.dataTransfer.setData('text/plain', '');
+                e.originalEvent.dataTransfer.effectAllowed = 'move';
+            })
 
-        // 2. Fine trascinamento
-        $('#imagesList-2').on('dragend', 'li', function () {
-            if ($draggedItem) {
-                $draggedItem.removeClass('dragging');
-                $draggedItem = null;
-            }
-        });
-
-        // 3. Permette il dragover (FONDAMENTALE per il drop)
-        $('#imagesList-2').on('dragover', 'li', function (e) {
-            e.preventDefault();
-            e.originalEvent.dataTransfer.dropEffect = 'move';
-        });
-
-        // 4. Rilascio (Drop)
-        $('#imagesList-2').on('drop', 'li', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            let $target = $(this);
-
-            if ($draggedItem && $draggedItem[0] !== $target[0]) {
-                let draggedIndex = $draggedItem.index();
-                let targetIndex = $target.index();
-
-                // Spostamento visivo 
-                if (draggedIndex < targetIndex) {
-                    $target.after($draggedItem);
-                } else {
-                    $target.before($draggedItem);
+            .on('dragend', '#imagesList-2 li', function () {
+                if ($draggedItem) {
+                    $draggedItem.removeClass('dragging');
+                    $draggedItem = null;
                 }
+            })
 
-                // Recuperiamo il ProductId dal <li>
-                let productId = $draggedItem.attr('data-product-id');
+            .on('dragover', '#imagesList-2 li', function (e) {
+                e.preventDefault();
+                e.originalEvent.dataTransfer.dropEffect = 'move';
+            })
 
-                if (productId) {
-                    salvaNuovoOrdine(productId);
+            .on('drop', '#imagesList-2 li', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                let $target = $(e.target).closest('li');
+
+                if ($draggedItem && $target.length && $draggedItem[0] !== $target[0]) {
+                    let draggedIndex = $draggedItem.index();
+                    let targetIndex = $target.index();
+
+                    if (draggedIndex < targetIndex) {
+                        $target.after($draggedItem);
+                    } else {
+                        $target.before($draggedItem);
+                    }
+
+                    let productId = $draggedItem.attr('data-product-id');
+                    if (productId) {
+                        salvaNuovoOrdine(productId);
+                    }
                 }
-            }
-        });
+            });
     });
 
     function salvaNuovoOrdine(productId) {
