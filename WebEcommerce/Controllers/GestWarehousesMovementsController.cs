@@ -4,6 +4,7 @@ using BLL_Ecommerce.Services;
 using DTO_Ecommerce;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.ApplicationServices;
 using System.Web.Mvc;
@@ -73,10 +74,20 @@ namespace WebEcommerce.Controllers
             {
                 idUser = (int)Session["UserId"];
 
+                List<sp_SearchWarehousesMovements_Result> result = _warehousesMovementsService.sp_SearchWarehousesMovements(param);
+              
+                int totCount = result.Any() ? result[0].TotalCount : 0;
+                
+                // se totCount il totale delle righe è 50 e il page size è 20-> 50 /10 ->  totalPage = 3 perchè il Ceiling arrotonda per eccesso
+                int totalPage = param.PageSize > 0 ? (int)Math.Ceiling(totCount / (double)param.PageSize) : 0;
+
+
                 WarehousesViewModel Model = new WarehousesViewModel
                 {
-                    TheWarehouseMovements = _warehousesMovementsService.sp_SearchWarehousesMovements(param)
-               
+                    TheWarehouseMovements = result,
+                    TotCount = totCount,
+                    TotalPage = totalPage,
+                    CurrentPage = param.PageNumber
                 };
 
                 return PartialView("_WarehousesMovementsTable", Model);
@@ -114,6 +125,30 @@ namespace WebEcommerce.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
+
+        [HttpGet]
+        public JsonResult Details (int MovementId)
+        {
+
+            int idUser = 0;
+            try
+            {
+                idUser = (int)Session["UserId"];
+
+                WarehousesViewModel Model = new WarehousesViewModel
+                {
+                    TheGetWarehouseMovementDetail = _warehousesMovementsService.sp_GetWarehousesMovementsById(MovementId),
+                };
+
+                return Json(new { success = true, data = Model }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
 
     }
 }

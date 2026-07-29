@@ -52,14 +52,19 @@
                         </td>
 
                         <!-- FILE PRINCIPALE -->
-                        <td class="text-center text-nowrap">
+                        <td  class="text-center text-nowrap">
                             @if (file.IsMain)
                             {
-                                <i class="bi bi-star-fill text-warning fs-5" title="File Principale"></i>
+                                <i class="bi bi-star-fill text-warning fs-5" title="File Principale"
+                                   data-id="@file.Id"></i>
                             }
                             else
                             {
-                                <i class="bi bi-star text-muted opacity-25" title="Non principale"></i>
+                                <i class="bi bi-star text-muted opacity-25 fileIsActive"
+                                   data-id="@file.Id"
+                                   data-product-id="@(file.ProductId)"
+                                   data-url="@Url.Action("SetMainProductFilePdf","GestProductFile")"
+                                   title="Non principale"></i>
                             }
                         </td>
 

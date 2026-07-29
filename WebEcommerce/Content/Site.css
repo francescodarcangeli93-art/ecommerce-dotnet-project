@@ -1184,7 +1184,7 @@ select {
     right: 5px;
     top: 5px;
     border: 2px solid;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     transition: all 0.3s ease;
     color: #d4a345;
 }
@@ -1291,7 +1291,7 @@ select {
 }
 
     .file-conteiner  .btnPositioning {
-        position:fixed !important;
+        position:absolute !important;
         right:290px !important;
     }
 

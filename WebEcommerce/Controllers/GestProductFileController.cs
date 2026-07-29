@@ -602,6 +602,10 @@ namespace WebEcommerce.Controllers
             
         }
 
+        /*======================================================================================================================
+          10  ACTION CHE SETTA L'IMMAGINE PRINCIPALE
+         ======================================================================================================================*/
+
         [HttpPost]
         public JsonResult SetMainProductFile(int id, int productId, string fileType = "Image")
         {
@@ -621,7 +625,7 @@ namespace WebEcommerce.Controllers
                     Id = id,
                     ProductId = productId,
                     FileType = fileType,
-                    IsMain = true         // 👈 La SP resetterà le altre a 0 e questa a 1
+                    IsMain = true         //  La SP resetterà le altre a 0 e questa a 1
                 };
 
                 _ProductsService.ManageProductFile(param);
@@ -638,6 +642,51 @@ namespace WebEcommerce.Controllers
                 });
             }
         }
+
+        /*======================================================================================================================
+         11  ACTION CHE SETTA L'IMMAGINE PRINCIPALE
+        ======================================================================================================================*/
+        [HttpPost]
+        public JsonResult SetMainProductFilePdf(int id, int productId, string fileType = "Image")
+        {
+            int idUser = Session["UserId"] != null ? Convert.ToInt32(Session["UserId"]) : 0;
+
+            try
+            {
+                if (id <= 0 || productId <= 0)
+                {
+                    return Json(new { success = false, message = "Dati deL File non validi." });
+                }
+
+                // Chiamata alla tua Stored Procedure con Operation = 'U' e IsMain = true
+                sp_ManageProductFile_Param param = new sp_ManageProductFile_Param
+                {
+                    Operation = "U",      // Update
+                    Id = id,
+                    ProductId = productId,
+                    FileType = fileType,
+                    IsMain = true         //  La SP resetterà le altre a 0 e questa a 1
+                };
+
+                _ProductsService.ManageProductFile(param);
+
+                return Json(new { success = true, message = "Immagine principale aggiornata con successo!" });
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, "SetMainProductFile: " + ex.Message);
+                return Json(new
+                {
+                    success = false,
+                    message = "Errore durante l'impostazione dell'immagine principale."
+                });
+            }
+        }
+
+
+        /*======================================================================================================================
+          12  ACTION CHE MODIFICA L'ORDINE
+         ======================================================================================================================*/
 
         [HttpPost]
     

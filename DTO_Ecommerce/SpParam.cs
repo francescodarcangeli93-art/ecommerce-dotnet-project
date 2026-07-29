@@ -213,6 +213,11 @@ namespace DTO_Ecommerce
         public int WarehouseId { get; set; }
     }
 
+    public class sp_GetWarehousesMovementsById_Param
+    {
+        public int @WarehouseMovementId { get; set; }
+    }
+
     public class sp_GetWarehouseStockProductById_Param
     {
         public int? Id { get; set; }
@@ -584,6 +589,12 @@ namespace DTO_Ecommerce
 
         public string CompanyName { get; set; }
 
+        public string Description { get; set; }
+
+        // parametri per la paginazione
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 10;
+
     }
 
 
@@ -594,6 +605,7 @@ namespace DTO_Ecommerce
         public int QtyToTransfer { get; set; }
         public int WarehouseId { get; set; }
         public int? DestinationWarehouseId { get; set; }
+        public int? @OriginalMovementId { get; set; }
 
     }
 

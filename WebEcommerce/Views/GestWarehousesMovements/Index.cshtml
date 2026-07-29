@@ -34,14 +34,18 @@
                 <div class="col-md-3">
                     <select name="WarehouseId" id="searchWarehouseId" class="form-select input-animated">
                         <option value="">--Selezionare il magazzino--</option>
-                        <option value="1">Nome Magazzino</option>
-                        <option value="2">Nome Magazzino</option>
+                        @foreach (var warehouse in Model.sp_GetAllWareHouseList)
+                        {
+                            <option value="@(warehouse.Id)">@warehouse.Name</option>
+                        }
                     </select>
                 </div>
 
                 <div class="col-md-3">
                     <input type="text" id="searchDescription" name="Description" placeholder="Cerca per Descrizione" class="form-control input-animated" />
                 </div>
+
+
 
                 <div class="col-md-3 d-flex align-items-center gap-2 justify-content-end">
                     <button type="button" id="btnPulisci" class="btn fw-semibold px-4 btn-animated bt-pulisci"><i class="bi-eraser"></i>  Pulisci</button>
@@ -61,15 +65,23 @@
         </a>
 
     </div>
+
+
     <div id="tabellaContainer"
          data-partial-url="@Url.Action("SearchWarehousesMovementsPartial", "GestWarehousesMovements")">
         @Html.Partial("_WarehousesMovementsTable")
     </div>
 
+
+
 </main>
 
 
-<!-- MODALE AGGIUNGI MOVIMENTO-->
+<!--=====================================================================================================================================================
+    MODALE AGGIUNGI MOVIMENTO
+==========================================================================================================================================================-->
+
+
 <div class="modal fade" id="modalNuovoMovimento" tabindex="-1" aria-labelledby="modalNuovoMovimentoLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -112,13 +124,24 @@
 
                     <!-- MAGAZZINO (partenza / unico) -->
                     <div id="magazzinoDestinazione" class="mb-3">
-                        <label for="saveMagazzino" id="lblMagazzino" class="form-label">Magazzino <span class="text-danger">*</span></label>
+                        <label for="saveMagazzino" id="lblMagazzino" class="form-label">Magazzino di partenza <span class="text-danger">*</span></label>
                         <select id="saveMagazzino" name="WarehouseId" class="form-select" required>
                             <option value="" selected disabled>-- Seleziona un magazzino --</option>
-                            @foreach (var wharehouses in Model.sp_GetAllWareHouseList.Where(x => x.Type.ToUpper().Trim() == "STOCK"))
-                            {
-                                <option value="@(wharehouses.Id)">@wharehouses.Name @wharehouses.Type (@wharehouses.City)</option>
-                            }
+                            @* Sezione Magazzini Spedizioni *@
+                            <optgroup label="🚚 Magazzini Spedizioni">
+                                @foreach (var wh in Model.sp_GetAllWareHouseList.Where(w => w.Type == "SHIPMENT"))
+                                {
+                                    <option value="@wh.Id">@wh.Name (@wh.City)</option>
+                                }
+                            </optgroup>
+
+                            @* Sezione Altri Magazzini / Stock *@
+                            <optgroup label="📦 Magazzini Stock / Centrali">
+                                @foreach (var wh in Model.sp_GetAllWareHouseList.Where(w => w.Type != "SHIPMENT"))
+                                {
+                                    <option value="@wh.Id">@wh.Name (@wh.City)</option>
+                                }
+                            </optgroup>
 
                         </select>
                         <small id="hintGiacenza" class="form-text text-muted"></small>
@@ -129,10 +152,20 @@
                         <label for="saveMagazzinoDestinazione" class="form-label">Magazzino destinazione <span class="text-danger">*</span></label>
                         <select id="saveMagazzinoDestinazione" name="DestinationWarehouseId" class="form-select">
                             <option value="" selected disabled>-- Seleziona un magazzino --</option>
-                            @foreach (var wharehouses in Model.sp_GetAllWareHouseList.Where(x => x.Type.ToUpper().Trim() == "SHIPMENT"))
-                            {
-                                <option value="@(wharehouses.Id)">@wharehouses.Name @wharehouses.Type (@wharehouses.City)</option>
-                            }
+                            <optgroup label="🚚 Magazzini Spedizioni">
+                                @foreach (var wh in Model.sp_GetAllWareHouseList.Where(w => w.Type == "SHIPMENT"))
+                                {
+                                    <option value="@wh.Id">@wh.Name (@wh.City)</option>
+                                }
+                            </optgroup>
+
+                            @* Sezione Altri Magazzini / Stock *@
+                            <optgroup label="📦 Magazzini Stock / Centrali">
+                                @foreach (var wh in Model.sp_GetAllWareHouseList.Where(w => w.Type != "SHIPMENT"))
+                                {
+                                    <option value="@wh.Id">@wh.Name (@wh.City)</option>
+                                }
+                            </optgroup>
 
                         </select>
                     </div>
@@ -159,7 +192,120 @@
 </div>
 
 
+<!--=====================================================================================================================================================
+    MODALE DETTAGLIO MOVIMENTO
+==========================================================================================================================================================-->
+
+<div class="modal fade" id="modalDettaglioMovimento" tabindex="-1" aria-labelledby="modalDettaglioLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg rounded-3">
+
+            <!-- HEADER -->
+            <div class="modal-header bg-light border-0 pt-3 pb-2 px-4">
+                <div>
+                    <span class="badge bg-secondary fw-normal mb-1">ID Movimento #<span id="det-movement-id"></span></span>
+                    <h5 class="modal-title fw-bold text-dark" id="modalDettaglioLabel">Dettaglio Movimento Magazzino</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-body p-4">
+
+                <!-- Banner sintetico Quantità e Tipo -->
+                <div class="p-3 mb-4 rounded-3 d-flex align-items-center justify-content-between bg-success-subtle text-success border border-success-subtle" id="banner-tipo">
+                    <div>
+                        <div class="small text-uppercase fw-semibold">Tipo Operazione</div>
+                        <div class="fs-5 fw-bold" id="det-detail"></div>
+                    </div>
+                    <div class="text-end">
+                        <div class="small text-uppercase fw-semibold">Quantità Movimentata</div>
+                        <div class="fs-2 fw-bolder" id="det-quantity"></div>
+                    </div>
+                </div>
+
+                <!-- Griglia Dati (2 Colonne) -->
+                <div class="row g-3">
+
+                    <!-- Data e Ora -->
+                    <div class="col-md-6">
+                        <div class="p-3 border rounded bg-light-subtle">
+                            <div class="text-muted small fw-bold text-uppercase mb-1">Data e Ora</div>
+                            <div class="fw-semibold text-dark fs-6" id="det-date"></div>
+                        </div>
+                    </div>
+
+                    <!-- Magazzino -->
+                    <div class="col-md-6">
+                        <div class="p-3 border rounded bg-light-subtle">
+                            <div class="text-muted small fw-bold text-uppercase mb-1">Magazzino</div>
+                            <div class="fw-semibold text-dark fs-6">
+                                <span id="det-warehouse-name"></span>
+                                <span class="text-muted small">(ID: <span id="det-warehouse-id"></span>)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Prodotto -->
+                    <div class="col-md-6">
+                        <div class="p-3 border rounded bg-light-subtle">
+                            <div class="text-muted small fw-bold text-uppercase mb-1">Prodotto</div>
+                            <div class="fw-semibold text-dark fs-6">
+                                <span id="det-product-name"></span>
+                                <span class="text-muted small">(ID: <span id="det-product-id"></span>)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fornitore / Azienda -->
+                    <div class="col-md-6">
+                        <div class="p-3 border rounded bg-light-subtle">
+                            <div class="text-muted small fw-bold text-uppercase mb-1">Fornitore / Azienda</div>
+                            <div class="fw-semibold text-dark fs-6" id="det-company-name"></div>
+                        </div>
+                    </div>
+
+                    <!-- Causale -->
+                    <div class="col-md-6">
+                        <div class="p-3 border rounded bg-light-subtle">
+                            <div class="text-muted small fw-bold text-uppercase mb-1">Causale Movimento</div>
+                            <div class="fw-semibold text-dark fs-6">
+                                <span id="det-description"></span>
+                                <span class="text-muted small d-block">ID Causale: <span id="det-reason-id"></span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dettaglio Operazione -->
+                    <div class="col-md-6">
+                        <div class="p-3 border rounded bg-light-subtle">
+                            <div class="text-muted small fw-bold text-uppercase mb-1">Dettaglio Operazione</div>
+                            <div class="fw-semibold text-dark fs-6" id="det-detail-text"></div>
+                        </div>
+                    </div>
+
+                    <!-- Note -->
+                    <div class="col-12">
+                        <div class="p-3 border rounded bg-light-subtle">
+                            <div class="text-muted small fw-bold text-uppercase mb-1">Note</div>
+                            <div class="text-dark" id="det-notes"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-footer bg-light border-0 px-4 py-3">
+                <button type="button" class="btn btn-dark px-4" data-bs-dismiss="modal">Chiudi</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 @section scripts {
+    <script>const searchMovements = '@Url.Action("SearchWarehousesMovementsPartial", "GestWarehousesMovements")'</script>
     <script src="@Url.Content("~/Scripts/js/WarehouseMovements.js")"></script>
 }
 

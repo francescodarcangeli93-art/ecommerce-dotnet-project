@@ -16,6 +16,8 @@ namespace BLL_Ecommerce.Interfaces
         List<sp_GetMovementReasonList_Result> sp_GetMovementReasonList();
 
         List<sp_GetAllWareHouseList_Result> sp_GetAllWareHouseList();
+
+        sp_GetWarehousesMovementsById_Result sp_GetWarehousesMovementsById(int warehouseMovementId);
     }
 
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace DAL_Ecommerce
 {
@@ -29,6 +30,11 @@ namespace DAL_Ecommerce
                     cmd.Parameters.Add(new SqlParameter("@MovementType", (object)spParam.MovementType ?? DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@MovementReasonId", (object)spParam.MovementReasonId ?? DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@CompanyName", (object)spParam.CompanyName ?? DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@Description", (object)spParam.Description ?? DBNull.Value));
+
+                    cmd.Parameters.Add(new SqlParameter("@PageNumber", (object)spParam.PageNumber ?? DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@PageSize", (object)spParam.PageSize ?? DBNull.Value));
+                
 
                     // Apertura connessione sincrona
                     conn.Open();
@@ -47,7 +53,7 @@ namespace DAL_Ecommerce
             }
             catch (Exception ex)
             {
-                throw ex; 
+                throw ; 
             }
 
             return retVal;
@@ -158,6 +164,49 @@ namespace DAL_Ecommerce
 
         }
 
+        public sp_GetWarehousesMovementsById_Result sp_GetWarehousesMovementsById(int warehouseMovementId)
+        {
+            string spName = "dbo.sp_GetWarehousesMovementsById";
+
+            // Inizializziamo a null
+            sp_GetWarehousesMovementsById_Result retVal = null;
+            DataTable dt = new DataTable();
+
+            try
+            {
+                using (SqlConnection conn = DbConnectionFactory.CreateConnection())
+                using (SqlCommand cmd = new SqlCommand(spName, conn))
+                {
+                
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+             
+                    cmd.Parameters.AddWithValue("@WarehouseMovementId", warehouseMovementId);
+
+                    // Apertura connessione
+                    conn.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        dt.Load(reader);
+                    }
+
+                   
+                    if (dt.Rows.Count > 0)
+                    {
+                        
+                        retVal = dt.DataTableToList<sp_GetWarehousesMovementsById_Result>().FirstOrDefault();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+              
+                throw ex;
+            }
+
+            return retVal;
+        }
 
     }
 }

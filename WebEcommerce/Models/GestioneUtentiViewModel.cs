@@ -105,9 +105,18 @@ namespace WebEcommerce.Models
 
         public List<sp_SearchWarehousesMovements_Result> TheWarehouseMovements { get; set; }
 
+        public int TotCount { get; set; }
+
+        public int TotalPage { get; set; }
+
+        public int CurrentPage { get; set; }
+
+
         public List<sp_GetMovementReasonList_Result> TheMovementReasonList { get; set; }
 
         public List<sp_GetAllWareHouseList_Result> sp_GetAllWareHouseList {  get; set; }
+
+        public sp_GetWarehousesMovementsById_Result TheGetWarehouseMovementDetail {  get; set; }
     }
 
     public class PriceListViewModel

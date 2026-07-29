@@ -28,5 +28,11 @@ namespace BLL_Ecommerce.Services
         {
             return WarehousesMovements.sp_GetAllWareHouseList();
         }
+
+        public sp_GetWarehousesMovementsById_Result sp_GetWarehousesMovementsById(int warehouseMovementId)
+        {
+            return WarehousesMovements.sp_GetWarehousesMovementsById(warehouseMovementId);
+        }
+
     }
 }

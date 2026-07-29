@@ -538,6 +538,60 @@ namespace DTO_Ecommerce
         }
     }
 
+/*=====================================================================================================================================================
+    RESULT PER IL DETTAGLLIO DI UN SINGOLO MOVIMENTO
+==========================================================================================================================================================*/
+
+    public class sp_GetWarehousesMovementsById_Result
+    {
+        public int MovementId { get; set; }
+        public DateTime Date { get; set; }
+        public int WarehouseId { get; set; }
+
+        public string WarehouseName { get; set; }
+        public int ProductId { get; set; }
+        public string ProductName { get; set; }
+        public string CompanyName { get; set; }
+        public int? Quantity { get; set; }
+        public string MovementType { get; set; }
+        public int MovementReasonId { get; set; }
+        public string Description { get; set; }
+        public string Detail { get; set; }
+        public string Notes { get; set; }
+
+        public int TotalCount { get; set; } // parametro di output che ritorna il totale delle righe 
+
+        public string DateString => Date.ToString("yyyy-MM-dd");
+        public string DateFormatted => Date.ToString("dd/MM/yyyy - HH:mm:ss");
+
+        public string QuantityEdit => this.MovementType + this.Quantity;
+
+        public string quntityClass => this.MovementType == "+" ? "icon-green" : "icon-red";
+
+        public string ColorClass
+        {
+            get
+            {
+                // Usiamo ToUpper() per evitare bug se sul DB è scritto "carico" minuscolo
+                switch (this.Detail.ToUpper().Trim())
+                {
+                    case "CARICO":
+                        return "lText-green";
+
+                    case "RETTIFICA+":
+                        return "lText-green";
+                    case "FURTO":
+                        return "lText-yellow";
+                    case "INCENDIO":
+                        return "lText-red";
+                    default:
+                        return "lText-neutral"; // Colore neutro di sicurezza
+                }
+            }
+        }
+
+    }
+
     public class sp_GetWarehouseStockProductById_Result
     {
         public int Id { get; set; }
@@ -762,6 +816,8 @@ namespace DTO_Ecommerce
 
     }
 
+
+
     public class sp_SearchWarehousesMovements_Result
     {
         public int MovementId { get; set; }
@@ -778,6 +834,8 @@ namespace DTO_Ecommerce
         public string Description { get; set; }
         public string Detail { get; set; }
         public string Notes { get; set; }
+
+        public int TotalCount { get; set; } // parametro di output che ritorna il totale delle righe 
 
         public string DateString => Date.ToString("yyyy-MM-dd");
 
@@ -809,7 +867,8 @@ namespace DTO_Ecommerce
     
 
 
-}
+    }
+
 
     public class sp_LoginUser_Result
     {
