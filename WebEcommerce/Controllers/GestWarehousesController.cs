@@ -22,12 +22,14 @@ namespace WebEcommerce.Controllers
         private readonly IRoleService _roleService;
         private readonly ILogService _logService;
         private readonly IWarehousesService _warehousesService;
-    
+        private readonly IWarehousesMovementsService _warehousesMovementsService;
+
         public GestWarehousesController()
         {
             _roleService = new RoleServices();
             _warehousesService = new WarehouseService();
             _logService = new LogService();
+            _warehousesMovementsService = new WarehousesMovementsService();
         }
 
 
@@ -126,7 +128,7 @@ namespace WebEcommerce.Controllers
                     TheProductsList = _roleService.sp_GetListProduct(),
                     TheWarehouse = _warehousesService.GetWarehouseById(id),
                     TheWarehouseMovementsList = _warehousesService.sp_GetWarehouseMovementsById(id),
-
+                    TheMovementReasonList = _warehousesMovementsService.sp_GetMovementReasonList(),
                     //TODO: verificare ce non ci siano problemi
                     //TheWarehouseStock = _warehousesService.sp_GetWarehouseStockProductById(id)
                 };
@@ -233,7 +235,37 @@ namespace WebEcommerce.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult CaricoProdotti(sp_WarehouseMoveProducts_Param param)
+        {
+         
+            int idUser = 0;
 
+
+            if (Session["UserId"] == null)
+            {
+                return Json(new { success = false, sessionExpired = true });
+            }
+
+            try
+            {
+                idUser = (int)Session["UserId"];
+        
+
+
+                _warehousesMovementsService.sp_WarehouseMoveProducts(param);
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, message = ex.Message });
+            }
+
+        }
+
+        
 
     }
 }

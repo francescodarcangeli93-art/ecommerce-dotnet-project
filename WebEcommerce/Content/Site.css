@@ -942,6 +942,39 @@ select {
         font-weight: 500;
     }
 
+.message-contener {
+
+    min-height: 70px;
+    display:flex;
+    align-items:center;
+}
+
+.message-contener .message {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* ==========================================================================
+    VERDE COLORI
+   ========================================================================== */
+
+
+.green-first {
+    color: #198754;
+}
+
+.green-second {
+    color: #3baea0;
+}
+
+.green-third {
+    color: #118a7e;
+}
+
+.green-fourth {
+    color: #1f6f78;
+}
+
 /* ==========================================================================
     GRAFICA BOTTONI
    ========================================================================== */
@@ -1211,6 +1244,10 @@ select {
     padding-left:1.5em;
 }
 
+.details-conteiner  span{
+    font-size: 1.2rem;
+}
+
     .details-conteiner span + span {
         margin-left: 30px;
     }
@@ -1278,8 +1315,6 @@ select {
 .thumb {
     background-color: chartreuse;
 }
-
-
 
 .file-conteiner {
     padding: 0 0.5em;

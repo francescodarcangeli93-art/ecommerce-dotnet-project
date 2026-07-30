@@ -48,8 +48,8 @@
     <div class="tab-content" id="tabMagazzinoContent">
 
         <!--=========================================================================================
-            TAB GIACENZE
-      =============================================================================================-->
+              TAB GIACENZE
+        =============================================================================================-->
 
         <div class="tab-pane fade show active" id="tab-giacenze" role="tabpanel">
 
@@ -57,14 +57,17 @@
                 <!-- Ricerca Prodotto -->
                 <input type="text" id="ricercaProdotto" class="form-control" style="max-width: 350px;" placeholder="Cerca prodotto per nome o codice" />
 
-                <button type="button" class="btn btn-animated btn-giallo" data-bs-toggle="modal" data-bs-target="#modalCaricaProdotto">
+
+                <!--  BOTTONE AGGIUNGI PRODOTTO -->
+                <button id="btn-addCarico" type="button" class="btn btn-animated btn-giallo"
+                        data-bs-toggle="modal" data-bs-target="#modalCaricaProdotto">
                     <i class="bi bi-plus-lg"></i> Aggiungi Prodotto (Carico Merce)
                 </button>
             </div>
 
             <!-- PARTIAL VIEW TABELLA GIACENZE -->
             <div id="contenitoreTabellaGiacenze">
-                @Html.Action("GetTabellaGiacenze", "GestWarehouses", new { Warehouseid = Model.TheWarehouse.Id})
+                @Html.Action("GetTabellaGiacenze", "GestWarehouses", new { Warehouseid = Model.TheWarehouse.Id })
             </div>
 
 
@@ -168,8 +171,8 @@
                     </div>
 
                     @*<div class="text-muted mt-2" style="font-size: 12px;">
-                        <i class="bi bi-lock"></i> Il tipo non è modificabile se il magazzino contiene prodotti o movimenti registrati.
-                    </div>*@
+                            <i class="bi bi-lock"></i> Il tipo non è modificabile se il magazzino contiene prodotti o movimenti registrati.
+                        </div>*@
 
 
                 </div>
@@ -190,38 +193,59 @@
 </div>
 
 <!--=============================================================================================================================================
-    MODAL: Carica Nuovo Prodotto
+    MODAL: AGGIUNGI UN NUOVO  PRODOTTO
 ==================================================================================================================================================-->
 
 <div class="modal fade" id="modalCaricaProdotto" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Carica Nuovo Prodotto</h5>
+                <h5 class="modal-title">Nuovo Prodotto</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
             </div>
             <div class="modal-body">
 
-                <div class="mb-3">
-                    <label class="form-label">Prodotto</label>
-                    <select class="form-select" id="selectProdotto">
-                        <option value="">-- Seleziona prodotto a catalogo --</option>
-                        @foreach (var prodotto in Model.TheProductsList)
-                        {
-                            <option value="@(prodotto.Id)">@prodotto.ProductName</option>
-                        }
+                <input type="hidden" id="saveMagazzino" name="WarehouseId" value="@Model.TheWarehouse.Id" />
 
+                <!-- CAUSALE -->
+                <div class="mb-3">
+                    <label for="saveCausale" class="form-label">Causale <span class="text-danger">*</span></label>
+                    <select id="saveCausale" name="MovementReasonId" class="form-select" required>
+                        <option value="" disabled>-- Seleziona una causale --</option>
+                        @foreach (var causale in Model.TheMovementReasonList.Where(x => x.MovementType == "+"))
+                        {
+                            <option value="@(causale.Id)">@causale.Code @causale.MovementType</option>
+                        }
                     </select>
                 </div>
 
+                <!-- PRODOTTO -->
                 <div class="mb-3">
-                    <label class="form-label">Quantità da caricare</label>
-                    <input type="number" min="1" class="form-control" id="inputQuantitaCarico" />
+                    <label for="saveProdotto" class="form-label">Prodotto <span class="text-danger">*</span></label>
+                    <select id="saveProdotto" name="ProductId" class="form-select" required>
+                        <option value="" selected disabled>-- Seleziona un prodotto --</option>
+                        @foreach (var product in Model.TheProductsList)
+                        {
+                            <option value="@(product.Id)">@product.ProductName</option>
+                        }
+                    </select>
                 </div>
+
+                <!-- QUANTITA' -->
+                <div class="mb-3">
+                    <label for="saveQuantita" class="form-label">Quantità <span class="text-danger">*</span></label>
+                    <input type="number" id="saveQuantita" name="QtyToTransfer" class="form-control" min="1" step="1" required />
+                </div>
+
+                <div class="message-contener">
+                    <span class="message"></span>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annulla</button>
-                <button type="button" class="btn btn-giallo" data-carico-url="@Url.Action("CaricoProdotti","GestWarehousesController")" id="btnConfermaCarico">Conferma Carico</button>
+                <button type="button" class="btn btn-giallo" data-carico-url="@Url.Action("CaricoProdotti","GestWarehouses")" id="btnConfermaCarico">Conferma Carico</button>
             </div>
         </div>
     </div>
@@ -234,59 +258,47 @@
 <div class="modal fade" id="modalScaricoProdotto" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
+
             <div class="modal-header">
                 <h5 class="modal-title">Scarica / Rettifica Prodotto</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
+
             <div class="modal-body">
 
-                <div class="bg-light rounded p-2 mb-3" style="font-size: 13px;">
+                <div class="bg-light rounded p-2 mb-3">
                     <div class="d-flex justify-content-between">
                         <span class="text-muted">Prodotto</span>
-                        <span class="fw-semibold" id="scaricoProdottoNome">-</span>
+                        <span class="fw-semibold" id="scaricoProdottoNome"></span>
                     </div>
+
                     <div class="d-flex justify-content-between">
                         <span class="text-muted">Quantità attuale</span>
-                        <span class="fw-semibold" id="scaricoQuantitaAttuale">-</span>
+                        <span class="fw-semibold" id="scaricoQuantitaAttuale"></span>
                     </div>
-                    <input type="hidden" id="scaricoProductId" />
+
+
                 </div>
 
+              
+                <input type="hidden" id="removeMagazzino" name="WarehouseId" value="@Model.TheWarehouse.Id" />
+
+                <!-- CAUSALE -->
                 <div class="mb-3">
-                    <label class="form-label">Causale</label>
-                    <select class="form-select" id="selectCausale">
-                        <!-- Loop da fare sulla tabella MovementReason tramite il campo Code Da non prendere  il campo a valore Null  -->
-                        <option value="CARICO">Carico da magazzino</option>
-                        <option value="SCARICO">Sarico da magazzino</option>
-                        <option value="FURTO">Furto a magazzino</option>
-                        <option value="INCENDIO">Incendio del magazzino</option>
-                        <option value="SMALTIMENTO">Merce danneggiata / non vendibile</option>
-                        <option value="RETTIFICA-">Rettifica negativa inventario</option>
-                        <option value="DISTRUZIONE">Distruzione merce</option>
-                        <option value="SEQUESTRO">Sequestro merce</option>
+                    <label for="removeCausale" class="form-label">Causale <span class="text-danger">*</span></label>
+                    <select id="removeCausale" name="MovementReasonId" class="form-select" required>
+                        <option value="" disabled>-- Seleziona una causale --</option>
+                        @foreach (var causale in Model.TheMovementReasonList.Where(x => x.MovementType == "-"))
+                        {
+                            <option value="@(causale.Id)" @(causale.Id == 3 ? "selected" : "")>@causale.Code @causale.MovementType</option>
+                        }
                     </select>
                 </div>
 
-
-                <!-- questo  div deve essere mostrato solo quando si clicca scarico -->
-                <div class="mb-3" id="rigaTrasferimento" style="display:none;">
-                    <div class="form-check mb-2">
-                        <input type="checkbox" class="form-check-input" id="checkTrasferimento" />
-                        <label class="form-check-label" for="checkTrasferimento">
-                            È un trasferimento verso un altro magazzino
-                        </label>
-                    </div>
-                    <select class="form-select" id="selectMagazzinoDest" disabled>
-                        <option value="">Seleziona magazzino destinazione</option>
-                        <!-- Loop da fare sulla tabella dei magazzini che però hanno l'id diverso da quello corrente' -->
-                        <option value="2">Magazzino2 (Stock)</option>
-                        <option value="3">Magazzino Spedizioni (Shipment)</option>
-                    </select>
-                </div>
-
+                <!-- QUANTITA' -->
                 <div class="mb-3">
-                    <label class="form-label">Quantità da scaricare</label>
-                    <input type="number" min="1" class="form-control" id="inputQuantitaScarico" />
+                    <label for="removeQuantita" class="form-label">Quantità <span class="text-danger">*</span></label>
+                    <input type="number" id="removeQuantita" name="QtyToTransfer" class="form-control" min="1" step="1" required />
                 </div>
 
                 <div class="mb-3">
@@ -296,9 +308,75 @@
                 </div>
 
             </div>
+
+            <div class="message-contener">
+                <span class="message"></span>
+            </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annulla</button>
-                <button type="button" class="btn btn-outline-danger" id="btnConfermaScarico">Conferma Scarico</button>
+                <button type="button" class="btn btn-outline-danger" data-scarico-url="@Url.Action("CaricoProdotti","GestWarehouses")" id="btnConfermaScarico">Conferma Scarico</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--=============================================================================================================================================
+    MODAL: CARICO SINGOLO PRODOTTO
+==================================================================================================================================================-->
+
+<div class="modal fade" id="modalCaricoSingoloProdotto" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Carica Nuovo Prodotto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
+            </div>
+            <div class="modal-body">
+                <div class="bg-light rounded p-2 mb-3">
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted">Prodotto</span>
+                        <span class="fw-semibold" id="singCaricoProdottoNome"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted">Quantità attuale</span>
+                        <span class="fw-semibold" id="singQuantitaAttuale"></span>
+                    </div>
+
+
+                </div>
+
+              
+                <input type="hidden" id="addSingleMagazzino" name="WarehouseId" value="@Model.TheWarehouse.Id" />
+
+                <!-- CAUSALE -->
+                <div class="mb-3">
+                    <label for="addSingleCausale" class="form-label">Causale <span class="text-danger">*</span></label>
+                    <select id="addSingleCausale" name="MovementReasonId" class="form-select" required>
+                        <option value="" disabled>-- Seleziona una causale --</option>
+                        @foreach (var causale in Model.TheMovementReasonList.Where(x => x.MovementType == "+"))
+                        {
+                            <option value="@(causale.Id)">@causale.Code @causale.MovementType</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- QUANTITA' -->
+                <div class="mb-3">
+                    <label for="addSingleQuantita" class="form-label">Quantità <span class="text-danger">*</span></label>
+                    <input type="number" id="addSingleQuantita" name="QtyToTransfer" class="form-control" min="1" step="1" required />
+                </div>
+
+                <div class="message-contener">
+                    <span class="message"></span>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" class="btn btn-giallo" data-carico-url="@Url.Action("CaricoProdotti","GestWarehouses")" id="btnConfermaSingoloCarico">Conferma Carico</button>
             </div>
         </div>
     </div>

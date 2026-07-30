@@ -1,5 +1,9 @@
 ﻿@model WebEcommerce.Models.WarehousesViewModel
 
+
+
+<input type="hidden" id="retProductId" name="ProductId" value="" />
+
 <table class="table tabella-magazzino" id="tabellaGiacenze">
 
     <thead>
@@ -21,16 +25,25 @@
                 <td class="text-center">@magazzino.LastUpdate</td>
                 <td class="text-center">@magazzino.Quantity</td>
                 <td class="text-center">
-                    <button type="button" class="btn btn-sm btn-outline-secondary" title="Storico prodotto">
+                    <button type="button" class="btn btn-sm btn-outline-secondary simpleBevel" title="Storico prodotto">
                         <i class="bi bi-clock-history"></i>
                     </button>
-                    <button type="button" class="btn btn-sm btn-outline-danger"
+
+                    <button type="button" class="btn btn-sm btn-outline-danger btn-scarica simpleBevel"
                             data-bs-toggle="modal" data-bs-target="#modalScaricoProdotto"
                             data-product-id="@magazzino.ProductId"
                             data-product-name="@magazzino.ProductName"
                             data-quantita-attuale="@magazzino.Quantity"
                             title="Scarica/Rettifica">
                         <i class="bi bi-dash-circle"></i>
+                    </button>
+
+                    <!--BOTTONE CARICO PRODOTTO-->
+                    <button type="button" class="btn btn-sm bi-plus-circle-fill btn-outline-success btn-carica text-success simpleBevel"
+                            data-bs-toggle="modal" data-bs-target="#modalCaricoSingoloProdotto"
+                            data-product-id="@magazzino.ProductId"
+                            data-product-name="@magazzino.ProductName"
+                            data-quantita-attuale="@magazzino.Quantity">
                     </button>
                 </td>
             </tr>
