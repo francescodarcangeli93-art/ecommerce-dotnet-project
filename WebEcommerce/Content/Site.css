@@ -12,9 +12,11 @@
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
+/* */
 input,
-select,
+select {
+    width: auto; /* oppure una larghezza specifica, es. 250px */
+}
 /*   */
  
 
