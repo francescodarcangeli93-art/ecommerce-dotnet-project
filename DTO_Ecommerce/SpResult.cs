@@ -341,6 +341,8 @@ namespace DTO_Ecommerce
     public class sp_GetProductById_Result
     {
         public int? ProductId { get; set; }
+        public int? CategoryId { get; set; }
+
         public string ProductName { get; set; }
         public int SupplierId { get; set; }
         public string CompanyName { get; set; }
@@ -406,6 +408,7 @@ namespace DTO_Ecommerce
     public class sp_GetSupplierById_Result
     {
         public int? Id { get; set; }
+        public int? CountryId { get; set; }
         public string CompanyName { get; set; }
         public string ContactName { get; set; }
         public string ContactTitle { get; set; }
@@ -732,6 +735,8 @@ namespace DTO_Ecommerce
         public bool IsActive { get; set; }
         public bool IsFreeShipping { get; set; }
     }
+
+    
 
     public class sp_SearchSupplier_Result
     {

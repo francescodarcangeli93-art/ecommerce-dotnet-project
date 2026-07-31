@@ -160,7 +160,7 @@
        ==================================================================================================*/
 
 
-    $('#tabellaContainer').on('click', '.btn-elimina', function () {
+    $(document).on('click', '.btn-elimina', function () {
 
         const id = $(this).data('id');
         const name = $(this).data('name');
@@ -174,7 +174,7 @@
 
     //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    $('#delList-btn').on('click', function () {
+    $(document).on('click', function () {
 
 
        
@@ -217,5 +217,95 @@
 
         $('#modalElimina').removeClass('active2');
     });
+
+
+    /* ====================================================================================================
+   APERTURA E POPOLAMENTO MODALE MODIFICA PRODOTTO
+==================================================================================================*/
+    $(document).on('click', '.btn-modifica', function (e) {
+        e.preventDefault();
+
+        const $btn = $(this);
+        const id = $btn.data('id');
+        const url = $btn.data('url');
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: { id: id },
+            success: function (response) {
+                if (response.success) {
+                    // Estraiamo il prodotto dal model inviato dal Controller (response.data.TheProduct)
+                    const product = response.data.TheProduct;
+
+                    // Popolamento 1:1 dei campi con prefisso "edit"
+                    $('#editId').val(product.ProductId);
+                    $('#editProductName').val(product.ProductName);
+                    $('#editSupplierId').val(product.SupplierId);
+                    $('#editCategoryId').val(product.CategoryId);
+                    $('#editBasedUnitPrice').val(product.BasedUnitPrice);
+                    $('#editPackage').val(product.Package);
+
+                    // Conversione booleano in stringa per la select
+                    $('#editIsDiscontinued').val(String(product.IsDiscontinued));
+
+                    // Checkbox visibile HP
+                    $('#editVisibleInHP').prop('checked', product.VisibleInHP);
+
+                    // Pulizia vecchi messaggi ed apertura modale
+                    $('#resultMessageEdit').empty();
+                    $('#modalEdit').modal('show');
+                } else {
+                    alert('Errore: ' + response.message);
+                }
+            },
+            error: function (xhr) {
+                console.error('Errore chiamata AJAX:', xhr.responseText);
+            }
+        });
+    });
+
+    /* ====================================================================================================
+   SALVATAGGIO MODIFICHE PRODOTTO
+==================================================================================================*/
+    $(document).on('click', '#btnEditModifica', function () {
+
+        const model = {
+            Id: $('#editId').val(),
+            ProductName: $('#editProductName').val(),
+            SupplierId: $('#editSupplierId').val(),
+            CategoryId: $('#editCategoryId').val(),
+            BasedUnitPrice: $('#editBasedUnitPrice').val(),
+            Package: $('#editPackage').val(),
+            IsDiscontinued: $('#editIsDiscontinued').val() === 'true',
+            VisibleInHP: $('#editVisibleInHP').is(':checked')
+        };
+
+        $.ajax({
+            url: '/GestProductFile/Update', // oppure l'azione del tuo Controller
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(model),
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    $('#resultMessageEdit').html('<span style="color:green; font-weight:bold;">Modifica completata con successo!</span>');
+
+                    // Ricarica la tabella prodotti
+                    $btnCerca.click();
+
+                    setTimeout(function () {
+                        $('#modalEdit').modal('hide');
+                    }, 1000);
+                } else {
+                    $('#resultMessageEdit').html('<span style="color:red">' + response.message + '</span>');
+                }
+            },
+            error: function (xhr) {
+                $('#resultMessageEdit').html('<span style="color:red">Errore durante il salvataggio: ' + xhr.responseText + '</span>');
+            }
+        });
+    });
+
 
 });

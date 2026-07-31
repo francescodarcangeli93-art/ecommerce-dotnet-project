@@ -74,9 +74,32 @@ namespace WebEcommerce.Controllers
             }
         }
 
+        /*============================================================================================================================
+          2  ACTION CHE AGGIUNGE UN NUOVO PRODOTTO
+       ==============================================================================================================================*/
+        [HttpPost]
+        public JsonResult Save(sp_ManageProduct_Param param)
+        {
+            int idUser = 0;
+            try
+            {
+                idUser = (int)Session["UserId"];
+
+                param.Operation = "I";
+                _ProductsService.ManageProduct(param);
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
 
         /*==================================================================
-           2  ACTION CHE RITORNA LA VIEW PER LA TABELLA.
+           3  ACTION CHE RITORNA LA VIEW PER LA TABELLA.
         ====================================================================*/
 
 
@@ -104,34 +127,36 @@ namespace WebEcommerce.Controllers
             }
         }
 
-
-
         /*============================================================================================================================
-           2  ACTION CHE AGGIUNGE UN NUOVO PRODOTTO
-        ==============================================================================================================================*/
-        [HttpPost]
-        public JsonResult Save(sp_ManageProduct_Param param)
+          4  ACTION CHE MODIFICA IL PRODOTTO
+         ==============================================================================================================================*/
+
+        [HttpGet]
+        public JsonResult Update(int id)
         {
             int idUser = 0;
             try
             {
                 idUser = (int)Session["UserId"];
 
-                param.Operation = "I";
-                _ProductsService.ManageProduct(param);
+                ProductCategoryViewModel Model = new ProductCategoryViewModel
+                {
 
-                return Json(new { success = true });
+                    TheProduct = _ProductsService.sp_GetProductById(id)
+                };
+
+               
+
+                return Json(new { success = true, data = Model}, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 _logService.WriteLogProcessError(idUser, ex.Message);
-                return Json(new { success = false, message = ex.Message });
+                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
-        /*============================================================================================================================
-          3  ACTION CHE MODIFICA IL PRODOTTO
-         ==============================================================================================================================*/
+
         [HttpPost]
         public JsonResult Update(sp_ManageProduct_Param param)
         {
@@ -155,7 +180,7 @@ namespace WebEcommerce.Controllers
         }
 
         /*============================================================================================================================
-                 3  ACTION CHE ELIMINA IL PRODOTTO
+                 5  ACTION CHE ELIMINA IL PRODOTTO
         ==============================================================================================================================*/
 
         [HttpPost]
@@ -185,7 +210,7 @@ namespace WebEcommerce.Controllers
         }
 
         /*============================================================================================================================
-           5  ACTION CHE APRE LA PAGINA DEL DETTAGLIO DEI PRODOTTI
+           6  ACTION CHE APRE LA PAGINA DEL DETTAGLIO DEI PRODOTTI
         ==============================================================================================================================*/
 
         // TO DO: implementare il modo che devo mostrare anche le immagini inattive con il parametro IncludeInactive che di defoult
@@ -223,7 +248,7 @@ namespace WebEcommerce.Controllers
 
 
         /*==========================================================================================================================
-          6 ACTION CHE RESTITUISCE LE IMMAGINI CICLATE ALLA VIEW
+          7 ACTION CHE RESTITUISCE LE IMMAGINI CICLATE ALLA VIEW
         ==========================================================================================================================*/
 
         [HttpGet]
@@ -285,7 +310,7 @@ namespace WebEcommerce.Controllers
 
 
         /*==========================================================================================================================
-          6 ACTION CHE GESTISCE IL DOWLOAD DEI FILE
+          8 ACTION CHE GESTISCE IL DOWLOAD DEI FILE
         ==========================================================================================================================*/
 
         [HttpGet]
@@ -327,7 +352,7 @@ namespace WebEcommerce.Controllers
         }
 
         /*=============================================================================================================================================
-          6 ACTION ELIMINA IL FILE
+          9 ACTION ELIMINA IL FILE
         ===============================================================================================================================================*/
 
         [HttpPost]
@@ -361,8 +386,8 @@ namespace WebEcommerce.Controllers
             }
         }
 
-        /*========================================================================================================================
-        7  ACTION CHE ELIMINA UN IMMAGINE
+     /*========================================================================================================================
+        10  ACTION CHE ELIMINA UN IMMAGINE
      ========================================================================================================================*/
 
         [HttpPost]
@@ -397,7 +422,7 @@ namespace WebEcommerce.Controllers
         }
 
         /*========================================================================================================================
-           8  ACTION CHE RITORNA UNA PARTIAL VIEW PER LE IMMAGINI IN GALLERIA .
+           11 ACTION CHE RITORNA UNA PARTIAL VIEW PER LE IMMAGINI IN GALLERIA .
         ========================================================================================================================*/
         [HttpGet]
         public ActionResult GetProductImagesPartial(int ProductId)
@@ -422,7 +447,7 @@ namespace WebEcommerce.Controllers
         }
 
         /*========================================================================================================================
-          9  ACTION CHE RITORNA UNA PARTIAL VIEW DEI FILE
+          12  ACTION CHE RITORNA UNA PARTIAL VIEW DEI FILE
        ========================================================================================================================*/
         [HttpGet]
         public ActionResult GetProductFilesPartial(int ProductId)
@@ -448,7 +473,7 @@ namespace WebEcommerce.Controllers
 
         /*=======================================================================================================================
          ************************************************************************************************************************
-         ************************ ACTION CHE SI OCCUPA DELL'UPLOAD DELLE IMMAGINI ***********************************************
+            13 ************************ ACTION CHE SI OCCUPA DELL'UPLOAD DELLE IMMAGINI **************************************
          ************************************************************************************************************************
          ======================================================================================================================*/
 
@@ -525,7 +550,7 @@ namespace WebEcommerce.Controllers
         }
 
         /*======================================================================================================================
-          9  ACTION CHE SI OCCUPA DELL'UPLOAD DEI FILE
+          14  ACTION CHE SI OCCUPA DELL'UPLOAD DEI FILE
          ======================================================================================================================*/
 
         [HttpPost]
@@ -579,7 +604,7 @@ namespace WebEcommerce.Controllers
         }
 
         /*======================================================================================================================
-          9  ACTION CHE SI OCCUPA DELLA GALLERIA DELLE IMMAGINI NELLA FINESTRA DI DETTAGLIO
+          15  ACTION CHE SI OCCUPA DELLA GALLERIA DELLE IMMAGINI NELLA FINESTRA DI DETTAGLIO
          ======================================================================================================================*/
         [HttpGet]
         public ActionResult ImageDetails(int id, int productId)
@@ -603,7 +628,7 @@ namespace WebEcommerce.Controllers
         }
 
         /*======================================================================================================================
-          10  ACTION CHE SETTA L'IMMAGINE PRINCIPALE
+          16  ACTION CHE SETTA L'IMMAGINE PRINCIPALE
          ======================================================================================================================*/
 
         [HttpPost]
@@ -644,7 +669,7 @@ namespace WebEcommerce.Controllers
         }
 
         /*======================================================================================================================
-         11  ACTION CHE SETTA L'IMMAGINE PRINCIPALE
+         17  ACTION CHE SETTA L'IMMAGINE PRINCIPALE
         ======================================================================================================================*/
         [HttpPost]
         public JsonResult SetMainProductFilePdf(int id, int productId, string fileType = "Image")
@@ -685,7 +710,7 @@ namespace WebEcommerce.Controllers
 
 
         /*======================================================================================================================
-          12  ACTION CHE MODIFICA L'ORDINE
+          18  ACTION CHE MODIFICA L'ORDINE
          ======================================================================================================================*/
 
         [HttpPost]

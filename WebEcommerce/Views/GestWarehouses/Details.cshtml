@@ -23,7 +23,7 @@
         </div>
         <div class="d-flex gap-2 align-items-center">
             <span class="badge-tipo">@testoTipo</span>
-            <span class="@badgeStatoClass">@testoStato</span>
+            <span class="badgeCustom @badgeStatoClass">@testoStato</span>
         </div>
     </div>
 
@@ -225,7 +225,7 @@
                     <label for="saveProdotto" class="form-label">Prodotto <span class="text-danger">*</span></label>
                     <select id="saveProdotto" name="ProductId" class="form-select" required>
                         <option value="" selected disabled>-- Seleziona un prodotto --</option>
-                        @foreach (var product in Model.TheProductsList)
+                        @foreach (var product in Model.TheProductsNotInTheWarouseList)
                         {
                             <option value="@(product.Id)">@product.ProductName</option>
                         }

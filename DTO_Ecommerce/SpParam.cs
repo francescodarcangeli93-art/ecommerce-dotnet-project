@@ -350,6 +350,7 @@ namespace DTO_Ecommerce
         public string Package { get; set; }
         public bool? IsDiscontinued { get; set; }
         public bool? VisibleInHP { get; set; }
+
     }
     public class sp_ManageProductCategory_Param
     {
@@ -397,7 +398,7 @@ namespace DTO_Ecommerce
         public string ContactName { get; set; }
         public string ContactTitle { get; set; }
         public string City { get; set; }
-        public string Country { get; set; }
+        public int? CountryId { get; set; }
         public string Phone { get; set; }
         public string Fax { get; set; }
     }
@@ -543,7 +544,7 @@ namespace DTO_Ecommerce
         public string ContactName { get; set; }
         public string ContactTitle { get; set; }
         public string City { get; set; }
-        public string Country { get; set; }
+        public int? CountryId { get; set; }
         public string Phone { get; set; }
         public string Fax { get; set; }
     }

@@ -131,10 +131,14 @@
                                         <label for="add-SupplierId">Fornitore*</label>
                                         <select name="SupplierId" id="addSupplierId" class="form-select" required>
                                             <option value="">--Selezionare il fornitore--</option>
-                                            @foreach (var supplier in Model.TheSupList)
+                                            @if (Model.TheSupplierList != null)
                                             {
-                                                <option value="@supplier.Id">@supplier.CompanyName</option>
+                                                foreach (var supplier in Model.TheSupList)
+                                                {
+                                                    <option value="@supplier.Id">@supplier.CompanyName</option>
+                                                }
                                             }
+
                                         </select>
                                     </div>
 
@@ -142,10 +146,14 @@
                                         <label for="addCategoryId">Categorie*</label>
                                         <select name="CategoryId" id="addCategoryId" class="form-select" required>
                                             <option value="">--Selezionare la categoria del prodotto--</option>
-                                            @foreach (var category in Model.ListProductCategories)
+                                            @if (Model.ListProductCategories != null)
                                             {
-                                                <option value="@category.Id">@category.CategoryName</option>
+                                                foreach (var category in Model.ListProductCategories)
+                                                {
+                                                    <option value="@category.Id">@category.CategoryName</option>
+                                                }
                                             }
+
                                         </select>
                                     </div>
 
@@ -217,6 +225,98 @@
         </div>
     </div>
 </div>
+
+
+<!--=======================================================================================================================================
+    MODALE MODIFICA PRODOTTO
+===========================================================================================================================================-->
+<div class="modal fade" id="modalEdit" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modifica Prodotto</h5>
+                <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="mb-4 p-4 bg-white card-animated card-detail">
+                <div class="card-body row g-3">
+                    <!-- ID Nascosto per la modifica -->
+                    <input type="hidden" id="editId" />
+
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="editProductName">Nome Prodotto</label>
+                            <input type="text" id="editProductName" name="ProductName" placeholder="Nome Prodotto" class="form-control input-animated" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editSupplierId">Fornitore</label>
+                            <select id="editSupplierId" name="SupplierId" class="form-select input-animated" required>
+                                <option value="">-- Seleziona Fornitore --</option>
+                                @if (Model.TheSupList != null)
+                                {
+                                    foreach (var supplier in Model.TheSupList)
+                                    {
+                                        <option value="@supplier.Id">@supplier.CompanyName</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editCategoryId">Categoria</label>
+                            <select id="editCategoryId" name="CategoryId" class="form-select input-animated" required>
+                                <option value="">-- Seleziona Categoria --</option>
+                                @if (Model.ListProductCategories != null)
+                                {
+                                    foreach (var category in Model.ListProductCategories)
+                                    {
+                                        <option value="@category.Id">@category.CategoryName</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editBasedUnitPrice">Prezzo Unitario Base (€)</label>
+                            <input type="number" step="0.01" id="editBasedUnitPrice" name="BasedUnitPrice" placeholder="0.00" class="form-control input-animated" required />
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="editPackage">Confezione / Imballo</label>
+                            <input type="text" id="editPackage" name="Package" placeholder="es. 12 bottiglie" class="form-control input-animated" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editIsDiscontinued">Stato Prodotto</label>
+                            <select id="editIsDiscontinued" name="IsDiscontinued" class="form-select input-animated">
+                                <option value="false">In Produzione / Attivo</option>
+                                <option value="true">Fuori Produzione / Discontinuato</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3 form-check mt-4">
+                            <input type="checkbox" id="editVisibleInHP" name="VisibleInHP" class="form-check-input" />
+                            <label class="form-check-label" for="editVisibleInHP">Visibile in Homepage</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="resultMessageEdit" class="error-message"></div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary simpleBevel" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" id="btnEditModifica" class="btn btn-success simpleBevel">Salva Modifiche</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 @section scripts {
     <script src="@Url.Content("~/Scripts/js/Product.js")"></script>

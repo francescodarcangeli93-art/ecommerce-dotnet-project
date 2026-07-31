@@ -18,7 +18,7 @@
             ContactName: $('#txtReferente').val(),
             ContactTitle: $('#txtRuolo').val(),
             City: $('#txtCitta').val(),
-            Country: $('#txtPaese').val(),
+            CountryId: $('#txtPaese').val(),
             Phone: $('#txtTelefono').val(),
             Fax: $('#txtFax').val(),
         };
@@ -60,27 +60,39 @@
         $('#btnCerca').click();
     });
 
-    //gestione evento cancella con la delega al corpo della tabella
-    $('#tabellaContainer').on('click','.btn-elimina', function () {
+
+
+    /* ==========================================================
+    2. APERTURA MODALE ELIMINA
+    ==========================================================*/
+
+    $('#tabellaContainer').on('click', '.btn-elimina', function () {
+
         const id = $(this).data('id');
         const name = $(this).data('companyname');
 
-        $('#indirizzoDaEliminare').val(id);
-        $('#nomeFornitore').text(name);
+        $('#fornitoreDaEliminare').val(id);
+        $('#supplierNameMessage').text(name);
 
-        $('#modalElimina').modal('show');
-        
-
+        $('#modalElimina').addClass('active2')
     });
 
-    $('#confermaElimina').on('click', function () {
-     
 
-        const $btnElimina = $('#confermaElimina');
-        const $deleteUrl = $btnElimina.attr('data-url');
+    $('.no-btn').on('click', function () {
+
+        $('#modalElimina').removeClass('active2');
+    });
+
+
+    $('#confermaElimina').on('click', function () {
+
+        console.log("stampa delete");
+        console.log($('#fornitoreDaEliminare').val());
+
+        const $deleteUrl = $(this).data('delete-url');
 
         const model = {
-            id: $('#indirizzoDaEliminare').val()
+            id: $('#fornitoreDaEliminare').val()
         }
 
         $.ajax({
@@ -93,13 +105,13 @@
             success: function (response) {
                 if (response.success) {
 
-                    $('#modalElimina').modal('hide');
+                    $('#modalElimina').removeClass('active2');
 
                     // rimuovo la riga della tabella corrispondente all'indirizzo eliminato
                     $('tr[data-id="' + model.id + '"]').remove();
                   
                 } else {
-                    $('#resultMessage').html('<span style="color:red">' + response.message + '</span>');
+                    $('#resultMessageDel').html('<span style="color:red">' + response.message + '</span>');
                 }
             },
 
@@ -167,13 +179,13 @@
     });
 
     $('#btnSalva').on('click', function () {
-
+  
         const model = {
             CompanyName: $('#Company').val(),
             ContactName: $('#Referente').val(),
             ContactTitle: $('#Ruolo').val(),
             City: $('#Citta').val(),
-            Country: $('#Paese').val(),
+            CountryId: $('#Paese').val(),
             Phone: $('#Telefono').val(),
             Fax: $('#Fax').val()
         }
@@ -228,7 +240,7 @@
                     $('#editReferente').val(response.data.ContactName);
                     $('#editRuolo').val(response.data.ContactTitle);
                     $('#editCitta').val(response.data.City);
-                    $('#editPaese').val(response.data.Country);
+                    $('#editPaese').val(response.data.CountryId);
                     $('#editTelefono').val(response.data.Phone);
                     $('#editFax').val(response.data.Fax);
 
@@ -257,7 +269,7 @@
             ContactName: $('#editReferente').val(),
             ContactTitle: $('#editRuolo').val(),
             City: $('#editCitta').val(),
-            Country: $('#editPaese').val(),
+            CountryId: $('#editPaese').val(),
             Phone: $('#editTelefono').val(),
             Fax: $('#editFax').val(),
         }

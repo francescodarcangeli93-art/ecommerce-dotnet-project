@@ -29,7 +29,7 @@ namespace DAL_Ecommerce
                     cmd.Parameters.Add(new SqlParameter("@ContactName", (object)spParam.ContactName ?? DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@ContactTitle", (object)spParam.ContactTitle ?? DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@City", (object)spParam.City ?? DBNull.Value));
-                    cmd.Parameters.Add(new SqlParameter("@Country", (object)spParam.Country ?? DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@CountryId", (object)spParam.CountryId ?? DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@Phone", (object)spParam.Phone ?? DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@Fax", (object)spParam.Fax ?? DBNull.Value));
 
@@ -66,6 +66,7 @@ namespace DAL_Ecommerce
             };
 
             sp_GetSupplierById_Result Supplier = new sp_GetSupplierById_Result();
+            DataTable dtSupplier = new DataTable();
 
             try
             {
@@ -75,33 +76,23 @@ namespace DAL_Ecommerce
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("@IdSupplier", param.IdSupplier));
 
-                    // Versione sincrona dell'apertura della connessione
+                    // Apertura connessione sincrona
                     conn.Open();
 
-                    // Esegue la stored procedure in modo sincrono
+                    // Lettura sincrona dei dati tramite reader
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        // Lettura sincrona dei dati
-                        if (reader.Read())
-                        {
-                            Supplier = new sp_GetSupplierById_Result
-                            {
-                                Id = Convert.ToInt32(reader["Id"]),
-                                CompanyName = reader["CompanyName"].ToString(),
-                                ContactName = reader["ContactName"].ToString(),
-                                ContactTitle = reader["ContactTitle"].ToString(),
-                                City = reader["City"].ToString(),
-                                Country = reader["Country"].ToString(),
-                                Phone = reader["Phone"].ToString(),
-                                Fax = reader["Fax"].ToString()
-                            };
-                        }
+                        dtSupplier.Load(reader);
+                    }
+
+                    if (dtSupplier.Rows.Count > 0)
+                    {
+                        Supplier = dtSupplier.DataTableToList<sp_GetSupplierById_Result>().FirstOrDefault();
                     }
                 }
             }
             catch (Exception ex)
             {
-               
                 throw;
             }
 
@@ -123,7 +114,7 @@ namespace DAL_Ecommerce
                 cmd.Parameters.Add(new SqlParameter("@ContactName", spParam.ContactName));
                 cmd.Parameters.Add(new SqlParameter("@ContactTitle", spParam.ContactTitle));
                 cmd.Parameters.Add(new SqlParameter("@City", spParam.City));
-                cmd.Parameters.Add(new SqlParameter("@Country", spParam.Country));
+                cmd.Parameters.Add(new SqlParameter("@CountryId", spParam.CountryId));
                 cmd.Parameters.Add(new SqlParameter("@Phone", spParam.Phone));
                 cmd.Parameters.Add(new SqlParameter("@Fax", spParam.Fax));
 

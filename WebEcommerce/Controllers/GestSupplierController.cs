@@ -49,7 +49,8 @@ namespace WebEcommerce.Controllers
                 SupplierViewModel Model = new SupplierViewModel
                 {
                     SupplierList =  _supplierService.SearchSupplier(param),
-                    Country =  _countryService.GetListCountry()
+                    Country = _countryService.GetListCountry()
+
                 };
 
                 return View(Model);
@@ -165,7 +166,7 @@ namespace WebEcommerce.Controllers
             catch (Exception ex)
             {
                 _logService.WriteLogProcessError(idUser, ex.Message);
-                return Json(new { success = false, message = ex.Message });
+                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 

@@ -143,7 +143,7 @@
                     // 1. Chiudi la modal
                     setTimeout(function () {
                         $('#modalCaricaProdotto').modal('hide');
-                    }, 2000);
+                    }, 1000);
                   
 
                     // 2. Ricarica SOLO la tabella tramite Partial View
@@ -218,7 +218,7 @@
                     // 1. Chiudi la modal
                     setTimeout(function () {
                         $('#modalCaricaProdotto').modal('hide');
-                    }, 2000);
+                    }, 1000);
 
 
                     // 2. Ricarica SOLO la tabella tramite Partial View

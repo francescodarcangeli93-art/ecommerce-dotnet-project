@@ -95,7 +95,10 @@ namespace WebEcommerce.Models
         public sp_GetWarehouseById_Result TheWarehouse { get; set; }
 
         public List<sp_GetListProduct_Result> TheProductsList { get; set; }
-       public List<sp_GetWarehouseMovementsById_Result> TheWarehouseMovementsList { get; set; }
+
+        public List<sp_GetListProduct_Result> TheProductsNotInTheWarouseList { get; set; }  // prodotti che no sono nella lista dei prodotti del magazzino selezoinato
+
+        public List<sp_GetWarehouseMovementsById_Result> TheWarehouseMovementsList { get; set; }
 
        public List<sp_GetWarehouseStockProductById_Result> TheWarehouseStock {  get; set; }
 
@@ -150,9 +153,9 @@ namespace WebEcommerce.Models
         public List<sp_GetProductFileById_Result> GetProductFileByIdList { get; set; }
         public List<sp_GetProductFileById_Result> GetManualsList { get; set; }
 
-        public sp_GetProductFileById_Result MainImage => GetProductFileByIdList.FirstOrDefault(x => x.IsMain);
+        public sp_GetProductFileById_Result MainImage => GetProductFileByIdList?.FirstOrDefault(x => x.IsMain);
 
-        public List<sp_GetProductFileById_Result> SecondaryImages => GetProductFileByIdList.Where(x => !x.IsMain).ToList();
+        public List<sp_GetProductFileById_Result> SecondaryImages => GetProductFileByIdList?.Where(x => !x.IsMain).ToList();
 
         // dettaglio immagini
         public sp_GetImageFileById_Result TheImageDetail {  get; set; }

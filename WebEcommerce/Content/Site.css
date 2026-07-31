@@ -1059,24 +1059,24 @@ select {
     font-weight: 600 !important;
 }
 
-.badge-attivo {
-    background-color: #e6f4ea;
-    color: #1e7e34;
+.badgeCustom {
     border-radius: 20px;
     padding: 4px 14px;
     font-size: 12px;
     font-weight: 600;
-    border: 1px solid #b6e3c2;
+    border: 1px solid;
+}
+
+.badge-attivo {
+    background-color: #e6f4ea;
+    color: #1e7e34;
+    border-color: #b6e3c2;
 }
 
 .badge-non-attivo {
     background-color: #fdecea;
     color: #b02a1f;
-    border-radius: 20px;
-    padding: 4px 14px;
-    font-size: 12px;
-    font-weight: 600;
-    border: 1px solid #f5c2c0;
+    border-color: #f5c2c0;
 }
 
 .nav-tabs-magazzino .nav-link {

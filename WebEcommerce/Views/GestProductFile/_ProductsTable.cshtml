@@ -40,7 +40,9 @@
                         <a href="@Url.Action("Details", "GestProductFile", new { id = @product.Id})" class="btn btn-sm btn-outline-info py-1 simpleBevel btn-dettagli"  title="Visualizza Dettagli">
                             <i class="bi bi-search"></i>
                         </a>
-                        <a class="btn btn-sm btn-outline-warning py-1 simpleBevel btn-modifica" data-id="@product.Id" title="Modifica riga">
+
+                        <a class="btn btn-sm btn-outline-warning py-1 simpleBevel btn-modifica" data-id="@product.Id" title="Modifica riga"
+                           data-url="@Url.Action("Update","GestProductFile")">
                             <i class="bi bi-pencil"></i>
                         </a>
 

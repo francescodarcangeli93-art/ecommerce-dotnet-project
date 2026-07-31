@@ -142,7 +142,7 @@ $(document).ready(function () {
 
 
     /* ==========================================================
-     2. MODALE ELIMINA
+     2.APERTURA MODALE ELIMINA
      ==========================================================*/
 
     $('#tabellaContainer').on('click', '.btn-elimina', function () {

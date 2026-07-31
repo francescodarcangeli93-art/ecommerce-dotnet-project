@@ -159,7 +159,7 @@ namespace WebEcommerce.Controllers
             }
         }
 
-        // GET: Wharehouse/Edit/5
+        // GET: Product/Edit/5
         public JsonResult Edit(int id)
         {
             int idUser = 0;

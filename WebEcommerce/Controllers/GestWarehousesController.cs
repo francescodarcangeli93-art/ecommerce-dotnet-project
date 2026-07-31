@@ -4,6 +4,8 @@ using BLL_Ecommerce.Services;
 using DTO_Ecommerce;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
 using System.Web.ApplicationServices;
 using System.Web.Mvc;
@@ -121,14 +123,14 @@ namespace WebEcommerce.Controllers
             {
                 idUser = (int)Session["UserId"];
 
-
-
+             
                 WarehousesViewModel Model = new WarehousesViewModel
                 {
                     TheProductsList = _roleService.sp_GetListProduct(),
                     TheWarehouse = _warehousesService.GetWarehouseById(id),
                     TheWarehouseMovementsList = _warehousesService.sp_GetWarehouseMovementsById(id),
                     TheMovementReasonList = _warehousesMovementsService.sp_GetMovementReasonList(),
+                    TheProductsNotInTheWarouseList = getWareHousesProductNotInStock(id)
                     //TODO: verificare ce non ci siano problemi
                     //TheWarehouseStock = _warehousesService.sp_GetWarehouseStockProductById(id)
                 };
@@ -265,7 +267,34 @@ namespace WebEcommerce.Controllers
 
         }
 
-        
 
+        private List<sp_GetListProduct_Result> getWareHousesProductNotInStock(int warehousesId)
+        {   
+            // i prodotti che sono in magazzino 
+            List<sp_GetWarehouseStockProductById_Result> theStockProductList = _warehousesService.sp_GetWarehouseStockProductById(warehousesId);
+
+            if (theStockProductList == null || theStockProductList.Count == 0)
+            {
+                return new List<sp_GetListProduct_Result> ();
+            }
+
+            // lista di tutti i prodotti del catalogo
+            List<sp_GetListProduct_Result> TheProductsList = _roleService.sp_GetListProduct();
+
+            // variabile temporanea che prende tutti i  protti  non sono nel magazino 
+
+
+           
+            // salvo gli id gia in giacenza nel magazzino in un hashset
+            HashSet<int> idInStock = theStockProductList.Select(x => x.ProductId).ToHashSet();
+
+            // otteniamo i prodotti che non sono nel magazzino
+            List<sp_GetListProduct_Result> noWareHousesProduct = TheProductsList.Where(product => !idInStock.Contains(product.Id)).ToList();
+
+            return noWareHousesProduct;
+        }
+
+
+       
     }
 }
