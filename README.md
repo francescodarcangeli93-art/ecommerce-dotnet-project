@@ -17,10 +17,10 @@ Il sistema è stato sviluppato seguendo il pattern architetturale MVC (Model-Vie
 *   **Interazioni Asincrone:** Utilizzo di chiamate AJAX per l'aggiornamento dinamico dell'interfaccia senza ricaricare la pagina.
 
 ## 🚧 Stato del Progetto
-Il progetto è nato durante il tirocinio ed è attualmente in pausa. Le funzionalità sono implementate e i flussi principali sono stati provati manualmente, ma non ho verificato tutti i casi limite né eseguito test sistematici: possono esserci bug.
+Il progetto è nato durante il tirocinio ed è attualmente in pausa. Le funzionalità sono implementate, ma non ho eseguito test sistematici né verificato tutti i casi limite: possono esserci bug.
 
 * **Anagrafiche e database:** implementati; flussi principali provati manualmente.
-* **Movimenti di magazzino:** implementati; flussi principali provati manualmente.
+* **Movimenti di magazzino:** implementati; non verificati a fondo, quindi la logica di stock potrebbe contenere errori.
 * **Gestione immagini (upload, ritaglio, ridimensionamento, watermark):** implementata; flussi principali provati manualmente.
 
 **Limiti noti e possibili sviluppi:**
