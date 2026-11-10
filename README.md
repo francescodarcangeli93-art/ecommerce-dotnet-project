@@ -1,9 +1,9 @@
-# Ecommerce (Full-Stack) - WORK IN PROGRESS
+# Gestionale E-commerce (Full-Stack) - WORK IN PROGRESS
 
 Un'applicazione gestionale full-stack progettata per la gestione di processi aziendali complessi. Il sistema include moduli per l'anagrafica, la gestione dei prodotti, il controllo dei movimenti di magazzino e l'elaborazione di file multimediali.
 
 ## 🛠️ Stack Tecnologico
-*   **Backend:** C#, ASP.NET MVC
+*   **Backend:** C#, ASP.NET, MVC ADO.NET
 *   **Database:** SQL Server (20+ tabelle relazionali, 20+ Stored Procedure)
 *   **Frontend:** HTML, CSS, JavaScript, jQuery
 *   **Comunicazione Client-Server:** Viste HTML (Razor) e dati JSON per chiamate AJAX asincrone.
