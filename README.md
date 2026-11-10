@@ -12,7 +12,6 @@ Un'applicazione gestionale full-stack progettata per la gestione di processi azi
 Il sistema è stato sviluppato seguendo il pattern architetturale MVC (Model-View-Controller).
 
 *   **Gestione Anagrafiche (Clienti, Utenti, Magazzini):** Creazione, modifica e visualizzazione di anagrafiche complesse con gestione delle relazioni e dei ruoli.
-*   **Movimenti di Magazzino:** Logica di business per il tracciamento delle entrate/uscite merci, controllo dello stock e associazione dei prodotti ai rispettivi magazzini.
 *   **Gestione Avanzata delle Immagini:** Modulo per l'upload dei file che include validazione lato server, **ritaglio dinamico (crop)**, ridimensionamento e applicazione di **watermark** per la protezione dei contenuti.
 *   **Interazioni Asincrone:** Utilizzo di chiamate AJAX per l'aggiornamento dinamico dell'interfaccia senza ricaricare la pagina.
 
