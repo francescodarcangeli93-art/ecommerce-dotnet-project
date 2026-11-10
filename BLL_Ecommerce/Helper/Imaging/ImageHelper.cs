@@ -20,10 +20,7 @@ namespace BLL_Ecommerce.Helper.Imaging
             using (Image original = Image.FromStream(msInput))
             {
 
-                //if (original.Width <= targetWidth && original.Height <= targetHeight)
-                //{
-                //    return originalBytes; 
-                //}
+              
 
                 // catturare il formato originale prima  di elaborare l'immagine
 

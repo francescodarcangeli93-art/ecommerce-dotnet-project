@@ -1,31 +1,72 @@
 ﻿$(document).ready(function () {
 
-    /*===================================================================================================================
-     1 FUNZIONE PER SALVARE LA CATEORIA E FARE IL REDIRECT  ALLA NUOVA PAGINA
-    =====================================================================================================================*/
+    /*=============================================================================================================================================
+     2 PAGINAZIONE (GLOBALE, RIUSABILE DA PIÙ TAB/CONTROLLER)
+     ==============================================================================================================================================*/
 
-    $(document).on("click", '.filtro-categoria', function () {
+    $(document).on('click', '.page-link', function (e) {
+        e.preventDefault();
 
-        let $filtroId = $(this).data('filtro');
-        let $url = $(this).data('filtri-url') + '?Id=' + $filtroId;
+        if ($(this).closest('li').hasClass('disabled')) {
+            return;
+        }
+
+        let paginaRichiesta = parseInt($(this).data('page'));
+
+        if (paginaRichiesta >= 1) {
+            eseguiRicerca(paginaRichiesta);
+        }
+    });
+
+    /*=============================================================================================================================================
+     3 MODALE MODIFICA
+     ==============================================================================================================================================*/
+    let modalDialog;
 
 
-        setTimeout(function () {
-            window.location.href = $url;
-        }, 500);
+    $(document).on('click', '.btn-modifica', function () {
+
+  
+        const target = $(this).data('target');
+
+        if (!target) {
+            console.warn('Bottone senza data-target:', this);
+            return;
+        }
+
+        // scatola che viene riempita con la variabile presa dal data-target  edit-modal//
+        const modalId = '#' + target; // -> #edit-modal
+      
+        modalDialog = $(modalId); // $(#edit-modal)
+       
+        // salva l'id dal bottone  modifica
+        const id = $(this).data('id'); 
+       
+        editGet($(this));
+
+        if (modalDialog.length > 0) {
+            // Assegna l'ID all'input hidden con la classe standard
+            $('.global-modaledit-id').val(id);
+            // Apri la modale
+            modalDialog[0].showModal();
+        }
 
     });
 
-    $(document).ready(function () {
+    $(document).on('click', '.btn-close-modal', function () {
 
-        const urlParams = new URLSearchParams(window.location.search);
+        if (modalDialog) {
+            modalDialog[0].close();
+            modalDialog = null;
 
-        let id = urlParams.get('Id');
-
-        $('#searchCategoryId').val(id);
-        $('#btnCerca').click();
-
+            // Metodo con ciclo esplicito .each()
+            $('input, textarea').each(function () {
+                // $(this) si riferisce al singolo elemento corrente
+                $(this).val('');
+            });
+        }
+        
     });
+
 
 });
-

@@ -215,7 +215,45 @@ namespace DAL_Ecommerce
             return retVal;
         }
 
-       
+        public int sp_CheckSingleProductStock(int warehouseId, int productId)
+        {
+            string spName = "dbo.sp_CheckSingleProductStock";
+
+            // Inizializzo a 0. Se non trova nulla, restituisce 0.
+            int quantityInStock = 0;
+
+            try
+            {
+                using (SqlConnection conn = DbConnectionFactory.CreateConnection())
+                using (SqlCommand cmd = new SqlCommand(spName, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    // Aggiungo i due parametri richiesti dalla SP
+                    cmd.Parameters.Add(new SqlParameter("@WarehouseId", warehouseId));
+                    cmd.Parameters.Add(new SqlParameter("@ProductId", productId));
+
+                    conn.Open();
+
+                    // Uso il reader esattamente come nel tuo modello
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            // Leggo l'alias "QuantityInStock" restituito dalla SELECT della Stored Procedure
+                            quantityInStock = Convert.ToInt32(reader["QuantityInStock"]);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            
+                throw ex;
+            }
+
+            return quantityInStock;
+        }
 
     }
 }

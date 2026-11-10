@@ -2,10 +2,6 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@section styles {
-    <link rel="stylesheet" href="@Url.Content("~/Content/Site.css")" />
-}
-
 
 <main class="container mt-4">
     <div class="title-conteiner">
@@ -14,11 +10,13 @@
         </h1>
     </div>
 
+    <p class="allert"></p>
+
     <!--  FILTRI -->
     <div class="mb-4 p-4 bg-white card-animated card-detail">
         <h5 class="mb-4 fw-semibold text-dark">Ricerca Moviementi</h5>
         <div>
-            <div class="card-body row g-3" id="filtriContainer">
+            <div class="filtri-movimenti card-body row g-3" id="filtriContainer">
 
                 <div class="col-md-3">
                     <input type="Date" id="searchStartDate" name="StartDate" placeholder="Nome Categoria" class="form-control input-animated" />
@@ -58,7 +56,7 @@
 
     @*TASTO AGGIUNGI*@
     <div class="d-flex justify-content-between align-items-end mb-3">
-        <h3 class="m-0">Lista Magazzini</h3>
+        <h3 class="m-0">Lista Movimenti</h3>
 
         <a id="btnAggiungi" class="btn fw-semibold px-4 btn-animated buttonAdd" data-bs-toggle="modal" data-bs-target="#modalNuovoMovimento">
             <i class="bi bi-box-seam"></i> Nuovo movimento
@@ -66,10 +64,14 @@
 
     </div>
 
+    <div id="loading" class="loading-message textHidden">
+        <p class="pText-grey">Caricamento movimenti in corso...</p>
+    </div>
 
-    <div id="tabellaContainer"
+    <div id="tabellaContainer" class="table-hidden " data-is-global="true"
          data-partial-url="@Url.Action("SearchWarehousesMovementsPartial", "GestWarehousesMovements")">
-        @Html.Partial("_WarehousesMovementsTable")
+        @*@Html.Partial("_WarehousesMovementsTable")*@
+
     </div>
 
 
@@ -124,7 +126,7 @@
 
                     <!-- MAGAZZINO (partenza / unico) -->
                     <div id="magazzinoDestinazione" class="mb-3">
-                        <label for="saveMagazzino" id="lblMagazzino" class="form-label">Magazzino di partenza <span class="text-danger">*</span></label>
+                        <label for="saveMagazzino" id="lblMagazzino" class="form-label">Magazzino</label><span class="text-danger">*</span>
                         <select id="saveMagazzino" name="WarehouseId" class="form-select" required>
                             <option value="" selected disabled>-- Seleziona un magazzino --</option>
                             @* Sezione Magazzini Spedizioni *@
@@ -149,7 +151,9 @@
 
                     <!-- MAGAZZINO DESTINAZIONE (solo per TRASF, nascosto di default) -->
                     <div class="mb-3" id="rowMagazzinoDestinazione">
+
                         <label for="saveMagazzinoDestinazione" class="form-label">Magazzino destinazione <span class="text-danger">*</span></label>
+
                         <select id="saveMagazzinoDestinazione" name="DestinationWarehouseId" class="form-select">
                             <option value="" selected disabled>-- Seleziona un magazzino --</option>
                             <optgroup label="🚚 Magazzini Spedizioni">
@@ -170,20 +174,33 @@
                         </select>
                     </div>
 
+                    <label></label>
+
+
                     <!-- QUANTITA' -->
                     <div class="mb-3">
                         <label for="saveQuantita" class="form-label">Quantità <span class="text-danger">*</span></label>
                         <input type="number" id="saveQuantita" name="QtyToTransfer" class="form-control" min="1" step="1" required />
                     </div>
+                    <!-- Note -->
+                    <div class="mb-3">
+                        <label for="saveNote" class="form-label">Inserire Nota</label>
+                        <textarea id="saveNote" class="form-control"></textarea>
+                    </div>
 
+
+                    <div class="error-message-3">
+                        <div id="resultMessageSaveMovement">
+
+                        </div>
+                    </div>
                 </div>
-                <div class="error-message-3">
-                    <div id="resultMessageSaveMovement"></div>
-                </div>
+
+
                 <div class="modal-footer">
 
                     <button type="button" class="cmButton no-btn" data-bs-dismiss="modal">Annulla</button>
-                    <button type="button" class="cmButton si-edit-btn" data-save-url="@Url.Action("SaveMovement","GestWarehousesMovements")" id="SalvaMovimento">Conferma</button>
+                    <button type="button" id="SalvaMovimento" class="cmButton si-edit-btn" data-save-url="@Url.Action("SaveMovement","GestWarehousesMovements")">Conferma</button>
 
                 </div>
             </form>
@@ -192,122 +209,16 @@
 </div>
 
 
-<!--=====================================================================================================================================================
-    MODALE DETTAGLIO MOVIMENTO
-==========================================================================================================================================================-->
 
-<div class="modal fade" id="modalDettaglioMovimento" tabindex="-1" aria-labelledby="modalDettaglioLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content border-0 shadow-lg rounded-3">
 
-            <!-- HEADER -->
-            <div class="modal-header bg-light border-0 pt-3 pb-2 px-4">
-                <div>
-                    <span class="badge bg-secondary fw-normal mb-1">ID Movimento #<span id="det-movement-id"></span></span>
-                    <h5 class="modal-title fw-bold text-dark" id="modalDettaglioLabel">Dettaglio Movimento Magazzino</h5>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
-            </div>
 
-            <!-- BODY -->
-            <div class="modal-body p-4">
 
-                <!-- Banner sintetico Quantità e Tipo -->
-                <div class="p-3 mb-4 rounded-3 d-flex align-items-center justify-content-between bg-success-subtle text-success border border-success-subtle" id="banner-tipo">
-                    <div>
-                        <div class="small text-uppercase fw-semibold">Tipo Operazione</div>
-                        <div class="fs-5 fw-bold" id="det-detail"></div>
-                    </div>
-                    <div class="text-end">
-                        <div class="small text-uppercase fw-semibold">Quantità Movimentata</div>
-                        <div class="fs-2 fw-bolder" id="det-quantity"></div>
-                    </div>
-                </div>
 
-                <!-- Griglia Dati (2 Colonne) -->
-                <div class="row g-3">
-
-                    <!-- Data e Ora -->
-                    <div class="col-md-6">
-                        <div class="p-3 border rounded bg-light-subtle">
-                            <div class="text-muted small fw-bold text-uppercase mb-1">Data e Ora</div>
-                            <div class="fw-semibold text-dark fs-6" id="det-date"></div>
-                        </div>
-                    </div>
-
-                    <!-- Magazzino -->
-                    <div class="col-md-6">
-                        <div class="p-3 border rounded bg-light-subtle">
-                            <div class="text-muted small fw-bold text-uppercase mb-1">Magazzino</div>
-                            <div class="fw-semibold text-dark fs-6">
-                                <span id="det-warehouse-name"></span>
-                                <span class="text-muted small">(ID: <span id="det-warehouse-id"></span>)</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Prodotto -->
-                    <div class="col-md-6">
-                        <div class="p-3 border rounded bg-light-subtle">
-                            <div class="text-muted small fw-bold text-uppercase mb-1">Prodotto</div>
-                            <div class="fw-semibold text-dark fs-6">
-                                <span id="det-product-name"></span>
-                                <span class="text-muted small">(ID: <span id="det-product-id"></span>)</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Fornitore / Azienda -->
-                    <div class="col-md-6">
-                        <div class="p-3 border rounded bg-light-subtle">
-                            <div class="text-muted small fw-bold text-uppercase mb-1">Fornitore / Azienda</div>
-                            <div class="fw-semibold text-dark fs-6" id="det-company-name"></div>
-                        </div>
-                    </div>
-
-                    <!-- Causale -->
-                    <div class="col-md-6">
-                        <div class="p-3 border rounded bg-light-subtle">
-                            <div class="text-muted small fw-bold text-uppercase mb-1">Causale Movimento</div>
-                            <div class="fw-semibold text-dark fs-6">
-                                <span id="det-description"></span>
-                                <span class="text-muted small d-block">ID Causale: <span id="det-reason-id"></span></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Dettaglio Operazione -->
-                    <div class="col-md-6">
-                        <div class="p-3 border rounded bg-light-subtle">
-                            <div class="text-muted small fw-bold text-uppercase mb-1">Dettaglio Operazione</div>
-                            <div class="fw-semibold text-dark fs-6" id="det-detail-text"></div>
-                        </div>
-                    </div>
-
-                    <!-- Note -->
-                    <div class="col-12">
-                        <div class="p-3 border rounded bg-light-subtle">
-                            <div class="text-muted small fw-bold text-uppercase mb-1">Note</div>
-                            <div class="text-dark" id="det-notes"></div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-           
-
-            <!-- FOOTER -->
-            <div class="modal-footer bg-light border-0 px-4 py-3">
-                <button type="button" class="btn btn-dark px-4" data-bs-dismiss="modal">Chiudi</button>
-            </div>
-
-        </div>
-    </div>
-</div>
 
 @section scripts {
+
     <script>const searchMovements = '@Url.Action("SearchWarehousesMovementsPartial", "GestWarehousesMovements")'</script>
+
     <script src="@Url.Content("~/Scripts/js/WarehouseMovements.js")"></script>
 }
 

@@ -17,75 +17,78 @@
         <i class="bi bi-calendar me-1"></i> @DateTime.Now.ToString("dddd, dd MMMM yyyy")
     </p>
 
+
+    <!-- Card Animate -->
     @if (ruolo == "admin" || ruolo == "admin-customer")
     {
-        <div class="row g-3 mb-5">
+     <div class="row g-3 mb-5">
 
-            <div class="col-md-3 card-fadein">
-                <div class="p-4 bg-white card-animated home-stat-card">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div>
-                            <p class="text-muted mb-1" style="font-size: 0.85rem;">Totale Utenti</p>
-                            <h3 class="fw-bold mb-0">--</h3>
-                        </div>
-                        <i class="bi bi-people-fill icon-stat-yellow"></i>
-                    </div>
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill fill-70"></div>
-                    </div>
-                    <p class="text-muted mt-1 mb-0" style="font-size: 0.75rem;">70% rispetto al mese scorso</p>
-                </div>
-            </div>
+         <div class="col-md-3 card-fadein">
+             <div class="p-4 bg-white card-animated home-stat-card">
+                 <div class="d-flex justify-content-between align-items-start mb-3">
+                     <div>
+                         <p class="text-muted mb-1" style="font-size: 0.85rem;">Totale Utenti</p>
+                         <h3 class="fw-bold mb-0">--</h3>
+                     </div>
+                     <i class="bi bi-people-fill icon-stat-yellow"></i>
+                 </div>
+                 <div class="progress-bar-bg">
+                     <div class="progress-bar-fill fill-70"></div>
+                 </div>
+                 <p class="text-muted mt-1 mb-0" style="font-size: 0.75rem;">70% rispetto al mese scorso</p>
+             </div>
+         </div>
 
-            <div class="col-md-3 card-fadein">
-                <div class="p-4 bg-white card-animated home-stat-card">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div>
-                            <p class="text-muted mb-1" style="font-size: 0.85rem;">Totale Ordini</p>
-                            <h3 class="fw-bold mb-0">--</h3>
-                        </div>
-                        <i class="bi bi-bag-fill icon-stat-dark"></i>
-                    </div>
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill fill-50"></div>
-                    </div>
-                    <p class="text-muted mt-1 mb-0" style="font-size: 0.75rem;">50% rispetto al mese scorso</p>
-                </div>
-            </div>
 
-            <div class="col-md-3 card-fadein">
-                <div class="p-4 bg-white card-animated home-stat-card">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div>
-                            <p class="text-muted mb-1" style="font-size: 0.85rem;">Totale Prodotti</p>
-                            <h3 class="fw-bold mb-0">--</h3>
-                        </div>
-                        <i class="bi bi-box-seam-fill icon-stat-yellow"></i>
-                    </div>
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill fill-85"></div>
-                    </div>
-                    <p class="text-muted mt-1 mb-0" style="font-size: 0.75rem;">85% rispetto al mese scorso</p>
-                </div>
-            </div>
+         <div class="col-md-3 card-fadein">
+             <div class="p-4 bg-white card-animated home-stat-card">
+                 <div class="d-flex justify-content-between align-items-start mb-3">
+                     <div>
+                         <p class="text-muted mb-1" style="font-size: 0.85rem;">Totale Ordini</p>
+                         <h3 class="fw-bold mb-0">--</h3>
+                     </div>
+                     <i class="bi bi-bag-fill icon-stat-dark"></i>
+                 </div>
+                 <div class="progress-bar-bg">
+                     <div class="progress-bar-fill fill-50"></div>
+                 </div>
+                 <p class="text-muted mt-1 mb-0" style="font-size: 0.75rem;">50% rispetto al mese scorso</p>
+             </div>
+         </div>
 
-            <div class="col-md-3 card-fadein">
-                <div class="p-4 bg-white card-animated home-stat-card">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div>
-                            <p class="text-muted mb-1" style="font-size: 0.85rem;">Totale Clienti</p>
-                            <h3 class="fw-bold mb-0">--</h3>
-                        </div>
-                        <i class="bi bi-person-fill icon-stat-dark"></i>
-                    </div>
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill fill-60"></div>
-                    </div>
-                    <p class="text-muted mt-1 mb-0" style="font-size: 0.75rem;">60% rispetto al mese scorso</p>
-                </div>
-            </div>
+         <div class="col-md-3 card-fadein">
+             <div class="p-4 bg-white card-animated home-stat-card">
+                 <div class="d-flex justify-content-between align-items-start mb-3">
+                     <div>
+                         <p class="text-muted mb-1" style="font-size: 0.85rem;">Totale Prodotti</p>
+                         <h3 class="fw-bold mb-0">--</h3>
+                     </div>
+                     <i class="bi bi-box-seam-fill icon-stat-yellow"></i>
+                 </div>
+                 <div class="progress-bar-bg">
+                     <div class="progress-bar-fill fill-85"></div>
+                 </div>
+                 <p class="text-muted mt-1 mb-0" style="font-size: 0.75rem;">85% rispetto al mese scorso</p>
+             </div>
+         </div>
 
-        </div>
+         <div class="col-md-3 card-fadein">
+             <div class="p-4 bg-white card-animated home-stat-card">
+                 <div class="d-flex justify-content-between align-items-start mb-3">
+                     <div>
+                         <p class="text-muted mb-1" style="font-size: 0.85rem;">Totale Clienti</p>
+                         <h3 class="fw-bold mb-0">--</h3>
+                     </div>
+                     <i class="bi bi-person-fill icon-stat-dark"></i>
+                 </div>
+                 <div class="progress-bar-bg">
+                     <div class="progress-bar-fill fill-60"></div>
+                 </div>
+                 <p class="text-muted mt-1 mb-0" style="font-size: 0.75rem;">60% rispetto al mese scorso</p>
+             </div>
+         </div>
+
+     </div>
     }
 
     @if (ruolo == "admin-customer" || ruolo == "customer")

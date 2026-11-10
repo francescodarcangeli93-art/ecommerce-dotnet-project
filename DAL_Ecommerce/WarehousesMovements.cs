@@ -73,7 +73,8 @@ namespace DAL_Ecommerce
                 cmd.Parameters.Add("@ProductId", SqlDbType.Int).Value = param.ProductId;
                 cmd.Parameters.Add("@QtyToTransfer", SqlDbType.Int).Value = param.QtyToTransfer;
                 cmd.Parameters.Add("@WarehouseId", SqlDbType.Int).Value = param.WarehouseId;
-
+                cmd.Parameters.Add("@Notes", SqlDbType.VarChar).Value = param.Notes;
+                
                 // Parametro opzionale (può essere NULL se si tratta di carico o scarico singolo)
                 cmd.Parameters.Add("@DestinationWarehouseId", SqlDbType.Int).Value = (object)param.DestinationWarehouseId ?? DBNull.Value;
 
@@ -206,6 +207,32 @@ namespace DAL_Ecommerce
             }
 
             return retVal;
+        }
+
+        public void sp_UpdateWarehouseMovementNotes(sp_UpdateWarehouseMovementNotes_Param param)
+        {
+            string spName = "dbo.sp_UpdateWarehouseMovementNotes";
+
+            using (SqlConnection conn = DbConnectionFactory.CreateConnection())
+            using (SqlCommand cmd = new SqlCommand(spName, conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                // Mappatura corretta con i parametri della Stored Procedure
+                cmd.Parameters.Add("@MovementId", SqlDbType.Int).Value = param.MovementId;
+                cmd.Parameters.Add("@Notes", SqlDbType.VarChar).Value = param.Notes;
+               
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SqlException ex)
+                {
+
+                    throw new WarehouseOperationException($"Impossibile modificare la nota: {ex.Message}", ex);
+                }
+            }
         }
 
     }

@@ -39,6 +39,10 @@ namespace BLL_Ecommerce.Services
             return Warehouses.sp_GetWarehouseStockProductById(WarehouseId);
         }
 
-      
+        public int sp_CheckSingleProductStock(int warehouseId, int productId)
+        {
+
+            return Warehouses.sp_CheckSingleProductStock(warehouseId, productId);
+        }
     }
 }

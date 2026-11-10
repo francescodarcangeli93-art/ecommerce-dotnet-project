@@ -130,7 +130,7 @@ namespace WebEcommerce.Controllers
                     TheWarehouse = _warehousesService.GetWarehouseById(id),
                     TheWarehouseMovementsList = _warehousesService.sp_GetWarehouseMovementsById(id),
                     TheMovementReasonList = _warehousesMovementsService.sp_GetMovementReasonList(),
-                    TheProductsNotInTheWarouseList = getWareHousesProductNotInStock(id)
+         
                     //TODO: verificare ce non ci siano problemi
                     //TheWarehouseStock = _warehousesService.sp_GetWarehouseStockProductById(id)
                 };
@@ -267,34 +267,22 @@ namespace WebEcommerce.Controllers
 
         }
 
-
-        private List<sp_GetListProduct_Result> getWareHousesProductNotInStock(int warehousesId)
-        {   
-            // i prodotti che sono in magazzino 
-            List<sp_GetWarehouseStockProductById_Result> theStockProductList = _warehousesService.sp_GetWarehouseStockProductById(warehousesId);
-
-            if (theStockProductList == null || theStockProductList.Count == 0)
+        [HttpGet]
+        public ActionResult RefreshGiacenza(int WarehouseId, int ProductId)
+        {
+            try
             {
-                return new List<sp_GetListProduct_Result> ();
+                // Chiami la SP (ora restituisce solo un int)
+                int stockAttuale = _warehousesService.sp_CheckSingleProductStock(WarehouseId, ProductId);
+
+                return Json(new { success = true, giacenza = stockAttuale }, JsonRequestBehavior.AllowGet);
             }
-
-            // lista di tutti i prodotti del catalogo
-            List<sp_GetListProduct_Result> TheProductsList = _roleService.sp_GetListProduct();
-
-            // variabile temporanea che prende tutti i  protti  non sono nel magazino 
-
-
-           
-            // salvo gli id gia in giacenza nel magazzino in un hashset
-            HashSet<int> idInStock = theStockProductList.Select(x => x.ProductId).ToHashSet();
-
-            // otteniamo i prodotti che non sono nel magazzino
-            List<sp_GetListProduct_Result> noWareHousesProduct = TheProductsList.Where(product => !idInStock.Contains(product.Id)).ToList();
-
-            return noWareHousesProduct;
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
-
-       
+        
     }
 }

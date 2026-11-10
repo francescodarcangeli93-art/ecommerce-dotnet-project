@@ -4,6 +4,7 @@ using BLL_Ecommerce.Services;
 using DTO_Ecommerce;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.ApplicationServices;
@@ -24,6 +25,7 @@ namespace WebEcommerce.Controllers
         private readonly ILogService _logService;
         private readonly IWarehousesMovementsService _warehousesMovementsService;
 
+        private static int Cont = 0;
 
         public GestWarehousesMovementsController()
         {
@@ -44,12 +46,12 @@ namespace WebEcommerce.Controllers
                 }
 
                 sp_SearchWarehousesMovements_Param param = new sp_SearchWarehousesMovements_Param();
-
+                
                 WarehousesViewModel Model = new WarehousesViewModel
                 { 
                     TheProductsList       = _roleService.sp_GetListProduct(),
                     TheMovementReasonList = _warehousesMovementsService.sp_GetMovementReasonList(),
-                    TheWarehouseMovements = _warehousesMovementsService.sp_SearchWarehousesMovements(param),
+                    //TheWarehouseMovements = _warehousesMovementsService.sp_SearchWarehousesMovements(param),
                     sp_GetAllWareHouseList = _warehousesMovementsService.sp_GetAllWareHouseList()
                 };
 
@@ -66,8 +68,12 @@ namespace WebEcommerce.Controllers
 
         // metodo per generare una tabella nella partialview
         [HttpGet]
-        public ActionResult SearchWarehousesMovementsPartial(sp_SearchWarehousesMovements_Param param)
+        public ActionResult SearchWarehousesMovementsPartial(sp_SearchWarehousesMovements_Param param, bool? isGlobal)
         {
+            ++Cont;
+        
+            Debug.WriteLine($"\n============ Chiamate al controller {Cont} =======================\n");
+           
 
             int idUser = 0;
             try
@@ -84,6 +90,7 @@ namespace WebEcommerce.Controllers
 
                 WarehousesViewModel Model = new WarehousesViewModel
                 {
+                    IsGlobal = isGlobal,
                     TheWarehouseMovements = result,
                     TotCount = totCount,
                     TotalPage = totalPage,
@@ -129,7 +136,7 @@ namespace WebEcommerce.Controllers
         [HttpGet]
         public JsonResult Details (int MovementId)
         {
-
+            Cont = 0;
             int idUser = 0;
             try
             {
@@ -149,6 +156,47 @@ namespace WebEcommerce.Controllers
             }
         }
 
+        [HttpGet]
+        public JsonResult UpdateMovement(int MovementId)
+        {
+            Cont = 0;
+            int idUser = 0;
+            try
+            {
+                idUser = (int)Session["UserId"];
 
+                // 
+                string notes = _warehousesMovementsService.sp_GetWarehousesMovementsById(MovementId).Notes;
+
+                return Json(new { success = true, data = notes }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult UpdateMovement(sp_UpdateWarehouseMovementNotes_Param param)
+        {
+            Cont = 0;
+            int idUser = 0;
+            try
+            {
+                idUser = (int)Session["UserId"];
+
+                // richiamare il metodo per salvare i dati di input 
+
+                _warehousesMovementsService.sp_UpdateWarehouseMovementNotes(param);
+
+                return Json(new { success = true});
+            }
+            catch (Exception ex)
+            {
+                _logService.WriteLogProcessError(idUser, ex.Message);
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
     }
 }

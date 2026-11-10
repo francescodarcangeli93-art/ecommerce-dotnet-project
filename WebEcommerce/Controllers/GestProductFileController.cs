@@ -74,6 +74,34 @@ namespace WebEcommerce.Controllers
             }
         }
 
+        // TO DO: Funzione che carica le immaggini nella tabella 
+
+        //[HttpGet]
+        //public FileResult GetImageInProductsTable(int id) 
+        //{
+        //    int idUser = 0;
+        //    try
+        //    {
+
+        //        if (Session["UserId"] != null) idUser = (int)Session["UserId"];
+
+        //        sp_GetProductFileContent_Result file = _ProductsService.GetProductFileContent(id);
+
+                  //if (file == null || file.FileContent == null || file.FileContent.Length == 0)
+                  //{
+                  //  string defaultImagePath = Server.MapPath("~/Content/Images/no-image.png");
+                  //  return File(defaultImagePath, "image/png");
+                  //}
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logService.WriteLogProcessError(idUser, ex.Message);
+              
+        //    }
+        //}
+
         /*============================================================================================================================
           2  ACTION CHE AGGIUNGE UN NUOVO PRODOTTO
        ==============================================================================================================================*/

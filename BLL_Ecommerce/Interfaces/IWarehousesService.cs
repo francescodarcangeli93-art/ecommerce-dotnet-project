@@ -16,6 +16,8 @@ namespace BLL_Ecommerce.Interfaces
 
         List<sp_GetWarehouseStockProductById_Result> sp_GetWarehouseStockProductById(int WarehouseId);
 
-     
+        int sp_CheckSingleProductStock(int warehouseId, int productId);
+
+
     }
 }

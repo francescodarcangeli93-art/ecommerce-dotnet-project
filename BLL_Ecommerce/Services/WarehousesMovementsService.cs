@@ -34,5 +34,9 @@ namespace BLL_Ecommerce.Services
             return WarehousesMovements.sp_GetWarehousesMovementsById(warehouseMovementId);
         }
 
+        public void sp_UpdateWarehouseMovementNotes(sp_UpdateWarehouseMovementNotes_Param param)
+        {
+             WarehousesMovements.sp_UpdateWarehouseMovementNotes(param);
+        }
     }
 }

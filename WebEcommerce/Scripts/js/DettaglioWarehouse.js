@@ -2,6 +2,9 @@
    
     var timerRicerca;
 
+    const warehouseId = $('#warehouseId').val();
+    let productId = null;
+
     document.getElementById('ricercaProdotto').addEventListener('input', function (event) {
 
         // 2. Ogni volta che premi un tasto, cancelli il timer del tasto precedente
@@ -16,31 +19,6 @@
             let righe = document.querySelectorAll('#tabellaGiacenze tbody tr');
             
             let isMatch = false;
-
-            // Il tuo ciclo FOR originale, intatto:
-            //for (var i = 0; i < righe.length; i++) {
-            //    var riga = righe[i];
-
-            //    if (isMatch) {
-            //        riga.style.display = 'none';
-            //        continue;
-            //    }
-
-            //    if (riga.cells[0].innerText.toLowerCase() === filtro) {
-            //        riga.style.display = '';
-            //        isMatch = true;
-            //    }
-            //    else if (filtro.length > 3 && riga.cells[1].innerText.toLowerCase().includes(filtro)) {
-            //        riga.style.display = '';
-            //    }
-            //    else if (filtro === '') {
-            //        riga.style.display = '';
-            //    }
-            //    else {
-            //        riga.style.display = 'none';
-            //    }
-            //}
-
 
             for (riga of righe) {
 
@@ -59,6 +37,72 @@
 
     });
 
+
+    /*=============================================================================================================================================
+        MODAL: CLICK SCARICO
+    ==================================================================================================================================================*/
+
+
+
+    $('#contenitoreTabellaGiacenze').on('click', '.btn-scarica', function () {
+
+         productId = $(this).data('product-id');
+        const productName = $(this).data('product-name');
+        const productQuantity = $(this).data('quantita-attuale');
+
+        $('#retProductId').val(productId);
+
+        $('#scaricoProdottoNome').text(productName);
+        $('#scaricoQuantitaAttuale').text(productQuantity);
+
+    });
+
+    /*=============================================================================================================================================
+       BOTTONE REFRESH DELLA QUANTITA DEL MAGAZZINO
+    ==================================================================================================================================================*/
+
+    $('#update').on('click', function () {
+        const $url = $(this).data('refresh-url');
+      
+       
+
+        console.log($url + " " + warehouseId + " " + productId);
+
+        
+
+        const model = {
+            WarehouseId: warehouseId,
+            ProductId: productId
+        }
+
+        $.ajax({
+            url: $url, // ACTION: RefreshGiacenza     CONTROLLER:  GestWarehouses
+            type: 'GET',
+            data: model,
+            success: function (response) {
+               
+                if (response.success) {
+
+                    console.log(response.giacenza);
+                    // aggiornare il massimo
+                    $('#scaricoQuantitaAttuale').text(response.giacenza);
+                } else {
+
+                    // Qui si gestisce l'errore restituito dal catch (es. ex.Message)
+                    
+                  
+                    alert('Errore impossibile aggiornare ' + response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                // Entra qui solo se c'è un errore di rete o crash del server (HTTP 500)
+                alert('Errore di comunicazione con il server: ' + error);
+            }
+        });
+    });
+
+
+
     $('#formImpostazioni').on('submit', function (e) {
         e.preventDefault(); // evita il refresh della pagina dato il submit nativo del form
 
@@ -69,7 +113,8 @@
             Address: $('#inputIndirizzo').val(),
             PostalCode: $('#inputCap').val(),
             City: $('#inputCitta').val(),
-            IsActive: $('#inputIsActive').is(':checked')
+            IsActive: $('#inputIsActive').is(':checked'),
+            
         }
 
         $.ajax({
@@ -95,6 +140,11 @@
         });
     });
 
+    $('#tab-movimenti-btn').on('click', function () {
+ 
+        $('#btnCerca').click();
+
+    });
 
     /*=============================================================================================================================================
         MODAL: CLICK CONFERMA CARICO 
@@ -118,7 +168,7 @@
             MovementReasonId: $('#saveCausale').val(),
             ProductId: $('#saveProdotto').val(),
             QtyToTransfer: $('#saveQuantita').val(),
-
+            Notes: $('#saveNote').val(),
             WarehouseId: warehouseId,
        
 
@@ -144,7 +194,7 @@
                     setTimeout(function () {
                         $('#modalCaricaProdotto').modal('hide');
                     }, 1000);
-                  
+                   
 
                     // 2. Ricarica SOLO la tabella tramite Partial View
                     $('#contenitoreTabellaGiacenze').load('/GestWarehouses/GetTabellaGiacenze?warehouseId=' + warehouseId);
@@ -163,22 +213,8 @@
 
 
     /*=============================================================================================================================================
-        MODAL: CLICK SCARICO
-    ==================================================================================================================================================*/
-
-    $('#contenitoreTabellaGiacenze').on('click', '.btn-scarica', function () {
-
-        const productId = $(this).data('product-id');
-        const productName = $(this).data('product-name');
-        const productQuantity = $(this).data('quantita-attuale');
-  
-        $('#retProductId').val(productId);
-
-        $('#scaricoProdottoNome').text(productName);
-        $('#scaricoQuantitaAttuale').text(productQuantity);
-
-    });
-
+       MODAL: CLICK SINGOLO SCARICO
+   ==================================================================================================================================================*/
 
     $('#btnConfermaScarico').on('click', function () {
 
@@ -191,16 +227,14 @@
             MovementReasonId: $('#removeCausale').val(),
             ProductId: $('#retProductId').val(),
             QtyToTransfer: $('#removeQuantita').val(),
-
+            Notes: $('#inputNoteScarico').val(),
             WarehouseId: warehouseId,
 
 
         };
 
-     
-
         $.ajax({
-            url: $url, // ACTION: CaricoProdotti     CONTROLLER:  GestWarehousesController
+            url: $url, // ACTION: ScaricoProdotti     CONTROLLER:  GestWarehousesController
             type: 'POST',
             data: model,
             success: function (response) {
@@ -214,18 +248,23 @@
 
 
 
-                    $('.message').html('<b>Scarico avvenuto con successo</b>').addClass('green-first');
+                    $('#discharge').html('<b>Scarico avvenuto con successo</b>').addClass('green-first');
                     // 1. Chiudi la modal
                     setTimeout(function () {
-                        $('#modalCaricaProdotto').modal('hide');
+                        $('#modalScaricoProdotto').modal('hide');
                     }, 1000);
 
+                    // agiorna tabella dei movimenti
+                    $('#tabellaContainer').load(searchMovements);
 
                     // 2. Ricarica SOLO la tabella tramite Partial View
                     $('#contenitoreTabellaGiacenze').load('/GestWarehouses/GetTabellaGiacenze?warehouseId=' + warehouseId);
                 } else {
+
                     // Qui gestisci l'errore restituito dal catch (es. ex.Message)
-                    alert('Errore: ' + response.message);
+                    //alert('Errore: ' + response.message);
+                    $('#discharge').html('errore' + response.message);
+
                 }
             },
             error: function (xhr, status, error) {
@@ -267,7 +306,7 @@
             MovementReasonId: $('#addSingleCausale').val(),
             ProductId: $('#retProductId').val(),
             QtyToTransfer: $('#addSingleQuantita').val(),
-
+            Notes: $('#addSingleNote').val(),
             WarehouseId: warehouseId,
 
 
@@ -294,6 +333,8 @@
                         $('#modalCaricoSingoloProdotto').modal('hide');
                     }, 2000);
 
+                    // agiorna tabella dei movimenti
+                    $('#tabellaContainer').load(searchMovements);
 
                     // 2. Ricarica SOLO la tabella tramite Partial View
                     $('#contenitoreTabellaGiacenze').load('/GestWarehouses/GetTabellaGiacenze?warehouseId=' + warehouseId);
@@ -311,14 +352,25 @@
     });
 
 
-    function safelyTrim(input) {
-        // Add a "guard clause" to check if the input is a string.
-        if (typeof input !== 'string') {
-            console.error('Error: The provided input is not a string.');
-            // Return a predictable value or the original input on failure.
-            return input;
-        }
 
-        return input.trim();
-    }
+
+
+    let timer;
+    let currentRequest;
+
+    const url = $('#retProductId').data('quantity-url');
+
+
+   
+
+        function safelyTrim(input) {
+      
+            if (typeof input !== 'string') {
+                console.error('Error: The provided input is not a string.');
+         
+                return input;
+            }
+
+            return input.trim();
+        }
 });

@@ -90,6 +90,7 @@ namespace WebEcommerce.Models
 
     public class WarehousesViewModel
     {
+        public bool? IsGlobal { get; set; }
         public List<sp_SearchWarehouses_Result> WarehousesList { get; set; }
 
         public sp_GetWarehouseById_Result TheWarehouse { get; set; }

@@ -18,6 +18,8 @@ namespace BLL_Ecommerce.Interfaces
         List<sp_GetAllWareHouseList_Result> sp_GetAllWareHouseList();
 
         sp_GetWarehousesMovementsById_Result sp_GetWarehousesMovementsById(int warehouseMovementId);
+
+        void sp_UpdateWarehouseMovementNotes(sp_UpdateWarehouseMovementNotes_Param param);
     }
 
 }

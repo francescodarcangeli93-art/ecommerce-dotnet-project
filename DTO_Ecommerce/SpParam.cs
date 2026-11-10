@@ -26,6 +26,12 @@ namespace DTO_Ecommerce
         public Enums.severityLog IdLogSeverity { get; set; }
         public string ErrorMessage { get; set; }
     }
+
+    public class sp_CheckSingleProductStock_Param
+    {
+        public int Id { get; set; }
+        public int ProductId { get; set; }
+    }
     public class sp_CheckProductReorderInWarehouse_Param
     {
         public int Id { get; set; }
@@ -579,6 +585,8 @@ namespace DTO_Ecommerce
 
     }
 
+
+
     public class sp_SearchWarehousesMovements_Param
     {
         public DateTime? StartDate { get; set; }
@@ -606,11 +614,15 @@ namespace DTO_Ecommerce
         public int QtyToTransfer { get; set; }
         public int WarehouseId { get; set; }
         public int? DestinationWarehouseId { get; set; }
-        public int? @OriginalMovementId { get; set; }
-
+        public int? OriginalMovementId { get; set; }
+        public string Notes { get; set; }
     }
 
-   
+   public class sp_UpdateWarehouseMovementNotes_Param
+    {
+        public int MovementId { get; set; }
+        public string Notes { get; set; }
+    }
 
 
     // --------------   MANAGE  --------------------------

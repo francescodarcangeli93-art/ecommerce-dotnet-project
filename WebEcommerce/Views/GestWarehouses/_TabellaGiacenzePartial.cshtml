@@ -1,8 +1,10 @@
 ﻿@model WebEcommerce.Models.WarehousesViewModel
 
 
+<!-- il value ha le informazioni del productId -->
+<input type="hidden" id="retProductId" name="ProductId" value=""  data-whare-id=""/>
 
-<input type="hidden" id="retProductId" name="ProductId" value="" />
+@*<input type="hidden" id="storeMaxQuantity" name="Quantity" value="" />*@
 
 <table class="table tabella-magazzino" id="tabellaGiacenze">
 
@@ -25,15 +27,18 @@
                 <td class="text-center">@magazzino.LastUpdate</td>
                 <td class="text-center">@magazzino.Quantity</td>
                 <td class="text-center">
-                    <button type="button" class="btn btn-sm btn-outline-secondary simpleBevel" title="Storico prodotto">
-                        <i class="bi bi-clock-history"></i>
-                    </button>
+
+                    @*<button type="button" class="btn btn-sm btn-outline-secondary simpleBevel" title="Storico prodotto">
+                            <i class="bi bi-clock-history"></i>
+                        </button>*@
+
 
                     <button type="button" class="btn btn-sm btn-outline-danger btn-scarica simpleBevel"
                             data-bs-toggle="modal" data-bs-target="#modalScaricoProdotto"
                             data-product-id="@magazzino.ProductId"
                             data-product-name="@magazzino.ProductName"
                             data-quantita-attuale="@magazzino.Quantity"
+                            data-wharehouse-id="@magazzino.Id"
                             title="Scarica/Rettifica">
                         <i class="bi bi-dash-circle"></i>
                     </button>

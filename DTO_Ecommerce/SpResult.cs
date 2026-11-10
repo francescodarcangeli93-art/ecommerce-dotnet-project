@@ -22,6 +22,11 @@ namespace DTO_Ecommerce
        }
      */
 
+    public class sp_CheckSingleProductStock_Result
+    {
+        public int QuantityInStock { get; set; }
+   
+    }
 
     public class sp_CheckProductReorderInWarehouse_Result
     {
@@ -820,8 +825,6 @@ namespace DTO_Ecommerce
     {
 
     }
-
-
 
     public class sp_SearchWarehousesMovements_Result
     {
