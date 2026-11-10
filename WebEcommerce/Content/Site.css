@@ -18,7 +18,10 @@ select {
     width: auto; /* oppure una larghezza specifica, es. 250px */
 }
 /*   */
- 
+    
+    :root{
+        --label-from-to-height: -70px;
+    }
     
     textarea {
         resize:both !important;
@@ -1089,8 +1092,8 @@ select {
     color: #a5a5a5;
     font-size: 13px;
     margin-left: 10px;
-    position: absolute;
-    top: 0;
+    position: relative;
+    top: var(--label-from-to-height);
 }
 
 .filtri-movimenti {
