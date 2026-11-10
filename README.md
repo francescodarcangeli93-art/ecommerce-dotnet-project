@@ -17,11 +17,11 @@ Il sistema è stato sviluppato seguendo il pattern architetturale MVC (Model-Vie
 *   **Interazioni Asincrone:** Utilizzo di chiamate AJAX per l'aggiornamento dinamico dell'interfaccia senza ricaricare la pagina.
 
 ## 🚧 Stato del Progetto
-Il progetto è nato durante il tirocinio ed è attualmente in pausa.
+Il progetto è nato durante il tirocinio ed è attualmente in pausa. Le funzionalità sono implementate e i flussi principali sono stati provati manualmente, ma non ho verificato tutti i casi limite né eseguito test sistematici: possono esserci bug.
 
-* **Anagrafiche e database:** implementati e verificati manualmente.
-* **Movimenti di magazzino:** implementati, ma testati solo in modo limitato; possono contenere bug.
-* **Gestione immagini:** implementata ma ci possono essere bug.
+* **Anagrafiche e database:** implementati; flussi principali provati manualmente.
+* **Movimenti di magazzino:** implementati; flussi principali provati manualmente.
+* **Gestione immagini (upload, ritaglio, ridimensionamento, watermark):** implementata; flussi principali provati manualmente.
 
 **Limiti noti e possibili sviluppi:**
 *   **Paginazione e ordinamento:** attualmente la paginazione dei dati avviene lato server (per ottimizzare le performance), mentre l'ordinamento e parte dei filtri sono gestiti lato client (JavaScript). Questo approccio causa un limite: l'ordinamento agisce solo sui record della pagina corrente e non sull'intero dataset. La soluzione prevista è spostare la logica di sorting e filtering direttamente nelle stored procedure SQL, passando i parametri dal server.
