@@ -27,9 +27,8 @@ Il progetto è attualmente in fase di sviluppo attivo. Il core backend (gestione
 ## 🧠 Metodologia di Sviluppo e uso dell'AI
 Durante lo sviluppo di questo progetto, ho limitato volontariamente l'uso dell'Intelligenza Artificiale al minimo indispensabile. Il mio obiettivo era imparare a programmare davvero.
 
-*   **Uso per il Boilerplate:** Ho utilizzato l'AI per generare codice ripetitivo o di base (es. classi di configurazione o markup HTML), come se fosse una scorciatoia per il copia-incolla. 
-*   **Sviluppo Core e Problem Solving:** Per le cose complesse (come l'implementazione dell'image processing, le query SQL e la logica di magazzino) mi sono divertito a cercare la soluzione e scrivere il codice da solo. 
-*   **Debugging:** Ho risolto tutti i bug per conto mio, sfruttando l'AI solo come "tutor" per spiegarmi concetti teorici o darmi una mano a leggere la documentazione ufficiale. Ogni riga di logica in questo repository è frutto del mio studio e della mia sperimentazione.
+*   **Apprendimento e Sviluppo Core:** All'inizio ho scritto tutto il codice di base a mano, per capire bene i meccanismi. Per le cose complesse (come l'implementazione dell'image processing, le query SQL e la logica di magazzino) mi sono divertito a cercare la soluzione e a scrivere il codice da solo. Per le logiche più intricate, a volte ho chiesto all'AI di illustrarmi diverse opzioni di implementazione a livello teorico e architetturale, ma la scelta finale e la scrittura del codice sono sempre state mie. Ho risolto tutti i bug in autonomia, sfruttando l'AI solo come "tutor" per chiarire concetti teorici.
+*   **Uso per il Boilerplate:** Successivamente, quando mi sono trovato davanti a codice ripetitivo o identico a quello già scritto (es. markup HTML o classi di configurazione), a volte ho usato l'AI come scorciatoia per velocizzare il copia-incolla, ma solo dopo aver capito come funzionava. Ogni riga di logica in questo repository è frutto del mio studio e della mia sperimentazione.
 
 ## 👨‍💻 Autore
 **Francesco D'Arcangeli**
