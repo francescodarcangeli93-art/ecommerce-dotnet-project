@@ -24,5 +24,12 @@ Il progetto è attualmente in fase di sviluppo attivo. Il core backend (gestione
 *   **Miglioramento UI/UX:** Revisione dell'interfaccia per rendere più fluide le chiamate AJAX e la gestione degli stati di caricamento.
 *   **Testing:** Implementazione di test di integrazione per le chiamate ai controller.
 
+## 🧠 Metodologia di Sviluppo e uso dell'AI
+Durante lo sviluppo di questo progetto, ho limitato volontariamente l'uso dell'Intelligenza Artificiale al minimo indispensabile. Il mio obiettivo era imparare a programmare davvero.
+
+*   **Uso per il Boilerplate:** Ho utilizzato l'AI per generare codice ripetitivo o di base (es. classi di configurazione o markup HTML), come se fosse una scorciatoia per il copia-incolla. 
+*   **Sviluppo Core e Problem Solving:** Per le cose complesse (come l'implementazione dell'image processing, le query SQL e la logica di magazzino) mi sono divertito a cercare la soluzione e scrivere il codice da solo. 
+*   **Debugging:** Ho risolto tutti i bug per conto mio, sfruttando l'AI solo come "tutor" per spiegarmi concetti teorici o darmi una mano a leggere la documentazione ufficiale. Ogni riga di logica in questo repository è frutto del mio studio e della mia sperimentazione.
+
 ## 👨‍💻 Autore
 **Francesco D'Arcangeli**
