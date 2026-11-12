@@ -38,7 +38,11 @@ Il progetto è nato durante il tirocinio ed è attualmente in pausa. Le funziona
 *   **Testing:** aggiungere test di integrazione per le chiamate ai controller.
 
 ## 🧠 Metodologia di Sviluppo e uso dell'AI
-Ho scritto io il codice e la logica del progetto, con l'obiettivo di imparare a programmare davvero. Ho usato l'AI come tutor per chiarire concetti e valutare alternative di implementazione, e per generare codice ripetitivo (markup HTML, classi di configurazione), che ho poi riletto e capito prima di tenerlo.
+Ho scritto io il codice e la logica del progetto, con l'obiettivo di imparare a programmare davvero. 
+La parte database (schema relazionale e stored procedure) è stata un lavoro condiviso; tutto il resto — backend C#, frontend, 
+modulo immagini e logica applicativa — è stato sviluppato da me in autonomia. 
+Ho usato l'AI come tutor per chiarire concetti e valutare alternative di implementazione, e per generare codice ripetitivo 
+(markup HTML, classi di configurazione), che ho poi riletto e capito prima di tenerlo.
 
 ## 👨‍💻 Autore
 **Francesco D'Arcangeli**
