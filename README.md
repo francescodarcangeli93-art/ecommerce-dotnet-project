@@ -2,6 +2,16 @@
 
 Un'applicazione gestionale full-stack progettata per la gestione di processi aziendali complessi. Il sistema include moduli per l'anagrafica, la gestione dei prodotti, il controllo dei movimenti di magazzino e l'elaborazione di file multimediali.
 
+## 🔑 Credenziali di Accesso (Demo)
+Per testare le diverse funzionalità del gestionale, è possibile utilizzare le seguenti credenziali demo:
+
+*   **Amministratore (Admin):** 
+    *   username: `admin`
+    *   Password: `1234`
+*   **Utente Standard (Cliente):** 
+    *   Email: `luv`
+    *   Password: `abcd`
+
 ## 🛠️ Stack Tecnologico
 *   **Backend:** C#, ASP.NET, MVC ADO.NET
 *   **Database:** SQL Server (20+ tabelle relazionali, 20+ Stored Procedure)
