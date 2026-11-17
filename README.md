@@ -9,7 +9,7 @@ Per testare le diverse funzionalità del gestionale, è possibile utilizzare le 
     *   username: `admin`
     *   Password: `1234`
 *   **Utente Standard (Cliente):** 
-    *   Email: `luv`
+    *   username: `luv`
     *   Password: `abcd`
 
 ## 🛠️ Stack Tecnologico
