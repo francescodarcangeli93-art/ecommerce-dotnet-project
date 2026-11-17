@@ -33,7 +33,7 @@ Il progetto è nato durante il tirocinio ed è attualmente in pausa. Le funziona
 * **Gestione immagini (upload, ritaglio, ridimensionamento, watermark):** implementata; flussi principali provati manualmente.
 
 **Limiti noti e possibili sviluppi:**
-*   **Paginazione e ordinamento:** attualmente la paginazione dei dati avviene lato server (per ottimizzare le performance), mentre l'ordinamento e parte dei filtri sono gestiti lato client (JavaScript). Questo approccio causa un limite: l'ordinamento agisce solo sui record della pagina corrente e non sull'intero dataset. La soluzione prevista è spostare la logica di sorting e filtering direttamente nelle stored procedure SQL, passando i parametri dal server.
+*   **Paginazione e ordinamento:** attualmente la paginazione dei dati avviene lato server (per ottimizzare le performance), mentre l'ordinamento e parte dei filtri sono gestiti lato client (JavaScript). Questo approccio causa un limite: l'ordinamento agisce solo sui record della pagina corrente e non sull'intero dataset. La soluzione prevista è spostare la logica di sorting direttamente nelle stored procedure SQL, passando i parametri dal server.
 *   **UI/UX:** rendere più fluide le chiamate AJAX e la gestione degli stati di caricamento.
 *   **Testing:** aggiungere test di integrazione per le chiamate ai controller.
 
